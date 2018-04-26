@@ -1,23 +1,18 @@
-import React from "react"
+
 import ReactDOM from "react-dom"
-import img from "./img/480_762.png"
-import index from "./css/index.css"
-class App extends React.Component{
-	state = {
-		big:true,
-	}
-	onClick = ()=> {
-		
-		this.setState({
-			big : !this.state.big
-		})
-		console.log(this.state)
-	}
+import React,{ Component } from "react"
+import {router} from "./config/router.js"
+
+
+class Root extends Component{
 	render(){
-		return <img src={img} />
-	} 
+		return router()
+	}
 }
 
-ReactDOM.render(<App />,document.querySelector("#app"))
+
+
+ReactDOM.render(<Root/>,document.querySelector("#Root"))
+
 
 

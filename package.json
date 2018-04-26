@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx webpack-dev-server --hot --config ./webpack.config-dev.js",
-    "build": "npx webpack --config ./webpack.config-build.js"
+    "dev": "npx webpack-dev-server --hot --history-api-fallback --config ./webpack.config-dev.js",
+    "build": "npx webpack --history-api-fallback --config ./webpack.config-build.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.46",
