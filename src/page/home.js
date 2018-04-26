@@ -1,17 +1,72 @@
-import React from "react"
+import React, {
+	Component
+} from "react"
+import { Table, Icon, Divider } from 'antd';
 
-export const Home = () => (
-	<div>
-		<h3>Home</h3>
-	</div>
-);
-export const About = () => (
-	<div>
-		<h4>about</h4>
-	</div>
-	);
-export const Tops = () => (
-	<div>
-		<h3>Tops</h3>
-	</div>
-);
+class Home extends Component {
+	constructor(props) {
+		super(props);
+		const columns = [{
+			title: 'Name',
+			dataIndex: 'name',
+			key: 'name',
+			render: text => <a href="javascript:;">{text}</a>,
+		}, {
+			title: 'Age',
+			dataIndex: 'age',
+			key: 'age',
+		}, {
+			title: 'Address',
+			dataIndex: 'address',
+			key: 'address',
+		}, {
+			title: 'Action',
+			key: 'action',
+			render: (text, record) => (
+				<span>
+				      <a href="javascript:;">Action 一 {record.name}</a>
+				    	  <Divider type="vertical" />
+				      <a href="javascript:;">Delete</a>
+				     	 <Divider type="vertical" />
+				      <a href="javascript:;" className="ant-dropdown-link">
+				        More actions <Icon type="down" />
+				      </a>
+   				 </span>
+			),
+		}];
+		const data = [{
+			  key: '1',
+			  name: 'John Brown',
+			  age: 32,
+			  address: 'New York No. 1 Lake Park',
+			}, {
+			  key: '2',
+			  name: 'Jim Green',
+			  age: 42,
+			  address: 'London No. 1 Lake Park',
+			}, {
+			  key: '3',
+			  name: 'Joe Black',
+			  age: 32,
+			  address: 'Sidney No. 1 Lake Park',
+			}];
+		this.state = {
+			columns,
+			data
+		}
+
+	}
+	render() {
+		
+		return(
+			<div>
+				<h3>Login</h3>
+				<Table columns={this.state.columns} dataSource={this.state.data} />
+			</div>
+		)
+	}
+}
+
+export {
+	Home
+}

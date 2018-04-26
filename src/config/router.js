@@ -1,11 +1,7 @@
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import React from "react"
+import {Login} from "../page/login.js"
+import {Home} from "../page/home.js"
 
-import {Home,About,Tops} from "../page/home.js"
-export const router = () =>  (
-	<Router>
-		<div>
-			<Route exact={true} path="/" component={Home} />
-		</div>
-	</Router>
-);
+export {
+	Login,
+	Home
+}
