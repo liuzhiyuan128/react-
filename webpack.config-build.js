@@ -2,6 +2,9 @@ const path = require('path')
 const CleanWebpackPlgin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+
 module.exports = {
   mode: 'development',
   devServer: {
@@ -11,7 +14,9 @@ module.exports = {
   	new CleanWebpackPlgin(['dist']),//打包之前清空目录
 	new HtmlWebpackPlugin({
 		template:"./index.html"//打包之后的模板文件
-	})
+	}),
+	new ExtractTextPlugin("./css/index.css")
+	
   ],
   module: {
     rules: [
@@ -27,13 +32,13 @@ module.exports = {
         }
       },
        {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|PNG)$/,
         use: [
        
           {
             loader: 'file-loader?limit=25000',
             options: {
-                     name: 'img/[name].[ext]'
+                     name: '/img/[name].[ext]'
                 }
           }
           
@@ -41,17 +46,19 @@ module.exports = {
        },
       {
       	test:/\.css$/,
-      	use:[//循序 也需要注意
-     
-      	{
-      		loader:"file-loader",
-      		options:{
-      			name: "css/[name].[ext]" //按文件类型输出但是没有压缩
-      		}
-      	},
-      	
-      	]
-      }
+	      	use:ExtractTextPlugin.extract({
+			    fallback:'style-loader',
+			    use:'css-loader',
+			    publicPath:'../' //解决css背景图，路径问题
+				})
+      },
+      {
+                test:/\.less$/,
+                use:ExtractTextPlugin.extract({
+                    fallback:'style-loader',
+                    use:['css-loader','less-loader']
+                })
+            }
         
       	
       

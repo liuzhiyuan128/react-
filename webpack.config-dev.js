@@ -1,9 +1,18 @@
 const path = require('path')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 module.exports = {
   mode: 'development',
   devServer: {
     contentBase: path.resolve(__dirname, './') //虚拟服务路径
   },
+   plugins:[
+  
+	new ExtractTextPlugin("./css/index.css"),
+	new MiniCssExtractPlugin({
+	    filename:'css/index.css'
+	})
+  ],
   module: {
     rules: [
       {
@@ -17,8 +26,8 @@ module.exports = {
           plugins: ['@babel/plugin-proposal-class-properties']//解析高es6语法
         }
       },
-       {
-        test: /\.(png|jpg|gif)$/,
+      {
+        test: /\.(png|jpg|gif|PNG)$/,
         use: [
        
           {
@@ -32,16 +41,16 @@ module.exports = {
        },
       {
       	test:/\.css$/,
-      	use:[//循序 也需要注意
-     
-      	{
-      		loader:"style-loader"//插入样式 
-      	},
-      	{
-      		loader:"css-loader"//解析样式
-      	}
-      	]
-      }
+	      	use:ExtractTextPlugin.extract({
+			    fallback:'style-loader',
+			    use:'css-loader',
+			    publicPath:'../' //解决css背景图，路径问题
+				})
+      },
+      {
+			test:/\.less$/,
+			use:['style-loader','css-loader','less-loader']
+	}	
         
       	
       

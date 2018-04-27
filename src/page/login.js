@@ -1,14 +1,15 @@
-import React, {
-	Component
-} from "react"
-import { Table, Icon, Divider } from 'antd';
-import ajax from "../config/ajax.js";
+
+
+import{
+	Component,
+	React,
+	ajax
+} from "../config/router.js"
 
 
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		
 
 	}
 	render() {

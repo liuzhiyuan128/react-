@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import React from "react"
-import {Home,Login} from "./config/router.js"
+
+
+import {Home,Login,BrowserRouter,Route,Link,React,Router } from "../config/router.js"
+
 export const root = () =>  (
 	<Router>
 		<div>
@@ -9,3 +10,4 @@ export const root = () =>  (
 		</div>
 	</Router>
 );
+

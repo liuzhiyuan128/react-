@@ -1,12 +1,7 @@
 
-import ReactDOM from "react-dom"
-
-import React,{ Component } from "react"
-
-import {root} from "./root.js"
-
+import {root,Component,React,ReactDOM} from "./config/router.js"
 import './css/antd.min.css';
-import './css/index.css';
+import './css/index.less';
 
 
 class Root extends Component{

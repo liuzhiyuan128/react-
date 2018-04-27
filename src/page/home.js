@@ -1,7 +1,6 @@
-import React, {
-	Component
-} from "react"
-import { Table, Icon, Divider } from 'antd';
+
+import {Divider,Table,Icon,Component,React} from "../config/router.js"
+
 
 class Home extends Component {
 	constructor(props) {
@@ -60,7 +59,7 @@ class Home extends Component {
 		
 		return(
 			<div>
-				<h3>Login</h3>
+				<h3>home</h3>
 				<Table columns={this.state.columns} dataSource={this.state.data} />
 			</div>
 		)
