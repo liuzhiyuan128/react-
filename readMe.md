@@ -11,5 +11,12 @@ npm run build 打包项目  我尝试着把css文件单独提取出来 就按照
 <br/>
 引入了阿里的ui--antd 经过 ie仿真测试可以兼容到ie8
 
+
+
 <br/>
-总结了上一个app的ajax数据的请求 做了一个封装 其大意是取最后一个值加以判断
+总结了上一个app的ajax数据的请求给予axios封装一个函数 其调用方法   ajax({url:"login",type:"post",data{a:""},successfunction(res){}})
+
+
+
+<br/>
+router.js 分发组件的作用 只要引入一个router.js 就可以获取所有需要的组件 
