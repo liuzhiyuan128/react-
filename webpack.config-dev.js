@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 module.exports = {
   mode: 'development',
   devServer: {
-    contentBase: path.resolve(__dirname, './') //虚拟服务路径
+    contentBase: path.resolve(__dirname, './dist') //虚拟服务路径
   },
    plugins:[
   

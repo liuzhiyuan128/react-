@@ -20,9 +20,48 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-img {
-  width: 100px;
+#Root {
+  height: 100%;
 }
-div ul li {
-  background: red;
+#Root > div {
+  height: 100%;
+}
+#Root > div > #home {
+  height: 100%;
+}
+#Root > div > #home > .ant-layout {
+  height: 100%;
+}
+#Root > div > #home > .ant-layout .ant-layout-sider-children > ul .ant-menu-sub .ant-menu-item.ant-menu-item-selected {
+  background: #2f3f64;
+}
+#Root > div > #home > .ant-layout .header {
+  background: #fff;
+  position: relative;
+}
+#Root > div > #home > .ant-layout .header > div {
+  position: absolute;
+  height: 45px;
+  right: 0;
+  top: 0;
+  line-height: 45px;
+  color: #7fa8fd;
+  padding-right: 20px;
+}
+#Root > div > #home > .ant-layout .header > div span {
+  margin-left: 15px ;
+}
+#Root > div > #home #logo {
+  background: url(/img/logo.png);
+  background-size: 100% 100%;
+}
+#Root #search {
+  height: 53px;
+  margin-top: 12px;
+}
+#Root #search .ant-row > div > * {
+  width: 100%;
+}
+#Root #search .ant-row .ant-calendar-date-input-wrap {
+  margin-left: 0;
 }

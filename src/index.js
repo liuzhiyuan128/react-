@@ -7,9 +7,7 @@ import './css/index.less';
 class Root extends Component{
 	constructor(props) {  
 	    super(props);  
-	    this.state = {  
-	      content:null,  
-	    }  
+	   
  	 }  
 	render(){
 		return root()
