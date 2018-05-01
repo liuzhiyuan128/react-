@@ -2,6 +2,7 @@
 
 import {Home,Login,Route,Link,React,Router,Redirect } from "../config/router.js"
 
+
 export const root = () =>  (
 	<Router>
 		<div>

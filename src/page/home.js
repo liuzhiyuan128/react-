@@ -1,9 +1,8 @@
 
-import { Header,Layout, Content, Footer, Sider , Menu, Breadcrumb, SubMenu, Component,React,Icon,Router,Route,Link,TrashRanking,compostRanking} from "../config/router.js"
+import { Header,Layout, Content, Footer, Sider , Menu, Breadcrumb, SubMenu, Component,React,Icon,Router,Route,Link,TrashRanking,compostRanking, Redirect,BrowserRouter} from "../config/router.js"
 
 const Home = ({match}) => {
-	console.log(match)
-
+	
 	return (<div id="home">
 				<Layout>
 				    <Layout>
@@ -54,7 +53,7 @@ const Home = ({match}) => {
 					    </Header>
 					    
 					    <div style={{ padding: '0 24px 24px' }}>
-					        <Route exact  path={`/home`} component={TrashRanking} />
+					        <Route  exact  path={`/home`} on render={()=><Redirect to="/home/trashRanking"></Redirect>}  />
 					        <Route path={`/home/trashRanking`} component={TrashRanking} />
 					        <Route path={`/home/compostRanking`} component={compostRanking}/>
 					    </div>

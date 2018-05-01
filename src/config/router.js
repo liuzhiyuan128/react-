@@ -25,7 +25,7 @@ import SearchRanking from "../component/searchRanking.js"
 
 import compostRanking from "../page/compost/ranking.js"//堆肥房 排行
 
-import { BrowserRouter as Router, Route, Link,Redirect } from "react-router-dom";//路由组件
+import { BrowserRouter as Router, Route, Link,Redirect} from "react-router-dom";//路由组件
 
 //echarts柱状图
 import echarts from 'echarts/lib/echarts' //必须
@@ -35,6 +35,24 @@ import 'echarts/lib/chart/bar'
 
 
 import ajax from "./ajax.js";//请求数据
+
+//监听路由变换或跳转使用的方法
+import createHistory from "history/createBrowserHistory"
+
+const history = createHistory()
+
+
+const location = history.location
+
+
+
+localStorage.token = ""
+if(!localStorage.token){
+	history.push("/login")
+}
+
+
+console.log(localStorage.token)
 
 export {
 	Login,
@@ -76,4 +94,5 @@ export {
 	TabPane,
 	Modal,
 	echarts
+	
 }
