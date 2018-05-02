@@ -3,8 +3,8 @@ import React,{ Component } from "react";
 import {Login} from "../page/login.js"//login页面
 import {Home} from "../page/home.js"//home页面
 import {root} from "../page/root.js"
-
-import { Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal } from 'antd';
+import qs from "qs"
+import { Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal, Pagination } from 'antd';
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
 const { SubMenu } = Menu;
@@ -40,13 +40,6 @@ import ajax from "./ajax.js";//请求数据
 import createHistory from "history/createBrowserHistory"
 
 const history = createHistory()
-
-
-
-
-
-
-
 if(!sessionStorage.token){
 	history.replace("/login")
 }
@@ -93,7 +86,8 @@ export {
 	TabPane,
 	Modal,
 	echarts,
-	history
+	qs,
+	Pagination 
 	
 	
 }

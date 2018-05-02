@@ -3,7 +3,6 @@ import { message } from "antd"
 //axios.defaults.baseURL = 'https://api.example.com';
 //axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
-
 const baseUrl = "http://118.31.7.200:8091/" //阿里云
 
 const ajax = (option) => {
@@ -17,8 +16,12 @@ const ajax = (option) => {
 	let url = "";
 	switch(lastUrlStr) {
 		case "login":
-			url = `${baseUrl}rbac/user/${option.url}`;
+			url = `${baseUrl}rbac/user/${option.url}`; //登陆
 			break;
+		case "getUserListByMonth":
+			url = `${baseUrl}bettle/api/evaluation/${option.url}`;//月季年 住户排名 根据 dataType来区分
+			break;
+		
 		default:
 			break;
 	}
@@ -45,6 +48,14 @@ const ajax = (option) => {
 			message.warning("请求数据有误")
 		});
 
+}
+
+window.BuildFormData = function (formDate) {
+	var form = new FormData()
+	for(let item in formDate){
+		form.append(item,formDate[item])
+	}
+	return form
 }
 
 export default ajax

@@ -1,10 +1,49 @@
-import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts } from "../../../config/router.js"
+import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination } from "../../../config/router.js"
 const getSearchData = (data) => {
 	console.log(data)
 }
+const househlodRankingForm = {
+	month: {
+		condition: "",
+		dateType: "",
+		pageSize: 1,
+		pageNum: 10
+	},
+	quarter: {
+		condition: "",
+		dateType: "",
+		pageSize: 10,
+		pageNum: 1
+	},
+	year: {
+		condition: "",
+		dateType: "",
+		pageSize: 1,
+		pageNum: 10
+	}
+}
+let dataType = "month"
 
-function callback(key) {
-	console.log(key);
+function callback(key,vm) {
+	
+	key = +key
+	switch(key) {
+		case 1:
+			dataType = "month"
+			
+			break;
+		case 2:
+			dataType = "quarter"
+
+			break;
+		case 3:
+			dataType = "year"
+			break;
+		default:
+			break;
+	}
+	
+	vm.getUserListByMonth();
 }
 
 const getALineData = (text, vm) => {
@@ -46,86 +85,186 @@ const getALineData = (text, vm) => {
 			]
 		};
 		var myChart = echarts.init(document.getElementById('barDetail'));
-		 myChart.setOption(option);
+		myChart.setOption(option);
 
 	}, 0)
 }
 
 class HouseHlodTable extends Component {
-	componentDidMount() {
+	getUserListByMonth() {
+		const data = {
+			condition: "",
+			dateType: dataType,
+			pageSize: this.state.pageSize
+		}
+		if(dataType == "month") {
+			data.pageNum = this.state.monthPagination.current
+		} else if(dataType == "quarter") {
+			data.pageNum = this.state.quarterPagination.current
+		} else {
+			data.pageNum = this.state.yearPagination.current
+		}
+		console.log(data)
+		ajax({
+			url: "getUserListByMonth",
+			data: qs.stringify(data),
+			type: "post",
+			success: (res) => {
+				res.list.some(function(item, index) {
+					item.key = index
+				})
 
-		var houseHlodTableData = [{
-				key: '1',
-				name: '胡彦斌',
-				age: 32,
-				address: '西湖区湖底公园1号',
-				operation: "查看详情"
-			},
-			{
-				key: '2',
-				name: '胡彦祖',
-				age: 42,
-				address: '西湖区湖底公园1号',
-				operation: "查看详情"
-			},
+				const houseHlodTableData = res.list
+				if(dataType == "month") {
+					this.setState({
+	
+						monthPagination: {
+							houseHlodTableData,
+							total: res.total,
+							current: res.pageNum
+						}
+					})
+				} else if(dataType == "quarter") {
+					this.setState({
+	
+						quarterPagination: {
+							houseHlodTableData,
+							total: res.total,
+							current: res.pageNum
+						}
+					})
+				} else {
+					this.setState({
+	
+						yearPagination: {
+							houseHlodTableData,
+							total: res.total,
+							current: res.pageNum
+						}
+					})
+				}
+				
 
-		]
-		var houseHlodTableColumns = [{
-			title: '姓名',
-			dataIndex: 'name',
-			key: 'name',
-		}, {
-			title: '年龄',
-			dataIndex: 'age',
-			key: 'age',
-		}, {
-			title: '住址',
-			dataIndex: 'address',
-			key: 'address',
-
-		}, {
-			title: '操作',
-			dataIndex: 'operation',
-			key: 'operation',
-			render: (record, text) => {
-
-				return(
-					<span style={{cursor:"pointer"}} onClick={()=>{
-						
-						return getALineData(text,this)
-   				}}>查看详细</span>
-				)
 			}
-		}]
-
-		this.setState({
-			houseHlodTableData,
-			houseHlodTableColumns
 		})
 	}
-	state = {
-		houseHlodTableData: [],
-		houseHlodTableColumns: [],
-		visible: false
+	componentDidMount() {
+		this.getUserListByMonth();
+
 	}
+	state = {
+
+		houseHlodTableColumns: [{
+			title: '姓名',
+			dataIndex: 'realname',
+			key: 'realname',
+		}, {
+			title: '住址',
+			dataIndex: 'adress',
+			key: 'adress',
+
+		}, {
+			title: "月总分",
+			dataIndex: "totalMonth",
+			key: "totalMonth"
+		}, {
+			title: "季总分",
+			dataIndex: "totalQuarter",
+			key: "totalQuarter"
+		}, {
+			title: "年总分",
+			dataIndex: "totalYear",
+			key: "totalYear"
+		}, {
+			title: "操作",
+			render: (text) => {
+				return(<div style={{cursor:"pointer"}} onClick={()=>getALineData(text,this)}>查看详情</div>)
+			}
+		}],
+		visible: false,
+		monthPagination: {
+			total: 10,
+			houseHlodTableData: [],
+			current: 1
+		},
+		quarterPagination: {
+			total: 10,
+			houseHlodTableData: [],
+			current: 1
+		},
+		yearPagination: {
+			total: 10,
+			houseHlodTableData: [],
+			current: 1
+		},
+		pageSize: 10
+	}
+
 	render() {
 
 		return(
 			<div className="tableBox">
-			<Tabs defaultActiveKey="1" onChange={callback}>
-			    <TabPane tab="月总分" key="1"><Table  dataSource={ this.state.houseHlodTableData} columns={this.state.houseHlodTableColumns} /></TabPane>
-			    <TabPane tab="季总分" key="2"><Table  dataSource={this.state.houseHlodTableData} columns={this.state.houseHlodTableColumns} /></TabPane>
-			    <TabPane tab="年总分" key="3"><Table  dataSource={this.state.houseHlodTableData} columns={this.state.houseHlodTableColumns} /></TabPane>
+			<Tabs defaultActiveKey="1" onChange={(key)=>callback(key,this)}>
+			    <TabPane tab="月总分" key="1">
+	
+			    	<Table pagination={{
+			    		total:this.state.monthPagination.total,
+			    		pageSize:this.state.pageSize,
+			    		defaultCurrent:1,
+			    		current:this.state.monthPagination.current,
+			    		onChange:(current)=>{
+			    			
+			    			this.setState({
+			    				monthPagination:Object.assign(this.state.monthPagination,{current:current})
+			    			},()=>{
+			    				this.getUserListByMonth()
+			    			})
+			    		}
+			    	}}  dataSource={ this.state.monthPagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+
+			    </TabPane>
+			    <TabPane tab="季总分" key="2">
+			    	<Table pagination={{
+			    		total:this.state.quarterPagination.total,
+			    		pageSize:this.state.pageSize,
+			    		
+			    		current:this.state.quarterPagination.current,
+			    		onChange:(current)=>{
+			    			
+			    			this.setState({
+			    				quarterPagination:Object.assign(this.state.quarterPagination,{current:current})
+			    			},()=>{
+			    				this.getUserListByMonth()
+			    			})
+			    		}
+			    	}} dataSource={this.state.quarterPagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+			    </TabPane>
+			    <TabPane tab="年总分" key="3">
+			    	<Table pagination={{
+			    		total:this.state.yearPagination.total,
+			    		pageSize:this.state.pageSize,
+			    		
+			    		current:this.state.yearPagination.current,
+			    		onChange:(current)=>{
+			    			
+			    			this.setState({
+			    				yearPagination:Object.assign(this.state.yearPagination,{current:current})
+			    			},()=>{
+			    				this.getUserListByMonth()
+			    			})
+			    		}
+			    	}} dataSource={this.state.yearPagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+			    </TabPane>
 			</Tabs>
 			 <Modal
 	          title="查看详情"
-	          visible={this.state.visible}
-	         onCancel = {(e) => {this.setState({visible: false,});}}
+	         visible={this.state.visible}
+	         onCancel = {(e) => {this.setState({visible: false});}}
 	         footer={null}
 	         bodyStyle={{width:"100%"}}
 	        >
 	        <div id="barDetail" style={{width:"100%",height:"400px"}}>
-
+			
 	        </div>
 	        </Modal>
 		</div>
@@ -138,4 +277,5 @@ const househlodRanking = () => (
 		<HouseHlodTable />
 	</div>
 )
+//			    	<Pagination onChange={this.monthOnChange} />
 export default househlodRanking
