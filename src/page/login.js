@@ -3,15 +3,23 @@
 import{
 	Component,
 	React,
-	ajax
+	ajax,
+	
 } from "../config/router.js"
 
 import "../js/loginFlash.js"
+import createHistory from "history/createBrowserHistory"
+
+
+
+
+
 class Login extends Component {
 	constructor(props) {
 		super(props);
 
 	}
+	
 	componentDidMount(){
 		(function() {
 
@@ -209,6 +217,31 @@ class Login extends Component {
     
 })();
 	}
+	 loginFn = ()=> {
+		let login = {
+			password:document.querySelector("#password").value,
+			username:document.querySelector("#username").value
+		}
+		var form = new FormData();
+		form.append("password",login.password)
+		form.append("username",login.username)
+		
+		ajax(
+			{
+				url:"login",
+				type:"post",	
+				data:form,
+				success:function (data){
+					const history = createHistory({
+					  forceRefresh: true
+					})
+					history.push("/home")
+					
+				}
+			}
+		)
+	}
+	
 	render() {
 	
 		return(
@@ -221,13 +254,13 @@ class Login extends Component {
 						
 							<div className="input_outer">
 								<span className="u_user"></span>
-								<input className="text" style={{color: "#FFFFFF" }} type="text"  placeholder="请输入账户" />
+								<input id="username"  className="text" style={{color: "#FFFFFF" }} type="text"   defaultValue=""   placeholder="请输入账户" />
 							</div>
 							<div className="input_outer">
 								<span className="us_uer"></span>
-								<input name="logpass" className="text" style={{color: "#FFFFFF", position:"absolute", zIndex:100}}  type="password" placeholder="请输入密码" />
+								<input id="password" name="logpass" className="text" style={{color: "#FFFFFF", position:"absolute", zIndex:100}}  defaultValue="" type="password" placeholder="请输入密码" />
 							</div>
-							<div className="mb2"><a className="act-but submit" href="javascript:;" 
+							<div className="mb2"><a onClick={this.loginFn} className="act-but submit" href="javascript:;" 
 							style={{color: "#FFFFFF"}}>登录</a></div>
 						
 					</div>

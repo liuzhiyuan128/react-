@@ -42,17 +42,16 @@ import createHistory from "history/createBrowserHistory"
 const history = createHistory()
 
 
-const location = history.location
 
 
 
-localStorage.token = ""
-if(!localStorage.token){
-	history.push("/login")
+
+
+if(!sessionStorage.token){
+	history.replace("/login")
 }
 
 
-console.log(localStorage.token)
 
 export {
 	Login,
@@ -93,6 +92,8 @@ export {
 	Tabs,
 	TabPane,
 	Modal,
-	echarts
+	echarts,
+	history
+	
 	
 }
