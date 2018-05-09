@@ -4,8 +4,10 @@ import{
 	Component,
 	React,
 	ajax,
+	qs
 	
 } from "../config/router.js"
+
 
 import "../js/loginFlash.js"
 import createHistory from "history/createBrowserHistory"
@@ -17,7 +19,6 @@ import createHistory from "history/createBrowserHistory"
 class Login extends Component {
 	constructor(props) {
 		super(props);
-
 	}
 	
 	componentDidMount(){
@@ -222,20 +223,27 @@ class Login extends Component {
 			password:document.querySelector("#password").value,
 			username:document.querySelector("#username").value
 		}
-		var form = new FormData();
-		form.append("password",login.password)
-		form.append("username",login.username)
+		
 		
 		ajax(
 			{
 				url:"login",
 				type:"post",	
-				data:form,
+				data:qs.stringify(login),
 				success:function (data){
+					console.log(data)
 					const history = createHistory({
 					  forceRefresh: true
 					})
-					history.push("/home")
+						ajax({
+						url:`selectMyUserById/${data.data.id}`,
+						type:"get",
+						success:function (res) {
+							sessionStorage.realname = res.data.realname
+							history.push("/home")
+							
+						}
+					})
 					
 				}
 			}
@@ -251,7 +259,6 @@ class Login extends Component {
 					<canvas id="demo-canvas" width="1536" height="416"></canvas>
 					<div className="logo_box">
 						<h3>欢迎你</h3>
-						
 							<div className="input_outer">
 								<span className="u_user"></span>
 								<input id="username"  className="text" style={{color: "#FFFFFF" }} type="text"   defaultValue=""   placeholder="请输入账户" />

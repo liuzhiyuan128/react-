@@ -4,12 +4,13 @@ import {Login} from "../page/login.js"//login页面
 import {Home} from "../page/home.js"//home页面
 import {root} from "../page/root.js"
 import qs from "qs"
-import { Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal, Pagination } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal, Pagination, Spin, Switch, TreeSelect, Input  } from 'antd';
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 const TabPane = Tabs.TabPane;
+const TreeNode = TreeSelect.TreeNode;
 
 //设置日期语言
 import moment from 'moment';
@@ -32,6 +33,7 @@ import echarts from 'echarts/lib/echarts' //必须
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/grid'
 import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/line'
 
 
 import ajax from "./ajax.js";//请求数据
@@ -40,9 +42,12 @@ import ajax from "./ajax.js";//请求数据
 import createHistory from "history/createBrowserHistory"
 
 const history = createHistory()
+
 if(!sessionStorage.token){
+
 	history.replace("/login")
 }
+
 
 
 
@@ -87,7 +92,11 @@ export {
 	Modal,
 	echarts,
 	qs,
-	Pagination 
-	
-	
+	Pagination,
+	createHistory,
+	Spin,
+	Switch,
+	TreeSelect,
+	TreeNode,
+	Input 
 }

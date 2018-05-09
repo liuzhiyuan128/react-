@@ -1,9 +1,19 @@
-
-import { Header,Layout, Content, Footer, Sider , Menu, Breadcrumb, SubMenu, Component,React,Icon,Router,Route,Link,TrashRanking,compostRanking, Redirect,BrowserRouter} from "../config/router.js"
-
-const Home = ({match}) => {
+import { Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory } from "../config/router.js"
+let defaultSub = sessionStorage.defaultSub || JSON.stringify(['sub1']);
+let defaultKeys = sessionStorage.defaultKeys || '3'
+const selectFn = ({key}) => {
+	sessionStorage.defaultKeys = key
+}
+const titleClcik = (select) => {
 	
-	return (<div id="home">
+	sessionStorage.defaultSub = JSON.stringify(select)
+}
+
+const Home = ({
+	match
+}) => {
+
+	return(<div id="home">
 				<Layout>
 				    <Layout>
 				       
@@ -12,9 +22,11 @@ const Home = ({match}) => {
 				        <Menu
 				       	  theme="dark"
 				          mode="inline"
-				          defaultSelectedKeys={['3']}
-				          defaultOpenKeys={['sub1']}
+				          defaultSelectedKeys={[defaultKeys]}
+				          defaultOpenKeys={JSON.parse(defaultSub)}
+				          onSelect = {selectFn}
 				          style={{ height: '100%', borderRight: 0 }}
+				         onOpenChange = {titleClcik}
 				        >
 				       
 				          <SubMenu style={{marginTop:"109px"}} key="sub1" title={<span>垃圾桶管理</span>}>
@@ -40,18 +52,8 @@ const Home = ({match}) => {
 				      </Sider>
 				      
 				      <Layout>
-				      	 <Header  style={{ height:"45px" }} className="header">
-					
-					     	<div>
-					     		<Icon type="user" />
-					     		王**
-					     		<span>
-					     			<Icon type="logout" />
-					     		</span>
-					     	</div>
-					    
-					    </Header>
-					    
+
+					    <HeaderComponent />
 					    <div style={{ padding: '0 24px 24px' }}>
 					        <Route  exact  path={`/home`} on render={()=><Redirect to="/home/trashRanking"></Redirect>}  />
 					        <Route path={`/home/trashRanking`} component={TrashRanking} />
@@ -62,9 +64,36 @@ const Home = ({match}) => {
 				  </Layout>
 			</div>)
 }
+class HeaderComponent extends Component {
+				componentWillMount(){
+					
+				}
+				state = {
+					realname: sessionStorage.realname 
+				}
+	             render() {
+	             		const {realname} = this.state
+						return <Header  style={{ height:"45px" }} className="header">
+					
+					     	<div>
+					     		<Icon type="user" />
+					     		<span style={{cursor:"default"}}>{realname}</span>
+					     		<span style={{cursor:"pointer"}} onClick={loginOut}>
+					     			<Icon type="logout" />
+					     		</span>
+					     	</div>	    
+					    </Header>
+	            }
 
+}
+const loginOut = () => {
+	localStorage.token = ""
+	const history = createHistory({
+		forceRefresh:true
+	})
+	history.push("/login")
 
-
+}
 export {
 	Home
 }
