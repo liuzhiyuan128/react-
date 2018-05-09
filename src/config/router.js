@@ -19,10 +19,11 @@ moment.locale('zh-cn');
 
 
 import TrashRanking from "../page/trash/ranking.js"//垃圾桶管理 排行
+import supervise from "../page/trash/supervise.js"//垃圾桶管理 督办
 import househlodRanking from "../page/trash/rankingPage/househlodRanking.js"//住户排行
 import vliiageRanking from "../page/trash/rankingPage/villageRanking.js"//村排行
 import townRanking from "../page/trash/rankingPage/townRanking.js"//镇排行
-import SearchRanking from "../component/searchRanking.js"
+import SearchRanking from "../component/searchRanking.js" //搜索组件
 
 import compostRanking from "../page/compost/ranking.js"//堆肥房 排行
 
@@ -44,7 +45,7 @@ import createHistory from "history/createBrowserHistory"
 const history = createHistory()
 
 if(!sessionStorage.token){
-
+	sessionStorage.token = '';
 	history.replace("/login")
 }
 
@@ -98,5 +99,6 @@ export {
 	Switch,
 	TreeSelect,
 	TreeNode,
-	Input 
+	Input,
+	supervise
 }
