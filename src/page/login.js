@@ -4,15 +4,14 @@ import{
 	Component,
 	React,
 	ajax,
-	qs
+    qs,
+    message
 	
 } from "../config/router.js"
 
 
 import "../js/loginFlash.js"
 import createHistory from "history/createBrowserHistory"
-
-
 
 
 
@@ -231,7 +230,10 @@ class Login extends Component {
 				type:"post",	
 				data:qs.stringify(login),
 				success:function (data){
-					console.log(data)
+                
+                    if (data.code != 200) return message.warning("登陆失败")
+
+                    sessionStorage.roleId = data.data.roleId
 					const history = createHistory({
 					  forceRefresh: true
 					})
@@ -239,9 +241,9 @@ class Login extends Component {
 						url:`selectMyUserById/${data.data.id}`,
 						type:"get",
 						success:function (res) {
-							sessionStorage.realname = res.data.realname
+                            sessionStorage.realname = res.data.realname
+                            console.log(res)
 							history.push("/home")
-							
 						}
 					})
 					

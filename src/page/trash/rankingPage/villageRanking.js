@@ -284,10 +284,6 @@ class HouseHlodTable extends Component {
 			        				<span style={{fontWeight:700,fontSize:"16px"}}>村名:</span>
 			        				<span style={{color:"#999",fontSize:"15px"}}>  {househlodRankingAlertData.villageName}</span>
 			        			</Col>
-			        			<Col span={12}>
-			        				<span style={{fontWeight:700,fontSize:"16px"}}>排名:</span>
-			        				<span style={{color:"#999",fontSize:"15px"}}>  {househlodRankingAlertData.rank}</span>
-			        			</Col>
 			        		</Row>
 			        		<Row style={{marginTop:"15px"}}>
 			        			<Col span={12}>

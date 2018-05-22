@@ -290,10 +290,6 @@ class CompostRankingTable extends Component{
 			        				<span style={{fontWeight:700,fontSize:"16px"}}>堆肥房名称:</span>
 			        				<span style={{color:"#999",fontSize:"15px"}}>  {compostRankingAlertData.compostingName}</span>
 			        			</Col>
-			        			<Col span={12}>
-			        				<span style={{fontWeight:700,fontSize:"16px"}}>排名:</span>
-			        				<span style={{color:"#999",fontSize:"15px"}}>  {compostRankingAlertData.rank}</span>
-			        			</Col>
 			        		</Row>
 			        		<Row style={{marginTop:"15px"}}>
 			        			<Col span={12}>

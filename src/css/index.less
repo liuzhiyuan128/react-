@@ -1,11 +1,11 @@
 
 @font-face {
   font-family: 'iconfont';  /* project id 609754 */
-  src: url('//at.alicdn.com/t/font_609754_jtwbxw88n5m0wwmi.eot');
-  src: url('//at.alicdn.com/t/font_609754_jtwbxw88n5m0wwmi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_609754_jtwbxw88n5m0wwmi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_609754_jtwbxw88n5m0wwmi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_609754_jtwbxw88n5m0wwmi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.eot');
+  src: url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.svg#iconfont') format('svg');
 }
 .iconfont{
     font-family:"iconfont" !important;
@@ -15,7 +15,11 @@
     -moz-osx-font-smoothing: grayscale;
     }
     
-
+.icontBox i{
+   font-size:  29px;
+   margin-right: 20px;
+   
+}
 #Root{
     height: 100%;
   
@@ -84,6 +88,106 @@
     }
     .ant-col-1{
         font-size: 14px;
+    }
+
+    #user{
+        width: 100%;
+        margin-top: 10px;
+        overflow: hidden;
+       
+        >div{
+            padding: 10px 10px;
+            background: #fff;
+            border-radius: 7px;
+            height: 100%;
+        }
+        .left{
+            float: left;
+             width: 25%;
+             overflow-y: scroll;
+             
+            
+        }
+    //     .left::-webkit-scrollbar-track{
+    //         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+    //         background-color: #CCCCCC;
+    //     }
+    //    .left::-webkit-scrollbar{
+    //         width: 10px;
+    //         background-color: #F5F5F5;
+    //     }
+    //     .left::-webkit-scrollbar-thumb{
+	//         background-color: #FFF;
+	//         background-image: -webkit-linear-gradient(90deg,
+	//                                           rgba(0, 0, 0, 1) 0%,
+	// 										  rgba(0, 0, 0, 1) 25%,
+	// 										  transparent 100%,
+	// 										  rgba(0, 0, 0, 1) 75%,
+	// 										  transparent)
+    //         }
+
+                 
+
+        .right{
+            float: right;
+            width: 74%;
+            
+        }
+    }
+
+    #role{
+        >div{
+            padding: 10px 10px;
+            background: #fff;
+            border-radius: 7px;
+            height: 100%;
+        }
+         width: 100%;
+        margin-top: 10px;
+        overflow: hidden;
+        .left{
+             float: left;
+             width: 25%;
+             overflow-y: scroll;
+        }
+        .right{
+            float: right;
+            width: 74%;
+            .ant-pagination{
+                display: none;
+            }
+            .ant-select > div{
+                background: none;
+            }
+            .userList{
+                height: 50px;
+                line-height: 50px;
+                padding-left: 20px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+            
+        }
+        .roles{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            background: rgb(241, 241, 241);
+            margin-top: 10px;
+            padding-left: 10px;
+            cursor: pointer;
+            transition: all 1s;
+            -moz-transition: all 1s;	/* Firefox 4 */
+            -webkit-transition: all 1s;	/* Safari 和 Chrome */
+            -o-transition: all 1s;	/* Opera */
+        }
+        .active{
+            color: #fff;
+            background: #6d9afc; 
+        }
+    }
+    #systemCompost{
+        width: 100%;
     }
 }
 //model样式
