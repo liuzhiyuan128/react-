@@ -16,19 +16,26 @@ import {
     compostAreaSupervise
 } from "../../config/router.js";
 
+let selected = sessionStorage.compost || "checkUps"
+const selectFn = ({item, key, selectedKeys}) => {
 
+    sessionStorage.compost = key
+
+}
 const compostSupervise = ({watch, history}) => {
+    selected = sessionStorage.compost || "checkUps"
     return (<div>
         <Menu
                     theme="light"
                     mode="horizontal"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[selected]}
                     style={{ lineHeight: '40px', height: 40, marginTop:15 }}
+                    onSelect = {selectFn}
                  >
-                    <Menu.Item key="1"><Link to="/home/compostSupervise/checkUp">检查合格</Link></Menu.Item>
-                    <Menu.Item key="2"><Link to="/home/compostSupervise/compostVillageSupervise">村督办</Link></Menu.Item>
-                    <Menu.Item key="3"><Link to="/home/compostSupervise/compostTownSupervise">镇督办</Link></Menu.Item>
-                    <Menu.Item key="4"><Link to="/home/compostSupervise/compostAreaSupervise">区督办</Link></Menu.Item>
+                    <Menu.Item key="checkUps"><Link to="/home/compostSupervise/checkUp">检查合格</Link></Menu.Item>
+                    <Menu.Item key="compostVillageSupervises"><Link to="/home/compostSupervise/compostVillageSupervise">村督办</Link></Menu.Item>
+                    <Menu.Item key="compostTownSupervises"><Link to="/home/compostSupervise/compostTownSupervise">镇督办</Link></Menu.Item>
+                    <Menu.Item key="compostAreaSupervises"><Link to="/home/compostSupervise/compostAreaSupervise">区督办</Link></Menu.Item>
                 </Menu>
                 
                 <Route exact path="/home/compostSupervise" render={()=><Redirect to="/home/compostSupervise/checkUp" />}></Route>

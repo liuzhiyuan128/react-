@@ -21,6 +21,13 @@ class Login extends Component {
 	}
 	
 	componentDidMount(){
+        document.addEventListener("keydown", (e) => {
+            if(e.keyCode === 13){
+                this.loginFn()
+            }
+        },false);
+      
+        
 		(function() {
 
     var width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;

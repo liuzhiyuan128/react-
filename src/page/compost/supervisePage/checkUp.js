@@ -108,10 +108,10 @@ var score = {
 }
 //意见
 const getALineData = (text, e) => {
-    console.log(text)
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
-    let data = {}
+    let data = {} 
+    let image = null
     ajax({
         url: "selectByPrimaryKey/" + text.id,
         asyny: false,
@@ -131,7 +131,9 @@ const getALineData = (text, e) => {
     ajax({
         url: 'selectCheckCompostingDetail/' + text.checkCompostingId,
         success: (res) => {
+            image = res.data.checkImage
             data = Object.assign(data, res.data)
+           
         },
         asyny: false
 
@@ -175,11 +177,10 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-    let image = null
+   
     //图片问题
-    if (data.image) {
-        image = data
-            .image
+    if (image) {
+        image = image
             .split("&");
         image.pop()
 
@@ -223,16 +224,9 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-
+    vm.state.getListParameter.pageNum = current;
     vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: current,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
+      
     }, () => {
         vm.getList()
     })
@@ -280,7 +274,7 @@ class CheckUp extends Component {
             tableColumns,
             tableData: [],
             pagination: {
-                total: 50,
+                total: 10,
                 current: 1,
                 loading: true,
                 onChange: pageOnChange
@@ -312,7 +306,7 @@ class CheckUp extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-
+                
                 res = res.data;
                 res
                     .list

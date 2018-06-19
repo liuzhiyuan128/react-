@@ -3,7 +3,12 @@ import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, e
 let searchData = null, vm = null
 const getSearchData = (data) => {
 	searchData = data;
-	vm.getUserListByMonth()
+	vm.state.pagination.current = 1;
+	vm.setState({
+	},()=>{
+		vm.getUserListByMonth()
+
+	})
 	
 }
 //点击切换 月趋势图和天趋势图
@@ -433,7 +438,7 @@ class HouseHlodTable extends Component {
 }
 const townRanking = () => (
 	<div>
-		<SearchRanking  getSearchData={getSearchData}/>
+		<SearchRanking showRankType  getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
 )

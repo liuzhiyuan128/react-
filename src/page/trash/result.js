@@ -1,9 +1,13 @@
-import { qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails}  from "../../config/router.js";
+import { Stree, qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails}  from "../../config/router.js";
 
 let vm = null,
     checkuserId = "",
     pageNum = 1,
-    searchData = null
+    searchData = null,
+    villageId = "";
+const styleHeight = {
+    height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53
+}
 
 const getSearchData = (data) => {
     searchData = data
@@ -14,14 +18,16 @@ const getSearchData = (data) => {
             pageNum: 1,
             startTime: data.startTime,
             endTime: data.endTime,
-            villageId: data.villageId
+            villageId: villageId
         }
     }, () => {
         vm.getList()
     })
 }
 
-const callback = (key) => {}
+const treeSelect = (key) => {
+    villageId = key[0];
+}
 const closeAlertDetails = () => {
     vm.setState({visible: false})
 }
@@ -108,16 +114,19 @@ const getALineData = (text, e) => {
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
     let data = {}
+     let image = null
     ajax({
         url: "getDetailByCheckuserId/" + text.checkuserId,
         asyny: false,
         success: (res) => {
+           image =  res.image
             data = Object.assign(data, res)
         }
     })
     ajax({
         url: 'getUserById/' + text.usersId,
         success: (res) => {
+            
             data = Object.assign(data, res)
         },
         asyny: false
@@ -146,11 +155,11 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-    let image = null
+   
+   
     //图片问题
-    if (data.image) {
-        image = data
-            .image
+    if (image) {
+        image = image
             .split("&");
         image.pop()
 
@@ -177,7 +186,7 @@ const getALineData = (text, e) => {
                     .some
                     .call(iconDiv, (item) => {
                         var chooseNum = item.getAttribute("choosenum")
-                        console.log(chooseNum)
+                     
                         if (chooseNum == null) 
                             return false;
                         
@@ -192,17 +201,10 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-    pageNum = current
+   vm.state.getListParameter.pageNum = current
 
     vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: current,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
+        
     }, () => {
         vm.getList()
     })
@@ -229,6 +231,28 @@ const tableColumns = [
         dataIndex: "createTime",
         key: "createTime"
     },{
+        title: '状态',
+        render:(text)=>{
+            let sign = [
+                {state:'合格',color: '#32da40'},
+                {state:'在办',color: '#2f8adf'},
+                {state:'正常完结',color: '#642fdf'}, 
+                {state:'强制终结',color: '#1d1b23'},
+                {state:'催办',color: '#c22c2c'},
+                {state:'重办',color: '#cde324'}
+            ];
+            // 5 催办 #c22c2c
+            // 6 重办 #cde324
+            // 1 合格 #32da40
+            // 2 在办 #2f8adf
+            // 3 正常完结 #642fdf
+            // 4 强制终结 #1d1b23
+            
+            let color = sign[text.sign-1] && sign[text.sign-1].color || "pink"
+            let state = sign[text.sign-1] && sign[text.sign-1].state || " "
+            return (<div style={{cursor:"default",color: color}}>{state}</div>)
+        }
+},{
         title: "操作",
         render: (text) => {
             return (
@@ -281,7 +305,7 @@ class TrashResult extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-                // console.log(res)
+               
                 res
                     .list
                     .some((item, index, arr) => {
@@ -303,11 +327,19 @@ class TrashResult extends Component {
     render() {
         return (
             <div>
-                <SearchRanking isTree={true} getSearchData={getSearchData}/>
-                <TableComponent
-                    pagination={this.state.pagination}
-                    tableData={this.state.tableData}
-                    tableColumns={this.state.tableColumns}/>
+                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                <div className="comBox">
+                    <div className="comLeft" style={styleHeight}>
+                        <Stree treeSelect={treeSelect}/>
+                    </div>
+                    <div className="comright" style={styleHeight}>
+                        <TableComponent
+                        pagination={this.state.pagination}
+                        tableData={this.state.tableData}
+                        tableColumns={this.state.tableColumns}/>
+                    </div>
+                </div>
+                
                 <AlertDetails
                    
                     alertMsg={this.state.alertMsg}

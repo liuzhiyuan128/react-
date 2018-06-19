@@ -12,6 +12,9 @@
   src: url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.eot');
   src: url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.woff') format('woff'), url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.ttf') format('truetype'), url('//at.alicdn.com/t/font_609754_qdvd2ickysii19k9.svg#iconfont') format('svg');
 }
+body {
+  min-width: 1515px;
+}
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -75,6 +78,98 @@
 }
 #Root .ant-col-1 {
   font-size: 14px;
+}
+#Root #user {
+  width: 100%;
+  margin-top: 10px;
+  overflow: hidden;
+}
+#Root #user > div {
+  padding: 10px 10px;
+  background: #fff;
+  border-radius: 7px;
+  height: 100%;
+}
+#Root #user .left {
+  float: left;
+  width: 25%;
+  overflow-y: scroll;
+  position: relative;
+}
+#Root #user .left .spinBox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+#Root #user .left .spinBox > div {
+  position: absolute;
+  transform: translate(-50% -50%);
+  top: 50%;
+  left: 50%;
+}
+#Root #user .right {
+  float: right;
+  width: 74%;
+}
+#Root #role {
+  width: 100%;
+  margin-top: 10px;
+  overflow: hidden;
+}
+#Root #role > div {
+  padding: 10px 10px;
+  background: #fff;
+  border-radius: 7px;
+  height: 100%;
+}
+#Root #role .left {
+  float: left;
+  width: 25%;
+  overflow-y: scroll;
+  position: relative;
+}
+#Root #role .right {
+  float: right;
+  width: 74%;
+}
+#Root #role .right .ant-pagination {
+  display: none;
+}
+#Root #role .right .ant-select > div {
+  background: none;
+}
+#Root #role .right .userList {
+  height: 50px;
+  line-height: 50px;
+  padding-left: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+#Root #role .roles {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #f1f1f1;
+  margin-top: 10px;
+  padding-left: 10px;
+  cursor: pointer;
+  transition: all 1s;
+  -moz-transition: all 1s;
+  /* Firefox 4 */
+  -webkit-transition: all 1s;
+  /* Safari 和 Chrome */
+  -o-transition: all 1s;
+  /* Opera */
+}
+#Root #role .active {
+  color: #fff;
+  background: #6d9afc;
+}
+#Root #systemCompost {
+  width: 100%;
 }
 .ant-modal {
   width: 700px !important;

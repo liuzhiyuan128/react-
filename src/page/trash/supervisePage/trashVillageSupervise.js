@@ -9,9 +9,13 @@ import {
     Tabs,
     TabPane,
     TableComponent,
-    AlertDetails
+    AlertDetails,
+    Stree
 } from "../../../config/router.js";
-let vm = null, checkuserId = "" , pageNum = 1, searchData = null
+let vm = null, checkuserId = "" , pageNum = 1, searchData = null, villageId = -1 
+const styleHeight = {
+    height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53
+}
 const dbjs = () => {
     ajax({
         url: 'updateCheckUserNomal/' + checkuserId,
@@ -59,13 +63,14 @@ const hurry = () => {
 }
 const cb = (tosthring, value)=> {
 
-    if(!tosthring) return message.warning("提交失败，请填入必填项")
+    
     if(!value) return message.warning("提交失败，请填入必填项")
-    console.log(value,tosthring)
+
+ 
     ajax({
         url: 'updateCheckUserRedo',
         type: 'post',
-        data: qs.stringify({zgyj:tosthring, limtTime: value,checkuserId: checkuserId}),
+        data: qs.stringify({zgyj:tosthring, checkuserId: checkuserId}),
         success: (data) => {
             if (data > 0) {
                 message.info("提交成功")
@@ -85,14 +90,16 @@ const getSearchData = (data) => {
             pageNum: 1,
             startTime: data.startTime,
             endTime: data.endTime,
-            villageId: data.villageId
+            villageId: villageId
         }
     }, () => {
         vm.getList()
     })
 }
 
-const callback = (key) => {}
+const treeSelect = (key) => {
+    villageId = key[0]
+}
 const closeAlertDetails = () => {
     vm.setState({visible: false})
 }
@@ -265,16 +272,8 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-    pageNum = current
+   vm.state.getListParameter.pageNum = current
     vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: pageNum,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
     }, () => {
         vm.getList()
     })
@@ -404,11 +403,19 @@ class TrashCheckUp extends Component {
     render() {
         return (
             <div>
-                <SearchRanking isTree={true} getSearchData={getSearchData}/>
-                <TableComponent
-                    pagination={this.state.pagination}
-                    tableData={this.state.tableData}
-                    tableColumns={this.state.tableColumns}/>
+                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                <div className="comBox">
+                        <div className="comLeft" style={styleHeight}>
+                            <Stree treeSelect={treeSelect}/>
+                        </div>
+                        <div className="comright" style={styleHeight}>
+                            <TableComponent
+                            pagination={this.state.pagination}
+                            tableData={this.state.tableData}
+                            tableColumns={this.state.tableColumns}/>
+                        </div>
+                    </div>
+                
                 <AlertDetails
                     cb={cb}
                     hurry = {hurry}

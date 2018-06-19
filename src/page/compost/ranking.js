@@ -2,8 +2,13 @@ import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, e
 
 var searchData = {}, compostingHouseId = '' ,vm = null
 function getSearchData (data) {
-	searchData = data
-	vm.getUserListByMonth()
+	searchData = data;
+	vm.state.pagination.current
+	vm.setState({},
+		() => {
+			vm.getUserListByMonth()
+		})
+	
 
 
 }
@@ -433,7 +438,7 @@ class CompostRankingTable extends Component{
 }
  const compostRanking = ()=>{
 	return (<div>
-			<SearchRanking onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
+			<SearchRanking showRankType onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
 			<CompostRankingTable />
 	</div>)
 }

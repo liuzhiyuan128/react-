@@ -1,8 +1,9 @@
 import {message} from "antd"
 
 // const baseUrl = "http://118.31.7.200:8091/" //阿里云
-// const baseUrl = "http://192.168.10.157:8091/" //西泉
-const baseUrl = "http://192.168.10.117:8888/"
+const baseUrl = "http://192.168.10.114:8091/" //西泉
+// const baseUrl = "http://192.168.10.102:8091/" //西泉
+// const baseUrl = "http://192.168.10.117:8888/"
 //    const baseUrl = "http://192.168.1.4:8888/"
 const ajax = (option) => {
 	//这一步是为了处理1login/111111 这样的场景
@@ -16,6 +17,95 @@ const ajax = (option) => {
 
 	let url = "";
 	switch (lastUrlStr) {
+		case "getSelfEvaluateCollectListVillage":
+			url = `${baseUrl}bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "check":
+			url = `${baseUrl}bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "getSelfEvaluateAdmin":
+			url = `${baseUrl}bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "getAllLog":
+			url = `${baseUrl}bettle/log/${option.url}`; //获取所有信息
+			break;
+		case "updateIsDisableByPrimaryKey":
+			url = `${baseUrl}bettle/api/composting/${option.url}`; //删除堆肥房
+			break;
+		case "updateByPrimaryKeySelective":
+			url = `${baseUrl}bettle/api/composting/${option.url}`; //修改堆肥房
+			break;
+		case "addComposting":
+			url = `${baseUrl}bettle/api/composting/${option.url}`; //新增堆肥房
+			break;
+		case "selectAll":
+			url = `${baseUrl}bettle/api/composting/${option.url}`; //查询所有没有被禁用的堆肥房列表
+			break;
+			
+		case "changeUserRoles":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "getUsers":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "changeRolePowers":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "getPowerByRoleId":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "deleteRole":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "updateRole":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "selectExistRoleName":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "addRole":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "selectAllRole":
+			url = `${baseUrl}rbac/role/${option.url}`; //获取详情数据
+			break;
+		case "updateVillage":
+			url = `${baseUrl}bettle/api/village/${option.url}`; //获取详情数据
+			break;
+		case "getVillageDetail":
+			url = `${baseUrl}bettle/api/village/${option.url}`; //获取详情数据
+			break;
+		case "delete":
+			url = `${baseUrl}bettle/api/village/${option.url}`; //删除部门
+			break;
+		case "saveVillage":
+			url = `${baseUrl}bettle/api/village/${option.url}`; //保存部门
+			break;
+		case "getUserDetail":
+			url = `${baseUrl}rbac/user/${option.url}`; //修改用户
+			break;
+		case "addUser":
+			url = `${baseUrl}rbac/user/${option.url}`; //修改用户
+			break;
+		case "modify":
+			url = `${baseUrl}rbac/user/${option.url}`; //修改用户
+			break;
+		case "deleteUser":
+			url = `${baseUrl}rbac/user/${option.url}`; //删除用户
+			break;
+		case "deleteUser":
+			url = `${baseUrl}rbac/user/${option.url}`; //删除用户
+			break;
+		
+		case "modify":
+			url = `${baseUrl}rbac/user/${option.url}`; //添加用户
+			break;
+		case "getUserDetail":
+			url = `${baseUrl}rbac/user/${option.url}`; //添加用户
+			break;
+		case "getAllUserByVillageId":
+			url = `${baseUrl}rbac/user/${option.url}`; //指定用户列表
+			break;
 		case "login":
 			url = `${baseUrl}rbac/user/${option.url}`; //登陆
 			break;
@@ -80,7 +170,6 @@ const ajax = (option) => {
 		case "getVillageTrendCom":
 			url = `${baseUrl}bettle/api/evaluation/${option.url}`; //村月趋势图
 			break;
-		
 		case "checkCompostingFinish":
 			url = `${baseUrl}bettle/api/checkComposting/${option.url}`;//堆肥房 督办结束
 			break;
@@ -152,10 +241,7 @@ const ajax = (option) => {
 	})
 
 }
-axios({
-	url: 'http://192.168.1.3:8888/rbac/user/login',
 
-})
 
 function axios(options) {
 	options = options || {};

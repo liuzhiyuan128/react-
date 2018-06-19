@@ -21,19 +21,7 @@ confirm =  ()=> {
                         value:e.target.value
                     })
                 }} placeholder="整改意见"/>
-                <DatePicker
-                    placeholder = "限定时间"
-                    style={{
-                    width: "100%",
-                    marginTop: "10px"
-                }}
-                    onChange={(value,tostring)=>{
-                       
-                        vm.setState({
-                            tostring:tostring
-                        })
-                       
-                    }}/>
+                
             </div>
         ),
         okText: '确认',
@@ -129,9 +117,14 @@ confirm =  ()=> {
                             return  <img width="260" alt="logo" src={item}/>
                         })
                     }
-                    {/*<img width="210" style={{marginRight: "12px"}} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/>
-                    <img width="210" style={{marginRight: "12px"}} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/>
-                    <img width="210" style={{marginRight: "12px"}} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/> */}
+                </div>
+                <div style={{marginTop: "12px", display: this.props.alertMsg.feedbackImage ? 'block' : 'none'}}>
+                    <div>反馈图片</div>
+                    {
+                        this.props.alertMsg.feedbackImage && this.props.alertMsg.feedbackImage.map((item)=>{
+                            return  <img width="260" alt="logo" src={item}/>
+                        })
+                    }
                 </div>
                 <div style={{display:this.props.alertMsg.zgyj ? "block":"none"}}>
                     <div>整改意见</div>

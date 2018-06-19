@@ -113,6 +113,8 @@ const getALineData = (text, e) => {
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
     let data = {}
+    let image = null
+    let feedbackImage = null;
     ajax({
         url: "selectByPrimaryKey/" + text.id,
         asyny: false,
@@ -132,6 +134,8 @@ const getALineData = (text, e) => {
     ajax({
         url: 'selectCheckCompostingDetail/' + text.checkCompostingId,
         success: (res) => {
+            image = res.data.checkImage
+            feedbackImage = res.data.feedbackImage
             data = Object.assign(data, res.data)
         },
         asyny: false
@@ -176,14 +180,18 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-    let image = null
+   
     //图片问题
-    if (data.image) {
-        image = data
-            .image
+   
+    if (image) {
+        image = image
             .split("&");
         image.pop()
 
+    }
+    if(feedbackImage){
+        feedbackImage = feedbackImage.split("&");
+        feedbackImage.pop()
     }
 
     const roleId = sessionStorage.roleId;
@@ -195,6 +203,7 @@ const getALineData = (text, e) => {
             zgyj,
             fkyj,
             image,
+            feedbackImage,
             cfsj: data.cfsj,
             weight: data.weight,
             cfqx: data.cfqx,
@@ -227,17 +236,10 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-    pageNum = current
+   vm.state.getListParameter.pageNum = current
 
     vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: current,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
+       
     }, () => {
         vm.getList()
     })
@@ -323,7 +325,7 @@ class CompostResult extends Component {
             tableColumns,
             tableData: [],
             pagination: {
-                total: 50,
+                total: 0,
                 current: 1,
                 loading: true,
                 onChange: pageOnChange

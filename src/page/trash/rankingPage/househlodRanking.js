@@ -1,8 +1,15 @@
-import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch  } from "../../../config/router.js"
-let searchData = {}, vm = null, trashId = ''
+import { Stree, React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch  } from "../../../config/router.js"
+let searchData = {}, vm = null, trashId = '';
 const getSearchData = (data) => {
+
 	searchData = data;
-	vm.getUserListByMonth()
+	vm.state.pagination.current = 1;
+	vm.setState({
+		
+	},()=>{
+		vm.getUserListByMonth()
+
+	})
 }
 
 
@@ -132,11 +139,15 @@ const getALineData = (text, vm) => {
 }
 
 class HouseHlodTable extends Component {
+	constructor(props){
+		super(props)
+		
+	}
 	getUserListByMonth() {
 		const data = {
 			condition: "",
 			pageSize: this.state.pageSize,
-			pageNum: this.state.pagination.current
+			pageNum: this.state.pagination.current,
 		}
 		if(JSON.stringify(searchData) !== "{}"){
 			for(var item in searchData){
@@ -441,7 +452,7 @@ class HouseHlodTable extends Component {
 }
 const househlodRanking = () => (
 	<div>
-		<SearchRanking isTree={true} getSearchData={getSearchData}/>
+		<SearchRanking showRankType isTree={true} getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
 )

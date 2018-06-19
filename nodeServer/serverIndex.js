@@ -15,8 +15,6 @@ const resHeaders = {
     "Access-Control-Expose-Headers" : 'token' //允许请求头的token被获取
 }
 
-
-
 http.createServer(function (request, response) {
     //跨域问题
       if (request.method == 'OPTIONS') {

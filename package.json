@@ -7,7 +7,7 @@
     "build": "npx webpack --history-api-fallback --config ./webpack.config-build.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "liu",
   "license": "ISC",
   "dependencies": {
     "antd": "^3.4.3",

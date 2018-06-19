@@ -1,15 +1,21 @@
-import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch } from "../../../config/router.js"
+import {React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch } from "../../../config/router.js"
 var searchData = null, vm = null
 const getSearchData = (data) => {
+	
 	searchData = data
-	vm.getUserListByMonth()
+	vm.state.pagination.current = 1;
+	vm.setState({
+	},()=>{
+		vm.getUserListByMonth()
+
+	})
 }
 
 
 //查看详趋势图情接口
 let getEvaluationById = 'getEvaluationByIdMonth';
 let  data = []
-let villageId = '';
+
 
 const getALineData = (text, vm) => {
 villageId = text.villageId
@@ -135,6 +141,10 @@ villageId = text.villageId
 }
 
 class HouseHlodTable extends Component {
+	constructor(props){
+		super(props)
+		
+	}
 	getUserListByMonth() {
 		const data = {
 			condition: "",
@@ -423,7 +433,7 @@ class HouseHlodTable extends Component {
 }
 const villageRanking = () => (
 	<div>
-		<SearchRanking isTree={true} getSearchData={getSearchData}/>
+		<SearchRanking showRankType isTree={true} getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
 )

@@ -1,5 +1,5 @@
-import { qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails}  from "../../../config/router.js";
-let vm = null
+import { Stree, qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails}  from "../../../config/router.js";
+let vm = null, villageId = "";
 
 const getSearchData = (data) => {
     vm.setState({
@@ -9,14 +9,16 @@ const getSearchData = (data) => {
             pageNum:1,
             startTime: data.startTime,
             endTime: data.endTime,
-            villageId: data.villageId
+            villageId: villageId
         }
     }, () => {
         vm.getList()
     })
 }
 
-const callback = (key) => {}
+const treeSelect = (key) => {
+    villageId = key[0]
+}
 const closeAlertDetails = () => {
     vm.setState({visible: false})
 }
@@ -102,10 +104,12 @@ const getALineData = (text, e) => {
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
     let data = {}
+    let image = null
     ajax({
         url: "getDetailByCheckuserId/" + text.checkuserId,
         asyny: false,
         success: (res) => {
+           image = res.image
             data = Object.assign(data, res)
         }
     })
@@ -140,11 +144,10 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-    let image = null
+    
     //图片问题
-    if (data.image) {
-        image = data
-            .image
+    if (image) {
+        image = image
             .split("&");
         image.pop()
 
@@ -157,7 +160,7 @@ const getALineData = (text, e) => {
             zgyj,
             fkyj,
             image,
-            db:true,
+           
             
         }
     }, () => {
@@ -187,17 +190,8 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-
-    vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: current,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
-    }, () => {
+vm.state.getListParameter.pageNum = current;
+    vm.setState({}, () => {
         vm.getList()
     })
 }
@@ -236,7 +230,9 @@ const tableColumns = [
     }
      
 ]
-
+const styleHeight = {
+    height: window.innerHeight - 45 - 10 - 10 -15 - 40 - 12 - 53
+}
 class TrashCheckUp extends Component {
     constructor(props) {
         super(props);
@@ -258,7 +254,7 @@ class TrashCheckUp extends Component {
             },
             getListParameter: {
                 condition: null,
-                pageSize: 10,
+                pageSize:10,
                 pageNum: 1,
                 startTime: null,
                 endTime: null,
@@ -298,12 +294,19 @@ class TrashCheckUp extends Component {
 
     render() {
         return (
-            <div>
-                <SearchRanking isTree={true} getSearchData={getSearchData}/>
-                <TableComponent
-                    pagination={this.state.pagination}
-                    tableData={this.state.tableData}
-                    tableColumns={this.state.tableColumns}/>
+            <div >
+                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                <div className="comBox">
+                    <div className="comLeft" style={styleHeight}>
+                        <Stree treeSelect={treeSelect}/>
+                    </div>
+                    <div className="comright" style={styleHeight}>
+                        <TableComponent
+                        pagination={this.state.pagination}
+                        tableData={this.state.tableData}
+                        tableColumns={this.state.tableColumns}/>
+                    </div>
+                </div>
                 <AlertDetails
                     alertMsg={this.state.alertMsg}
                     rows={rows}

@@ -49,7 +49,7 @@ const dbjs = () => {
 }
 const hurry = () => {
    let zgyj = "";
-   let limitTime = '';
+ 
     Modal.confirm({
         title: '催办',
         content: (
@@ -57,25 +57,19 @@ const hurry = () => {
                 <Input  onChange={(e)=>{
                    zgyj = e.target.value
                 }} placeholder="整改意见"/>
-               <DatePicker style={{
-                    width: "100%",
-                    marginTop: "10px"
-                }} onChange ={(dateObj, toString)=>{
-                   limitTime = toString
-               }} placeholder="请输入限定时间"/>
+               
             </div>
         ),
         okText: '确认',
         cancelText: '取消',
-        onOk: () => {
-            if(!limitTime) return message.warning("请输入必填项")
+        onOk: () => { 
             ajax({
                 url: 'areaPressdo',
                 type: "post",
                 data: qs.stringify({
                     checkCompostingId: checkCompostingId,
                     zgyj: zgyj,
-                    limitTime: limitTime + ' 00:00'
+                   
                 }),
                 success: (res) => {
                     if(res.code==200){
@@ -187,6 +181,7 @@ const getALineData = (text, e) => {
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
     let data = {}
+     let image = null
     ajax({
         url: "selectByPrimaryKey/" + text.id,
         asyny: false,
@@ -206,6 +201,7 @@ const getALineData = (text, e) => {
     ajax({
         url: 'selectCheckCompostingDetail/' + text.checkCompostingId,
         success: (res) => {
+            image  = res.data.checkImage
             data = Object.assign(data, res.data)
         },
         asyny: false
@@ -250,11 +246,10 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-    let image = null
+
     //图片问题
-    if (data.image) {
-        image = data
-            .image
+    if (image) {
+        image = image
             .split("&");
         image.pop()
 
@@ -302,16 +297,9 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-    pageNum = current
+   vm.state.getListParameter.state.pageNum = current
     vm.setState({
-        getListParameter: {
-            condition: null,
-            pageSize: 10,
-            pageNum: current,
-            startTime: null,
-            endTime: null,
-            villageId: null
-        }
+       
     }, () => {
         vm.getList()
     })
@@ -337,7 +325,30 @@ const tableColumns = [
         title: "时间",
         dataIndex: "createTime",
         key: "createTime"
-    }, {
+    },
+    {
+        title: '状态',
+        render:(text)=>{
+            let sign = [
+                {state:'合格',color: '#32da40'},
+                {state:'在办',color: '#2f8adf'},
+                {state:'正常完结',color: '#642fdf'}, 
+                {state:'强制终结',color: '#1d1b23'},
+                {state:'催办',color: '#c22c2c'},
+                {state:'重办',color: '#cde324'}
+            ];
+            // 5 催办 #c22c2c
+            // 6 重办 #cde324
+            // 1 合格 #32da40
+            // 2 在办 #2f8adf
+            // 3 正常完结 #642fdf
+            // 4 强制终结 #1d1b23
+            
+            let color = sign[text.sign-1] && sign[text.sign-1].color || "pink"
+            let state = sign[text.sign-1] && sign[text.sign-1].state || " "
+            return (<div style={{cursor:"default",color: color}}>{state}</div>)
+        }
+}, {
         title: "操作",
         render: (text) => {
             return (

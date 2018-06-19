@@ -1,72 +1,14 @@
-import {Form, Input, Modal, Select, Option, Tabs, TabPane, Button, Route, Table, Row, Col, Icon,React, Component} from '../../config/router';
+import {Checkbox, qs, Form, Input, Modal, Select, Option, Tabs, TabPane, Button, Route, Table, Row, Col, Icon,React, Component, ajax, message} from '../../config/router';
 const FormItem = Form.Item;
-import { Router } from '../../../node_modules/_react-router-dom@4.2.2@react-router-dom';
+const CheckboxGroup = Checkbox.Group;
 const roleStyle = {
     height: window.innerHeight - 45 - 10 - 10
 }
-let userListVM = null, ChoiceUserListVM = null;
+let userListVM = null, ChoiceUserListVM = null, RoleVM = null , updataFormVM = null
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        render: text => <a href="javascript:;">{text}</a>
-    }
-];
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name
-    })
-};
-const rowSelection1 = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name
-    })
-};
-const rowSelection2 = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name
-    })
-};
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park'
-    }, {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park'
-    }, {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park'
-    }, {
-        key: '4',
-        name: 'Disabled User',
-        age: 99,
-        address: 'Sidney No. 1 Lake Park'
-    }
-];
 class AddForm extends React.Component {
     constructor(props) {
         super(props)
-
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -76,7 +18,22 @@ class AddForm extends React.Component {
             .validateFields((err, values) => {
                 if (!err) {
 
-                    console.log('Received values of form: ', values);
+                    ajax({
+                        url: 'addRole',
+                        type: 'post',
+                        data: qs.stringify(values),
+                        success: (res)=> {
+                            if(res.code == 200){
+                                message.info(res.msg);
+                                RoleVM.selectAllRole();
+                                RoleVM.setState({
+                                    visible: false
+                                })
+                            }else{
+                                message.warning(res.message)
+                            }
+                        }
+                    })
                     
                 }
             });
@@ -87,8 +44,6 @@ class AddForm extends React.Component {
         
         return (
             <Form onSubmit={this.handleSubmit}>
-                
-                 
                 <FormItem
                     label="角色名称"
                     labelCol={{
@@ -97,7 +52,7 @@ class AddForm extends React.Component {
                     wrapperCol={{
                     span: 12
                 }}>
-                    {getFieldDecorator('role', {
+                    {getFieldDecorator('roleName', {
                         rules: [
                             {
                                 required: true,
@@ -105,19 +60,27 @@ class AddForm extends React.Component {
                             }
                         ]
                     })(<Input onBlur = {(e)=>{
+                        // return console.log(e._targetInst.stateNode.value)
+                      const  value = this.props.form.getFieldValue('roleName')
+                     
+                      
+                            ajax({
+                                url:'selectExistRoleName',
+                                data: qs.stringify({roleName: value}),
+                                type: 'post',
+                                success: (res)=>{
+                                    if(res.msg){
+                                        this.props.form.setFields({
+                                            roleName: {
+                                                value: value,
+                                                errors: [new Error(res.msg)],
+                                            },
+                                        });
+                                    }
+                                }
+                            })
                             
-                            var div = document.createElement("div");
-                            div.className = 'ant-form-explain';
-                            div.innerHTML = "角色名已存在";
-                            div.style.color = 'red'
-                            document.querySelector(".ant-row").className = "ant-row ant-form-item ant-form-item-with-help";
-                            var is = document.querySelector(".ant-form-item-control").querySelector(".ant-form-explain")
-                            if(is){
-                               return false;
-                            }
-                            document.querySelector(".ant-form-item-control").appendChild(div)
-
-
+                            
                             
                     }} />)}
                 </FormItem>
@@ -129,7 +92,7 @@ class AddForm extends React.Component {
                     wrapperCol={{
                     span: 12
                 }}>
-                    {getFieldDecorator('remarks', {
+                    {getFieldDecorator('description', {
                         rules: [
                             {
                                 required: false,
@@ -154,55 +117,260 @@ class AddForm extends React.Component {
         );
     }
 }
+
+class updataForm extends React.Component {
+    constructor(props) {
+        super(props)
+        updataFormVM = this
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this
+            .props
+            .form
+            .validateFields((err, values) => {
+                if (!err) {
+
+                    ajax({
+                        url: 'updateRole',
+                        type: 'post',
+                        data: qs.stringify(values),
+                        success: (res)=> {
+                            if(res.code == 200){
+                                message.info(res.msg);
+                                RoleVM.selectAllRole();
+                                RoleVM.setState({
+                                    updateRole: false
+                                })
+                            }else{
+                                message.warning(res.message)
+                            }
+                        }
+                    })
+                    
+                }
+            });
+    }
+
+    render() {
+        const {getFieldDecorator,formItemLayout } = this.props.form;
+        
+        return (
+            <Form onSubmit={this.handleSubmit}>
+                <FormItem
+                    label="角色名称"
+                    labelCol={{
+                    span: 5
+                }}
+                    wrapperCol={{
+                    span: 12
+                }}>
+                    {getFieldDecorator('roleName', {
+                        rules: [
+                            {
+                                required: true,
+                                message: '请输入角色名称'
+                            }
+                        ]
+                    })(<Input onBlur = {(e)=>{
+                        // return console.log(e._targetInst.stateNode.value)
+                      const  value = this.props.form.getFieldValue('roleName')
+                     
+                      
+                            ajax({
+                                url:'selectExistRoleName',
+                                data: qs.stringify({roleName: value}),
+                                type: 'post',
+                                success: (res)=>{
+                                    if(res.msg){
+                                        this.props.form.setFields({
+                                            roleName: {
+                                                value: value,
+                                                errors: [new Error(res.msg)],
+                                            },
+                                        });
+                                    }
+                                }
+                            })
+
+                            
+                    }} />)}
+                </FormItem>
+                <FormItem
+                    label="备注"
+                    labelCol={{
+                    span: 5
+                }}
+                    wrapperCol={{
+                    span: 12
+                }}>
+                    {getFieldDecorator('description', {
+                        rules: [
+                            {
+                                required: false,
+                                message: '请输入名称'
+                            }
+                        ]
+                    })(<Input/>)}
+                </FormItem>
+                {getFieldDecorator('id', {
+                        rules: [
+                            {
+                                required: false,
+                                message: '请输入名称'
+                            }
+                        ]
+                    })(<Input type="hidden"/>)}
+                <FormItem
+                    wrapperCol={{
+                    span: 12,
+                    offset: 5,
+                    style: {
+                        textAlign: 'right'
+                    }
+                }}>
+                    <Button type="primary" htmlType="submit">
+                        保存
+                    </Button>
+                </FormItem>
+            </Form>
+        );
+    }
+}
+
+
 const AddFormConment = Form.create()(AddForm);
+const UpdataFormConment = Form.create()(updataForm);
+
+
 class UserList extends Component {
     constructor(props){
         super(props)
         this.state={
-            userList: [
-                    {
-                        key: 0,
-                        name: 'admin'
-                    },
-                    {
-                        key: 1,
-                        name: 'user'
-                    },
-                    {
-                        key: 2,
-                        name: 'admin'
-                    },
-                    {
-                        key: 3,
-                        name: 'user'
-                    }
-                ]
+            userList: [],
+            getUsers: []
+
         }
        
         userListVM = this
         
     }
-    
+    componentDidMount = () => {
+        this.getUsers()
+    }
+    getUsers = () => {
+        ajax({
+            url: 'getUsers',
+            data: qs.stringify({
+                roleId: RoleVM.state.id
+            }),
+            type: 'post',
+            success: (res) => {
+                this.setState({
+                    userList: res.data.unselected
+                });
+                
+                ChoiceUserListVM.setState({
+                    userList: res.data.selected
+                })
+              
+                
+            }
+        })
+    }
     userList = (userListItem) => {
         userListItem.isActive = !userListItem.isActive;
         this.setState({})
     }
+    readyCholse = (value) => {
+        ajax({
+            url: 'getUsers',
+            data: qs.stringify({
+                roleId: RoleVM.state.id,
+                description: value   
+            }),
+            type: 'post',
+            success: (res) => {
+                this.setState({
+                    userList: res.data.unselected
+                });
+                
+                ChoiceUserListVM.setState({
+                    userList: res.data.selected
+                })
+              
+                
+            }
+        })
+    }
+    getuserslist = (list) => {
+        console.log(new Date().getTime())
+       var arr = [];
+       for (let i = 0; i < list.length; i++) {
+           const item = list[i];
+            if (item.isActive) {
+                 
+                    arr.push(
+                          <div
+                    key={item.id}
+                    onClick={() => {
+                    this.userList(item)
+                }}
+                    className={`userList active`}>{item.userName}</div>
+                    )
+
+            }else{
+                   arr.push(
+                        <div
+                        key={item.id}
+                        onClick={() => {
+                        this.userList(item)
+                    }}
+                    className='userList'>{item.userName}</div>
+                   )
+            }
+       }
+       console.log(new Date().getTime())
+       return arr;
+        // this
+        //                     .state
+        //                     .userList
+        //                     .map((item) => {
+        //                         if (item.isActive) {
+        //                             return <div
+        //                                 key={item.id}
+        //                                 onClick={() => {
+        //                                 this.userList(item)
+        //                             }}
+        //                                 className={`userList active`}>{item.userName}</div>
+        //                         } else {
+                                    
+        //                         }
+        //                     })
+    }
     render(){
         return <div style={{
-                    padding: "0 20px"
+                    padding: "0 20px",
+                    maxHeight: window.innerHeight - 200,
+                    overflowY: "scroll"
                 }}>
                     <div style={{
                         border: '1px solid rgb(241, 241, 241)'
                     }}>
                         <Select
-                            allowClear={true}
+                            onChange = {this.readyCholse}
                             style={{
                             width: "100%",
                             background: 'rgb(241, 241, 241)'
                         }}
                             placeholder="待选用户列表">
-                            <Option value="1" key="1">1</Option>
-                            <Option value="2" key="2">2</Option>
+                           {// 0最高管理员 1 区领导 2 镇管理员 3 村管理员 4 村民
+                           }
+                           <Option value = '0'>最高管理员</Option>
+                           <Option value = '1'>区领导</Option>
+                           <Option value = '2'>镇管理员</Option>
+                           <Option value = '3'>村管理员</Option>
+                           <Option value = '4'>村民</Option>
                         </Select>
                         <div
                             style={{
@@ -225,7 +393,6 @@ class UserList extends Component {
                                   ChoiceUserListVM.state.userList.push(newItem)  
                                 })
                                
-                               
                                 ChoiceUserListVM.setState({});
                               
                                 this.setState({
@@ -242,7 +409,6 @@ class UserList extends Component {
                                     let key = ChoiceUserListVM.state.userList.length, k = 0;
                                     const {userList} = this.state;
 
-                                    
                                     var newUserList = JSON.parse(JSON.stringify(userList));
                                     newUserList.some((item, i)=>{
                                         key++
@@ -256,33 +422,15 @@ class UserList extends Component {
                                         }
                                          
                                     })
-                                    console.log(userList)
+                                    
                                     ChoiceUserListVM.setState({});
                               
                                     this.setState({})
                             }}/>
                         </div>
 
-                        {this
-                            .state
-                            .userList
-                            .map((item) => {
-                                if (item.isActive) {
-                                    return <div
-                                        key={item.key}
-                                        onClick={() => {
-                                        this.userList(item)
-                                    }}
-                                        className={`userList active`}>{item.name}</div>
-                                } else {
-                                    return <div
-                                        key={item.key}
-                                        onClick={() => {
-                                        this.userList(item)
-                                    }}
-                                        className='userList'>{item.name}</div>
-                                }
-                            })
+                        {
+                            (this.getuserslist(this.state.userList))
                 }
                     </div>
                 </div>
@@ -291,28 +439,74 @@ class UserList extends Component {
 class ChoiceUserList extends Component {
     constructor(props) {
         super(props)
-        console.log(props)
         this.state = {
             userList: [
-                {
-                    key: 0,
-                    name: 'admin'
-                }, {
-                    key: 1,
-                    name: 'user'
-                }
             ]
         }
+      
         ChoiceUserListVM = this
     }
     userList = (userListItem) => {
         userListItem.isActive = !userListItem.isActive;
         this.setState({})
     }
+    getuserslist = (list) => {
+        
+       var arr = [];
+       for (let i = 0; i < list.length; i++) {
+           const item = list[i];
+            if (item.isActive) {
+                 
+                    arr.push(
+                          <div
+                    key={item.id}
+                    onClick={() => {
+                    this.userList(item)
+                }}
+                    className={`userList active`}>{item.userName}</div>
+                    )
+
+            }else{
+                   arr.push(
+                        <div
+                        key={item.id}
+                        onClick={() => {
+                        this.userList(item)
+                    }}
+                    className='userList'>{item.userName}</div>
+                   )
+            }
+       }
+     
+   
+       this
+                    .state
+                    .userList
+                    .map((item) => {
+                        if (item.isActive) {
+                            return <div
+                                key={item.id}
+                                onClick={() => {
+                                this.userList(item)
+                            }}
+                                className={`userList active`}>{item.userName}</div>
+                        } else {
+                            return <div
+                                key={item.id}
+                                onClick={() => {
+                                this.userList(item)
+                            }}
+                                className='userList'>{item.userName}</div>
+                        }
+                    })
+       
+    }
     render() {
         return <div style={{
-            padding: "0 20px"
-        }}>
+                    padding: "0 20px",
+                    maxHeight: window.innerHeight - 200,
+                    overflowY: "scroll"
+                }}>
             <div
                 style={{
                 border: '1px solid rgb(241, 241, 241)'
@@ -358,7 +552,7 @@ class ChoiceUserList extends Component {
                                          
                                     })
                                     userListVM.setState({});
-                              
+
                                     this.setState({})
                             }}/>
                     <Icon
@@ -379,7 +573,7 @@ class ChoiceUserList extends Component {
                                   userListVM.state.userList.push(newItem)  
                                 })
                                
-                               
+ 
                                 userListVM.setState({});
                               
                                 this.setState({
@@ -390,68 +584,210 @@ class ChoiceUserList extends Component {
                     
                 </div>
 
-                {this
-                    .state
-                    .userList
-                    .map((item) => {
-                        if (item.isActive) {
-                            return <div
-                                key={item.key}
-                                onClick={() => {
-                                this.userList(item)
-                            }}
-                                className={`userList active`}>{item.name}</div>
-                        } else {
-                            return <div
-                                key={item.key}
-                                onClick={() => {
-                                this.userList(item)
-                            }}
-                                className='userList'>{item.name}</div>
-                        }
-                    })
+                {
+                    this.getuserslist(this.state.userList)
 }
             </div>
         </div>
     }
 }
+var checkboxData = null
 class Role extends Component {
     constructor(props){
         super(props)
         this.state = {
-            rolesData: [
-                {
-                key: 1,
-                name: "产品管理员"
-                
-                },
-                {
-                key: 2,
-                name: "订单管理员"
-                }
-                
-        ],
+            rolesData: [],
         chooseActive:1,
         clickKey: -1,
         userListVm: null,
-        visible: false
+        visible: false,
+        updateRole: false,
+        checkboxData: []
         }
+        RoleVM = this
+          
+       
     }
+    
     getRolesfn = (data) => {
+       
        this.setState({
-           clickKey: data.key
+           clickKey: data.key,
+           id: data.id
        },()=>{
+          
+           ajax({
+               url: 'getPowerByRoleId/' + data.id,
+               success: (res) => {
+                    var data = res.data
+                    checkboxData = data;
+                    var first = [];
+                        for(var i = 0; i < data.length; i++){
+                            if(data[i].pid == 0){
+                                first.push(data[i])
+                            }
+                        }
+                    
+                    for(var i = 0; i < data.length; i ++){
+
+                        for(var k = 0; k < first.length; k++){
+                            if(first[k].id == data[i].pid){
+                                if(!first[k].second){
+                                    first[k].second = []
+                                }
+                                first[k].second.push(data[i]);
+                                break;
+                            }
+                        }
+                    }
+                    console.log(first)
+                    this.setState({
+                        checkboxData:first 
+                    })
+               }
+           })
            this.props.history.push(`${this.props.match.path}/${data.key}`)
        })
+    }
+    
+    selectAllRole = () => {
+        ajax({
+            url: 'selectAllRole',
+            success: (res) => {
+                console.log(res)
+                res.data.some((item,i)=>{
+                    item.key = i
+                })
+                this.setState({
+                    rolesData: res.data
+                })
+            }
+        })
+    }
+    componentDidMount = ()=>{
+       this.selectAllRole()
+    }
+   updateRole = (item) => {
+     
+        setTimeout(() => {
+          const valueObj = updataFormVM.props.form.getFieldsValue();
+          for (const oneitem in valueObj) {
+              if (valueObj.hasOwnProperty(oneitem)) {
+                  valueObj[oneitem] = item[oneitem]
+                  
+              }
+          }
+          updataFormVM.props.form.setFieldsValue(valueObj)
+        }, 0);
+        this.setState({
+            updateRole: true
+        })
+   }
+    deleteRole = (item) => {
+        Modal.warning({
+            title: '删除',
+            content: '确认删除',
+            onOk: ()=>{
+                
+                ajax({
+                    url: 'deleteRole/'+ item.id,
+                    success: (res) => {
+                      
+                        if(res.code == 200) {
+                            console.log(this)
+                            message.info(res.msg)
+                             this.selectAllRole()
+            
+                        }else{
+                            message.warning(res.msg)
+                        }
+                    }
+                })
+            }
+        })
+    }
+    onChange = (e) => {
+    
+        checkboxData.some((item)=>{
+            if(item.id == e.target.value){
+                item.checked = e.target.checked
+                return false;
+            }
+        })
 
     }
- 
-   
+    changeRolePowers = () =>{
+        var data = [];
+        for (const item in checkboxData) {
+            if (checkboxData.hasOwnProperty(item)) {
+                const element = checkboxData[item];
+                if(element.checked){
+                    data.push(element.id);
+                }
+            }
+        }
+
+        var dataStr = data.join(",")
+        ajax({
+            url: 'changeRolePowers',
+            type: 'post',
+            data: qs.stringify({
+                roleId: this.state.id,
+                powerIds: dataStr
+            }),
+            success: (res) => {
+                if(res.code == 200) {
+                    message.info(res.msg);
+                }else{
+                    message.warning(res.msg)
+                }
+                console.log(res)
+            }
+        })
+       
+        console.log(this.state.id)
+    }
+    changeUserRoles = () => {
     
+        var powerIds = new Array();
+        ChoiceUserListVM.state.userList.some((item)=>{
+            powerIds.push(item.id)
+        })
+      var powerIds=  powerIds.join(',')
+        ajax({
+            url: 'changeUserRoles',
+            data: qs.stringify({
+                userIds: powerIds,
+                roleId: this.state.id
+            }),
+            type: 'post',
+            success: (res) => {
+                if(res.code == 200){
+                    message.info(res.msg)
+                    userListVM.getUsers()
+                }else{
+                    message.info(res.msg)
+                }
+            }
+        })
+    }
     render(){
+      
       
         return (
                 <div id="role" style={roleStyle}>
+                        <Modal
+                            visible = {this.state.updateRole}
+                            title = "修改角色"
+                            onCancel = {()=>{
+                                this.setState({
+                                    updateRole: false
+                                })
+                            }}
+                            footer = {null} 
+                        >
+                        <UpdataFormConment/>
+                        </Modal>
                         <Modal 
                             title = "新增角色"
                             visible={this.state.visible}
@@ -494,18 +830,22 @@ class Role extends Component {
                                                     }}>
                                                     <Row>
                                                         <Col span={9}>
-                                                            {item.name}
+                                                            {item.roleName}
                                                         </Col>
                                                         <Col span={15} style={{textAlign: "right"}}>
-                                                             {<Icon style={{marginRight: 10}} type='delete'/>}
-                                                            {<Icon style={{marginRight: 10}} type='edit'/>}
+                                                             {<Icon onClick = {() => {
+                                                                 this.deleteRole(item)
+                                                            }} style={{marginRight: 10}} type='delete'/>}
+                                                            {<Icon onClick={()=>{
+                                                                this.updateRole(item)
+                                                            }} style={{marginRight: 10}} type='edit'/>}
                                                         </Col>
                                                      </Row>
                                               </div>
                                   }else{
                                         return <div key={item.key} className={"roles"} onClick={()=>{
                                                     this.getRolesfn(item)
-                                                    }}>{item.name}</div>
+                                                    }}>{item.roleName}</div>
                                   }
                                 })
                             }
@@ -518,20 +858,24 @@ class Role extends Component {
                                         <div>
                                             <Tabs>
                                                 <TabPane key="1" tab="角色与权限">
-                                                    <Row>
-                                                        <Col span={8}>
-                                                            <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <Table rowSelection={rowSelection1} columns={columns} dataSource={data} />
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <Table rowSelection={rowSelection2} columns={columns} dataSource={data} />
-                                                        </Col>
-                                                    </Row>
+                                                    <div style={{padding: "0 50px"}}>
+                                                        <Row style={{border:'1px solid #f1f1f1'}}>
+                                                            {this.state.checkboxData.map((item) => {
+                                                                return (<Col key={item.id} span={8}>
+                                                                            <div style={{width: "100%", background: '#f1f1f1',height: "50px",lineHeight: "50px",textAlign: 'center'}}>{item.name}</div>
+                                                                           
+                                                                            {item.second.map((sitem)=>{
+                                                                                return <div key = {sitem.id} style={{width: "100%", height: "50px",lineHeight: "50px",textAlign: 'center'}}>
+                                                                                            <Checkbox defaultChecked={sitem.checked} value={sitem.id} onChange={this.onChange}>{sitem.name}</Checkbox>
+                                                                                        </div>
+                                                                            })}
+                                                                        </Col>)
+                                                                        })}
+                                                        </Row>
+                                                    </div>
                                                     <Row style={{marginTop: 10}}>
                                                         <Col span={24} style={{textAlign: "right",paddingRight:12}}>
-                                                            <Button type='primary'>保存</Button>
+                                                            <Button type='primary' onClick={this.changeRolePowers}>保存</Button>
                                                         </Col>
                                                     </Row>
                                                 </TabPane>
@@ -546,7 +890,7 @@ class Role extends Component {
                                                     </Row>
                                                     <Row style={{marginTop: 10}}>
                                                         <Col span={24} style={{textAlign: "right",paddingRight:12}}>
-                                                            <Button type='primary'>保存</Button>
+                                                            <Button type='primary' onClick={this.changeUserRoles}>保存</Button>
                                                         </Col>
                                                     </Row>
                                                 </TabPane>

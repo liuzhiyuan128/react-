@@ -4,7 +4,8 @@ import {Login} from "../page/login.js"//login页面
 import {Home} from "../page/home.js"//home页面
 import {root} from "../page/root.js"
 import qs from "qs"
-import {Radio, Form, Tree, Rate, message, Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal, Pagination, Spin, Switch, TreeSelect, Input  } from 'antd';
+
+import {Avatar, List, Checkbox, Radio, Form, Tree, Rate, message, Layout, Menu, Breadcrumb, Icon, Row, Col, DatePicker, Select, Button, Table, Tabs, Modal, Pagination, Spin, Switch, TreeSelect, Input  } from 'antd';
 const {TextArea} = Input 
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
@@ -25,12 +26,19 @@ import trashVillageSupervise from "../page/trash/supervisePage/trashVillageSuper
 import trashTownSupervise from "../page/trash/supervisePage/trashTownSupervise" //垃圾桶管理 督办 镇督办
 import trashAreaSupervise from "../page/trash/supervisePage/trashAreaSupervise" //垃圾桶管理 督办 区督办
 import trashResult from "../page/trash/result" //垃圾桶管理 考核结果
+import selfReviewReview from "../page/trash/selfReviewReview" //自评审核
+import selfEvaluateCollectListVillage from "../page/trash/selfEvaluateCollectListVillage" //村自评汇总
+
 
 import househlodRanking from "../page/trash/rankingPage/househlodRanking.js"//住户排行
 import vliiageRanking from "../page/trash/rankingPage/villageRanking.js"//村排行
 import townRanking from "../page/trash/rankingPage/townRanking.js"//镇排行
+
+
 import SearchRanking from "../component/searchRanking.js" //搜索组件
 import TableComponent from "../component/tableComponent.js"// table组件
+import Stree from "../component/streeComponent.js";//树状图组件
+
 import AlertDetails from "../component/alertDetails"//查看详情组件
 import compostRanking from "../page/compost/ranking.js"//堆肥房 排行
 import compostSupervise from "../page/compost/compostSupervise" //堆肥房 督辦
@@ -66,13 +74,18 @@ const history = createHistory()
 
 if(!sessionStorage.token){
 	sessionStorage.token = '';
+
 	history.replace("/login")
 }
 
 
-
-
 export {
+	selfEvaluateCollectListVillage,
+	List,
+	Avatar,
+	selfReviewReview,
+	Stree,
+	Checkbox,
 	Radio,
 	Form,
 	dataFilter,

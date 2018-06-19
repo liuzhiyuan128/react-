@@ -1,4 +1,4 @@
-import { role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
+import { selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
 let defaultSub = sessionStorage.defaultSub || JSON.stringify(['sub1']);
 let defaultKeys = sessionStorage.defaultKeys || '3'
 const selectFn = ({key}) => {
@@ -7,6 +7,11 @@ const selectFn = ({key}) => {
 }
 const titleClcik = (select) => {
 	sessionStorage.defaultSub = JSON.stringify(select)
+}
+const selectClcik = () => {
+	sessionStorage.compost = "";
+	sessionStorage.supervise = '';
+	sessionStorage.selected = "";
 }
 
 const Home = (router) => {
@@ -22,7 +27,10 @@ const Home = (router) => {
 				          defaultSelectedKeys={[defaultKeys]}
 				          defaultOpenKeys={JSON.parse(defaultSub)}
 				          onSelect = {selectFn}
-				          style={{ height: '100%', borderRight: 0 }}
+									style={{ height: '100%', borderRight: 0 }}
+									onClick = {
+										selectClcik
+									}
 				         onOpenChange = {titleClcik}
 				        >
 				       
@@ -30,6 +38,10 @@ const Home = (router) => {
 				            <Menu.Item key="1"><Link to="/home/trashSupervise">考核督办</Link></Menu.Item>
 				            <Menu.Item key="2"><Link to="/home/trashResult">考核结果</Link></Menu.Item>
 				            <Menu.Item key="3"><Link to={`/home/trashRanking`}>考核排行</Link></Menu.Item>
+										
+				            <Menu.Item key="selfReviewReview"><Link to={`/home/selfReviewReview`}>自评审核</Link></Menu.Item>
+				            <Menu.Item key="selfEvaluateCollectListVillage"><Link to={`/home/selfEvaluateCollectListVillage`}>村自评汇总</Link></Menu.Item>
+										
 				          </SubMenu>
 				          <SubMenu key="sub2" title={<span>堆肥房管理</span>}>
 				            <Menu.Item key="4"><Link to="/home/compostSupervise">考核督办</Link></Menu.Item>
@@ -48,7 +60,7 @@ const Home = (router) => {
 				          </SubMenu>
 				        </Menu>
 				      </Sider>
-				      
+				
 				      <Layout>
 
 					    <HeaderComponent />
@@ -64,6 +76,8 @@ const Home = (router) => {
 									<Route path="/home/user" component = {user}/>
 									<Route path="/home/systemCompost" component = {systemCompost}/>
 									<Route path="/home/role" component={role}/>
+									<Route path="/home/selfReviewReview" component={selfReviewReview}/> 
+									<Route path="/home/selfEvaluateCollectListVillage" component={selfEvaluateCollectListVillage}/> 
 					    </div>
 				      </Layout>
 				    </Layout>
@@ -93,7 +107,12 @@ class HeaderComponent extends Component {
 
 }
 const loginOut = () => {
-	localStorage.token = ""
+	sessionStorage.token = "";
+	for (const item in sessionStorage) {
+		if (sessionStorage.hasOwnProperty(item)) {
+			sessionStorage[item] = ''	
+		}
+	}
 	const history = createHistory({
 		forceRefresh:true
 	})

@@ -1,18 +1,25 @@
 import {trashAreaSupervise, trashTownSupervise, Redirect, Menu, Link, trashCheckUp, qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails, trashVillageSupervise}  from "../../config/router.js";
+let selected = sessionStorage.supervise || "trashCheckUp"
+const selectFn = ({item, key, selectedKeys}) => {
+    
+    sessionStorage.supervise = key
 
+}
 const supervise = ({ watch, history }) => {
+selected = sessionStorage.supervise || "trashCheckUp"
 	return (
 		<div>
         <Menu
                     theme="light"
                     mode="horizontal"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[selected]}
                     style={{ height: 40,lineHeight: '40px', marginTop:15 }}
+                    onSelect={selectFn}
                  >
-                    <Menu.Item key="1"><Link to="/home/trashSupervise/trashCheckUp">检查合格</Link></Menu.Item>
-                    <Menu.Item key="2"><Link to="/home/trashSupervise/trashVillageSupervise">村督办</Link></Menu.Item>
-                    <Menu.Item key="3"><Link to="/home/trashSupervise/trashTownSupervise">镇督办</Link></Menu.Item>
-                    <Menu.Item key="4"><Link to="/home/trashSupervise/trashAreaSupervise">区督办</Link></Menu.Item>
+                    <Menu.Item key="trashCheckUp"><Link to="/home/trashSupervise/trashCheckUp">检查合格</Link></Menu.Item>
+                    <Menu.Item key="trashVillageSupervise"><Link to="/home/trashSupervise/trashVillageSupervise">村督办</Link></Menu.Item>
+                    <Menu.Item key="trashTownSupervise"><Link to="/home/trashSupervise/trashTownSupervise">镇督办</Link></Menu.Item>
+                    <Menu.Item key="trashAreaSupervise"><Link to="/home/trashSupervise/trashAreaSupervise">区督办</Link></Menu.Item>
                 </Menu>
                 <Route exact path="/home/trashSupervise" render={()=><Redirect to="/home/trashSupervise/trashCheckUp" />}></Route>
                 <Route path="/home/trashSupervise/trashCheckUp" component={trashCheckUp} />
