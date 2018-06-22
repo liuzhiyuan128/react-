@@ -12,35 +12,45 @@ import {
     message,
     Stree
 } from "../../../config/router.js";
-let vm = null, checkuserId = "" , pageNum = 1, searchData = null, villageId = '',
-styleHeight = {
+let vm = null,
+    checkuserId = "",
+    pageNum = 1,
+    searchData = null,
+    villageId = "";
+const styleHeight = {
     height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53
 }
 const dbjs = () => {
     ajax({
         url: 'updateCheckUserNomal/' + checkuserId,
         success: function (res) {
-            if(res > 0){
+            if (res > 0) {
                 vm.setState({
                     getListParameter: {
-                        condition: searchData ?  searchData.condition : null,
+                        condition: searchData
+                            ? searchData.condition
+                            : null,
                         pageSize: 10,
                         pageNum: pageNum,
-                        startTime: searchData ? searchData.startTime : null,
-                        endTime: searchData ?  searchData.endTime : null,
-                        villageId: searchData ? searchData.villageId  : null
+                        startTime: searchData
+                            ? searchData.startTime
+                            : null,
+                        endTime: searchData
+                            ? searchData.endTime
+                            : null,
+                        villageId: searchData
+                            ? searchData.villageId
+                            : null
                     }
-                    
+
                 }, () => {
                     vm.getList()
-                    vm.setState({
-                        visible: false
-                    })
+                    vm.setState({visible: false})
                 })
-            }else{
+            } else {
                 message.warning("提交失败")
             }
-            
+
         }
     })
 }
@@ -48,30 +58,30 @@ const hurry = () => {
     ajax({
         url: "updateCheckUserPressdo",
         type: 'post',
-        data: qs.stringify({
-            checkuserId: checkuserId
-        }),
-        success: (res)=>{
+        data: qs.stringify({checkuserId: checkuserId}),
+        success: (res) => {
             console.log(res)
-            if(res>0){
+            if (res > 0) {
                 message.info("催办成功")
-            }else{
+            } else {
                 message.info("催办失败")
             }
         }
     })
 }
-const cb = (tosthring, value)=> {
-    if(!value) return message.warning("提交失败，请填入必填项")
-  
+const cb = (tosthring, value) => {
+
+    if (!value) 
+        return message.warning("提交失败，请填入必填项")
+
     ajax({
         url: 'updateCheckUserRedo',
         type: 'post',
-        data: qs.stringify({zgyj:tosthring, checkuserId: checkuserId}),
+        data: qs.stringify({zgyj: tosthring, checkuserId: checkuserId}),
         success: (data) => {
             if (data > 0) {
                 message.info("提交成功")
-                
+
             } else {
                 message.warning("提交失败")
             }
@@ -179,15 +189,16 @@ var score = {
 }
 //意见
 const getALineData = (text, e) => {
-    checkuserId = text.checkuserId
+    checkuserId = text.checkuserId;
     var i = 0;
     let closVals = JSON.parse(JSON.stringify(closVal))
     let data = {}
-      let image = null
+    let image = null
     ajax({
         url: "getDetailByCheckuserId/" + text.checkuserId,
         asyny: false,
         success: (res) => {
+            console.log(res)
             image = res.image
             data = Object.assign(data, res)
         }
@@ -223,11 +234,10 @@ const getALineData = (text, e) => {
     }
     let fkyj = data.fkyj
     let zgyj = data.zgyj
-  
+
     //图片问题
     if (image) {
-        image = image
-            .split("&");
+        image = image.split("&");
         image.pop()
 
     }
@@ -238,10 +248,7 @@ const getALineData = (text, e) => {
             score,
             zgyj,
             fkyj,
-            image,
-            cb: true,
-            db: true,
-            hurry: true
+            image
         }
     }, () => {
 
@@ -270,11 +277,9 @@ const getALineData = (text, e) => {
 
 }
 const pageOnChange = (current) => {
-    vm.state.getListParameter.pageNum = current;
+    vm.state.getListParameter.pageNum = current
 
-    vm.setState({
-        
-    }, () => {
+    vm.setState({}, () => {
         vm.getList()
     })
 }
@@ -300,32 +305,14 @@ const tableColumns = [
         dataIndex: "createTime",
         key: "createTime"
     }, {
-        title: "限定时间",
-        dataIndex: "limitTime",
-        key: "limitTime"
+        title: "重办次数",
+        dataIndex: "vedo",
+        key: "vedo"
     }, {
-        title: '状态',
-        render:(text)=>{
-            let sign = [
-                {state:'合格',color: '#32da40'},
-                {state:'在办',color: '#2f8adf'},
-                {state:'正常完结',color: '#642fdf'}, 
-                {state:'强制终结',color: '#1d1b23'},
-                {state:'催办',color: '#c22c2c'},
-                {state:'重办',color: '#cde324'}
-            ];
-            // 5 催办 #c22c2c
-            // 6 重办 #cde324
-            // 1 合格 #32da40
-            // 2 在办 #2f8adf
-            // 3 正常完结 #642fdf
-            // 4 强制终结 #1d1b23
-            
-            let color = sign[text.sign-1] && sign[text.sign-1].color || "pink"
-            let state = sign[text.sign-1] && sign[text.sign-1].state || " "
-            return (<div style={{cursor:"default",color: color}}>{state}</div>)
-        }
-}, {
+        title: '催办次数',
+        dataIndex: "pressdo",
+        key: "pressdo"
+    }, {
         title: "操作",
         render: (text) => {
             return (
@@ -339,7 +326,7 @@ const tableColumns = [
     }
 ]
 
-class TrashTownSupervise extends Component {
+class TrashAreaSupervise extends Component {
     constructor(props) {
         super(props);
         vm = this
@@ -374,7 +361,7 @@ class TrashTownSupervise extends Component {
     }
     getList() {
         ajax({
-            url: 'selectAllCheckdUserNotTown',
+            url: 'selectAllCheckdUserNotArea',
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
@@ -396,7 +383,7 @@ class TrashTownSupervise extends Component {
             }
         })
     }
-    treeShow = () => {
+treeShow = () => {
       
         if(sessionStorage.roleId != 2){
               return  <div className="comBox">
@@ -422,11 +409,11 @@ class TrashTownSupervise extends Component {
             <div>
                 <SearchRanking isTree={false} getSearchData={getSearchData}/>
                 {this.treeShow()}
-               
+
                 <AlertDetails
-                    dbjs = {dbjs}
-                    cb = {cb}
-                    hurry = {hurry}
+                    dbjs={dbjs}
+                    cb={cb}
+                    hurry={hurry}
                     alertMsg={this.state.alertMsg}
                     rows={rows}
                     closeAlertDetails={closeAlertDetails}
@@ -435,7 +422,8 @@ class TrashTownSupervise extends Component {
         )
     }
 }
-const trashTownSupervise = () => {
-    return <TrashTownSupervise/>
+const overTimeSupervise = () => {
+  
+    return <TrashAreaSupervise/>
 }
-export default trashTownSupervise;
+export default overTimeSupervise;

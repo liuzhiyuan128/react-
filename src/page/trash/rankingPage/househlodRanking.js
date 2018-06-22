@@ -56,7 +56,7 @@ const getALineData = (text, vm) => {
 						}
 						data.push(item.total)
 					})
-					console.log(avg)
+					
 			
 					var option = {
 						color: ['#3398DB'],
@@ -214,7 +214,7 @@ class HouseHlodTable extends Component {
 			dataIndex: "avg",
 			key: "avg"
 		}, {
-			title: "次数",
+			title: "检查次数",
 			dataIndex: "number",
 			key: "number"
 		}, {
@@ -338,7 +338,7 @@ class HouseHlodTable extends Component {
 			        				平均分<span style={{color:"red"}}>  {househlodRankingAlertData.avg+"分"} </span>
 			        			</Col>
 			        			<Col span={6}>
-			        				次数<span style={{color:"red"}}>  {househlodRankingAlertData.number+"次"} </span>
+			        				检查次数<span style={{color:"red"}}>  {househlodRankingAlertData.number+"次"} </span>
 			        			</Col>
 			        			<Col span={6}>
 			        				排名<span style={{color:"red"}}>  {househlodRankingAlertData.rank+"名"} </span>
@@ -450,9 +450,18 @@ class HouseHlodTable extends Component {
 		)
 	}
 }
+const rankTypeList = [
+	{
+		name: '总分',
+		value: 0
+	}, {
+		name: '平均分',
+		value: 1
+	}
+]
 const househlodRanking = () => (
 	<div>
-		<SearchRanking showRankType isTree={true} getSearchData={getSearchData}/>
+		<SearchRanking showExport="exportWordHousehold"  showRankType isTree={true} rankTypeList={rankTypeList} getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
 )

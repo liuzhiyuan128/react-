@@ -25,9 +25,11 @@ import trashCheckUp from "../page/trash/supervisePage/trashCheckUp" //垃圾桶�
 import trashVillageSupervise from "../page/trash/supervisePage/trashVillageSupervise" //垃圾桶管理 督办 村督办
 import trashTownSupervise from "../page/trash/supervisePage/trashTownSupervise" //垃圾桶管理 督办 镇督办
 import trashAreaSupervise from "../page/trash/supervisePage/trashAreaSupervise" //垃圾桶管理 督办 区督办
+import overTimeSupervise from "../page/trash/supervisePage/overTimeSupervise" //垃圾桶管理 督办 超时督办
 import trashResult from "../page/trash/result" //垃圾桶管理 考核结果
 import selfReviewReview from "../page/trash/selfReviewReview" //自评审核
 import selfEvaluateCollectListVillage from "../page/trash/selfEvaluateCollectListVillage" //村自评汇总
+import selfEvaluateCollectList from "../page/trash/selfEvaluateCollectList" //村自评汇总
 
 
 import househlodRanking from "../page/trash/rankingPage/househlodRanking.js"//住户排行
@@ -74,12 +76,12 @@ const history = createHistory()
 
 if(!sessionStorage.token){
 	sessionStorage.token = '';
-
 	history.replace("/login")
 }
 
-
 export {
+	selfEvaluateCollectList,
+	overTimeSupervise,
 	selfEvaluateCollectListVillage,
 	List,
 	Avatar,

@@ -1,4 +1,4 @@
-import { selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
+import { selfEvaluateCollectList, selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
 let defaultSub = sessionStorage.defaultSub || JSON.stringify(['sub1']);
 let defaultKeys = sessionStorage.defaultKeys || '3'
 const selectFn = ({key}) => {
@@ -15,7 +15,7 @@ const selectClcik = () => {
 }
 
 const Home = (router) => {
-	
+
 	return(<div id="home">
 				<Layout>
 				    <Layout>
@@ -41,6 +41,7 @@ const Home = (router) => {
 										
 				            <Menu.Item key="selfReviewReview"><Link to={`/home/selfReviewReview`}>自评审核</Link></Menu.Item>
 				            <Menu.Item key="selfEvaluateCollectListVillage"><Link to={`/home/selfEvaluateCollectListVillage`}>村自评汇总</Link></Menu.Item>
+				            <Menu.Item key="selfEvaluateCollectList"><Link to={`/home/selfEvaluateCollectList`}>自评汇总</Link></Menu.Item>
 										
 				          </SubMenu>
 				          <SubMenu key="sub2" title={<span>堆肥房管理</span>}>
@@ -78,6 +79,7 @@ const Home = (router) => {
 									<Route path="/home/role" component={role}/>
 									<Route path="/home/selfReviewReview" component={selfReviewReview}/> 
 									<Route path="/home/selfEvaluateCollectListVillage" component={selfEvaluateCollectListVillage}/> 
+									<Route path="/home/selfEvaluateCollectList" component={selfEvaluateCollectList}/>
 					    </div>
 				      </Layout>
 				    </Layout>

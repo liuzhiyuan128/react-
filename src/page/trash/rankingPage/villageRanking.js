@@ -1,5 +1,5 @@
 import {React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch } from "../../../config/router.js"
-var searchData = null, vm = null
+var searchData = null, vm = null, villageId
 const getSearchData = (data) => {
 	
 	searchData = data
@@ -193,13 +193,13 @@ class HouseHlodTable extends Component {
 	}
 	state = {
 
-		houseHlodTableColumns: [{
+		houseHlodTableColumns: [ {
 			title:"村名",
 			dataIndex:"villageName",
 			key:"villageName"
 		},
 		{
-			title:"户数",
+			title:"总户数",
 			dataIndex:"houseNum",
 			key:"houseNum"
 		}, {
@@ -212,14 +212,35 @@ class HouseHlodTable extends Component {
 			dataIndex: "avg",
 			key: "avg"
 		}, {
-			title: "次数",
+			title: "检查次数",
 			dataIndex: "number",
 			key: "number"
 		}, {
+			title: "考核户数",
+			dataIndex: "houseNumberIn",
+			key: "houseNumberIn"
+		},
+		{
+			title: "合格户数",
+			dataIndex: "passNumber",
+			key: "passNumber"
+		},
+		{
+			title: "考核率",
+			dataIndex: "housePercent",
+			key: "housePercent"
+		},
+		{
+			title: "源头正确率",
+			dataIndex: "correctPercent",
+			key: "correctPercent"
+		},
+		{
 			title: "排名",
 			dataIndex: "rank",
 			key: "rank"
-		}, {
+		},
+		 {
 			title: "操作",
 			render: (text) => {
 				return(<div style={{cursor:"pointer"}} onClick={()=>getALineData(text,this)}>查看详情</div>)
@@ -319,7 +340,7 @@ class HouseHlodTable extends Component {
 			        				平均分<span style={{color:"red"}}>  {househlodRankingAlertData.avg+"分"} </span>
 			        			</Col>
 			        			<Col span={6}>
-			        				次数<span style={{color:"red"}}>  {househlodRankingAlertData.number+"次"} </span>
+			        				检查次数<span style={{color:"red"}}>  {househlodRankingAlertData.number+"次"} </span>
 			        			</Col>
 			        			<Col span={6}>
 			        				排名<span style={{color:"red"}}>  {househlodRankingAlertData.rank+"名"} </span>
@@ -431,9 +452,26 @@ class HouseHlodTable extends Component {
 		)
 	}
 }
+//：0总分 1平均分 2 考核率 3源头正确率
+const rankTypeList = [
+	{
+		name: '总分',
+		value: 0,
+		
+	}, {
+		name: '平均分',
+		value: 1
+	}, {
+		name: '考核率',
+		value: 2
+	}, {
+		name: '源头正确率',
+		value: 3
+	}
+]
 const villageRanking = () => (
 	<div>
-		<SearchRanking showRankType isTree={true} getSearchData={getSearchData}/>
+		<SearchRanking showExport="exportWordVillage" showRankType rankTypeList={rankTypeList} isTree={true} getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
 )

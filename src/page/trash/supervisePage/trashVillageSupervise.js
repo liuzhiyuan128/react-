@@ -399,12 +399,10 @@ class TrashCheckUp extends Component {
             }
         })
     }
-
-    render() {
-        return (
-            <div>
-                <SearchRanking isTree={false} getSearchData={getSearchData}/>
-                <div className="comBox">
+    treeShow = () => {
+      
+        if(sessionStorage.roleId != 2){
+              return  <div className="comBox">
                         <div className="comLeft" style={styleHeight}>
                             <Stree treeSelect={treeSelect}/>
                         </div>
@@ -414,7 +412,19 @@ class TrashCheckUp extends Component {
                             tableData={this.state.tableData}
                             tableColumns={this.state.tableColumns}/>
                         </div>
-                    </div>
+                    </div>   
+        }
+        return <TableComponent
+                        pagination={this.state.pagination}
+                        tableData={this.state.tableData}
+                        tableColumns={this.state.tableColumns}/>
+      
+    }
+    render() {
+        return (
+            <div>
+                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                {this.treeShow()}
                 
                 <AlertDetails
                     cb={cb}

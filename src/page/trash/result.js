@@ -27,6 +27,12 @@ const getSearchData = (data) => {
 
 const treeSelect = (key) => {
     villageId = key[0];
+    vm.setState(
+        {
+            villageId
+        }
+       
+    )
 }
 const closeAlertDetails = () => {
     vm.setState({visible: false})
@@ -292,7 +298,8 @@ class TrashResult extends Component {
                 startTime: null,
                 endTime: null,
                 villageId: null
-            }
+            },
+            villageId: ''
         }
     }
     componentWillMount() {
@@ -323,22 +330,34 @@ class TrashResult extends Component {
             }
         })
     }
-
-    render() {
-        return (
-            <div>
-                <SearchRanking isTree={false} getSearchData={getSearchData}/>
-                <div className="comBox">
-                    <div className="comLeft" style={styleHeight}>
-                        <Stree treeSelect={treeSelect}/>
-                    </div>
-                    <div className="comright" style={styleHeight}>
-                        <TableComponent
+    treeShow = () => {
+      
+        if(sessionStorage.roleId != 2){
+              return  <div className="comBox">
+                        <div className="comLeft" style={styleHeight}>
+                            <Stree treeSelect={treeSelect}/>
+                        </div>
+                        <div className="comright" style={styleHeight}>
+                            <TableComponent
+                            pagination={this.state.pagination}
+                            tableData={this.state.tableData}
+                            tableColumns={this.state.tableColumns}/>
+                        </div>
+                    </div>   
+        }
+        return <TableComponent
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
                         tableColumns={this.state.tableColumns}/>
-                    </div>
-                </div>
+      
+    }
+    render() {
+        return (
+            <div>
+                <SearchRanking villageId={this.state.villageId} showExport="exportExcelTrashResult"  isTree={false} getSearchData={getSearchData}/>
+                {
+                    this.treeShow()
+                }
                 
                 <AlertDetails
                    

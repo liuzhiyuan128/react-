@@ -1,6 +1,7 @@
 
 
 function dataFilter(data) {
+	
 	if(!data || data.length == 0) return [];
 	var data = JSON.parse(JSON.stringify(data))
 	var treeData = []

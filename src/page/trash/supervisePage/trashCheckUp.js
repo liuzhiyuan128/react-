@@ -1,4 +1,4 @@
-import { Stree, qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails}  from "../../../config/router.js";
+import { Stree, qs, Route, Component, React, ajax, SearchRanking, Tabs, TabPane, TableComponent, AlertDetails, message}  from "../../../config/router.js";
 let vm = null, villageId = "";
 
 const getSearchData = (data) => {
@@ -266,6 +266,27 @@ class TrashCheckUp extends Component {
         this.getList();
 
     }
+    treeShow = () => {
+      
+        if(sessionStorage.roleId != 2){
+              return  <div className="comBox">
+                        <div className="comLeft" style={styleHeight}>
+                            <Stree treeSelect={treeSelect}/>
+                        </div>
+                        <div className="comright" style={styleHeight}>
+                            <TableComponent
+                            pagination={this.state.pagination}
+                            tableData={this.state.tableData}
+                            tableColumns={this.state.tableColumns}/>
+                        </div>
+                    </div>   
+        }
+        return <TableComponent
+                        pagination={this.state.pagination}
+                        tableData={this.state.tableData}
+                        tableColumns={this.state.tableColumns}/>
+      
+    }
     getList() {
     
         ajax({
@@ -294,19 +315,9 @@ class TrashCheckUp extends Component {
 
     render() {
         return (
-            <div >
+            <div>
                 <SearchRanking isTree={false} getSearchData={getSearchData}/>
-                <div className="comBox">
-                    <div className="comLeft" style={styleHeight}>
-                        <Stree treeSelect={treeSelect}/>
-                    </div>
-                    <div className="comright" style={styleHeight}>
-                        <TableComponent
-                        pagination={this.state.pagination}
-                        tableData={this.state.tableData}
-                        tableColumns={this.state.tableColumns}/>
-                    </div>
-                </div>
+               {this.treeShow()}
                 <AlertDetails
                     alertMsg={this.state.alertMsg}
                     rows={rows}

@@ -4,7 +4,7 @@ const util = require('util');
 const transferStation = require('./transferStation').transferStation;
 const port = 8888;
 // const ip = "192.168.1.4"
-const ip = "192.168.10.117"
+const ip = "192.168.10.139"
 
 
 const resHeaders = {

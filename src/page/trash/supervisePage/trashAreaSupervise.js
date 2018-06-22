@@ -401,22 +401,34 @@ class TrashAreaSupervise extends Component {
             }
         })
     }
-
+    treeShow = () => {
+      
+        if(sessionStorage.roleId != 2){
+              return  <div className="comBox">
+                        <div className="comLeft" style={styleHeight}>
+                            <Stree treeSelect={treeSelect}/>
+                        </div>
+                        <div className="comright" style={styleHeight}>
+                            <TableComponent
+                            pagination={this.state.pagination}
+                            tableData={this.state.tableData}
+                            tableColumns={this.state.tableColumns}/>
+                        </div>
+                    </div>   
+        }
+        return <TableComponent
+                        pagination={this.state.pagination}
+                        tableData={this.state.tableData}
+                        tableColumns={this.state.tableColumns}/>
+      
+    }
     render() {
         return (
             <div>
                 <SearchRanking isTree={false} getSearchData={getSearchData}/>
-                <div className = "comBox">
-                    <div style={styleHeight} className = 'comLeft'>
-                        <Stree treeSelect={treeSelect} />
-                    </div>
-                    <div style={styleHeight} className="comright">
-                        <TableComponent
-                        pagination={this.state.pagination}
-                        tableData={this.state.tableData}
-                        tableColumns={this.state.tableColumns}/>
-                    </div>
-                </div>
+                {
+                    this.treeShow()
+                }
                
                 <AlertDetails
                     dbjs = {dbjs}

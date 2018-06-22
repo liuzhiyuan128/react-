@@ -1,10 +1,11 @@
-import {message} from "antd"
+﻿import {message} from "antd"
 
 // const baseUrl = "http://118.31.7.200:8091/" //阿里云
+// const baseUrl = "http://118.31.7.200:8090/" //阿里云
 const baseUrl = "http://192.168.10.114:8091/" //西泉
 // const baseUrl = "http://192.168.10.102:8091/" //西泉
 // const baseUrl = "http://192.168.10.117:8888/"
-//    const baseUrl = "http://192.168.1.4:8888/"
+//    const baseUrl = "http://192.168.1.139:8888/"
 const ajax = (option) => {
 	//这一步是为了处理1login/111111 这样的场景
 	const lastUrlStr = (option.url.indexOf("/") == -1)
@@ -16,7 +17,39 @@ const ajax = (option) => {
 	option.data = option.data || {}
 
 	let url = "";
+	
 	switch (lastUrlStr) {
+		
+		case "exportSelfEvaluateCollectListVillage":
+			url = `${baseUrl}/bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "exportSelfEvaluateCollectList":
+			url = `${baseUrl}/bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "getSelfEvaluateCollectList":
+			url = `${baseUrl}/bettle/api/selfEvaluateController/${option.url}`; 
+			break;
+		case "exportExcelTrashResult":
+			url = `${baseUrl}/bettle/api/check/${option.url}`; 
+			break;
+		case "exportExcelCompostResult":
+			url = `${baseUrl}/bettle/api/checkComposting/${option.url}`; 
+			break;
+		case "exportWordCompostRanking":
+			url = `${baseUrl}/bettle/api/checkComposting/${option.url}`; 
+			break;
+		case "exportWordHousehold":
+			url = `${baseUrl}/bettle/api/evaluation/${option.url}`; 
+			break;
+		case "exportWordTown":
+			url = `${baseUrl}/bettle/api/evaluation/${option.url}`; 
+			break;
+		case "exportWordTown":
+			url = `${baseUrl}/bettle/api/evaluation/${option.url}`; 
+			break;
+		case "exportWordVillage":
+			url = `${baseUrl}/bettle/api/evaluation/${option.url}`; 
+			break;
 		case "getSelfEvaluateCollectListVillage":
 			url = `${baseUrl}bettle/api/selfEvaluateController/${option.url}`; 
 			break;

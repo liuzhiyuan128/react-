@@ -378,7 +378,7 @@ class CompostResult extends Component {
     render() {
         return (
             <div>
-                <SearchRanking onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
+                <SearchRanking showExport="exportExcelCompostResult" onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
                 <TableComponent
                     pagination={this.state.pagination}
                     tableData={this.state.tableData}

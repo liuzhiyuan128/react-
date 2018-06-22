@@ -1,12 +1,12 @@
 import { Menu, Content, React, Component,Link,Route,Redirect,vliiageRanking,townRanking,househlodRanking } from "../../config/router.js"
 let selected = sessionStorage.selected || "househlodRanking"
 const selectFn = ({ item, key, selectedKeys }) => {
+	selected = key
 	sessionStorage.selected = key
-	
 }
+
 const TrashRanking = ({match}) =>{
-	
-	
+	selected = sessionStorage.selected || "househlodRanking"
 	return (
 			<div>
 				<Menu

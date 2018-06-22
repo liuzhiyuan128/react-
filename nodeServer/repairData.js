@@ -3,6 +3,9 @@
 const jwt = require("jsonwebtoken");
 const url = require("url");
 const getSqlData = require("./getSqlData").getSqlData;
+var contentDisposition = require('content-disposition')
+var destroy = require('destroy')
+var onFinished = require('on-finished')
 
 let token = jwt.sign({
     foo: 'bar'
@@ -365,7 +368,8 @@ exports.repairData  = {
              res.writeHead(404, resHeaders);
              res.end()
         }
-    }
+    },
+ 
    
     
     

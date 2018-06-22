@@ -200,7 +200,7 @@ class CompostRankingTable extends Component{
 			dataIndex: "avg",
 			key: "avg"
 		}, {
-			title: "次数",
+			title: "检查次数",
 			dataIndex: "number",
 			key: "number"
 		}, {
@@ -436,9 +436,18 @@ class CompostRankingTable extends Component{
 		)
 	}
 }
+const rankTypeList = [
+	{
+		name: '总分',
+		value: 0
+	}, {
+		name: '平均分',
+		value: 1
+	}
+]
  const compostRanking = ()=>{
 	return (<div>
-			<SearchRanking showRankType onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
+			<SearchRanking showExport="exportWordCompostRanking" showRankType rankTypeList={rankTypeList} onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
 			<CompostRankingTable />
 	</div>)
 }

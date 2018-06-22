@@ -126,7 +126,7 @@ class GetSelfEvaluateCollectListVillage extends Component {
    
     render(){
         return <div>
-            <SearchRanking conditionNone selectData={this.state.selectData} getSearchData={this.getSearchData}/>
+            <SearchRanking conditionNone showExport="exportSelfEvaluateCollectListVillage" selectData={this.state.selectData} getSearchData={this.getSearchData}/>
              <TableComponent
                     pagination={this.state.pagination}
                     tableData={this.state.tableData}
