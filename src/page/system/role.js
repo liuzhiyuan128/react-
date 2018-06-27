@@ -850,7 +850,7 @@ class Role extends Component {
                                 })
                             }
                         </div>
-                        <div className="right">
+                        <div className="right" style={{overflowY:'scroll'}}>
                             <Route exact={true}  to={`${this.props.match.path}/${this.state.clickKey}` } component = {
                                 ()=>{
                                   if(this.state.clickKey === -1 ) return '' 
@@ -861,12 +861,12 @@ class Role extends Component {
                                                     <div style={{padding: "0 50px"}}>
                                                         <Row style={{border:'1px solid #f1f1f1'}}>
                                                             {this.state.checkboxData.map((item) => {
-                                                                return (<Col key={item.id} span={8}>
+                                                                return (<Col key={item.id} span={6}>
                                                                             <div style={{width: "100%", background: '#f1f1f1',height: "50px",lineHeight: "50px",textAlign: 'center'}}>{item.name}</div>
                                                                            
                                                                             {item.second.map((sitem)=>{
                                                                                 return <div key = {sitem.id} style={{width: "100%", height: "50px",lineHeight: "50px",textAlign: 'center'}}>
-                                                                                            <Checkbox defaultChecked={sitem.checked} value={sitem.id} onChange={this.onChange}>{sitem.name}</Checkbox>
+                                                                                            <Checkbox defaultChecked={sitem.checked} value={sitem.id} onChange={this.onChange}>{sitem.name}</Checkbox> {sitem.type== 1 ?  "电脑" : "手机"}
                                                                                         </div>
                                                                             })}
                                                                         </Col>)

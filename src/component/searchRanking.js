@@ -34,6 +34,7 @@ class SearchRanking extends Component {
 	constructor(props) {
 		super(props)
 		searchData = {}
+	
 	}
 	triger() {
 		this.props.getSearchData(searchData);
@@ -76,8 +77,12 @@ class SearchRanking extends Component {
 	if(searchData.rankType){
 		 
 	}else{
-		searchData.rankType = this.props.selectData.defaultValue
+		if( this.props.selectData){
+		searchData.rankType =  this.props.selectData.defaultValue
+			
+		}
 	}
+	
 		
 			ajax({
 				url: this.props.showExport,

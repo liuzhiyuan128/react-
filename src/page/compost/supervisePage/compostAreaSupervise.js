@@ -332,20 +332,16 @@ const tableColumns = [
             let sign = [
                 {state:'合格',color: '#32da40'},
                 {state:'在办',color: '#2f8adf'},
+                {state:'催办',color: '#c22c2c'},
+
                 {state:'正常完结',color: '#642fdf'}, 
                 {state:'强制终结',color: '#1d1b23'},
-                {state:'催办',color: '#c22c2c'},
                 {state:'重办',color: '#cde324'}
             ];
-            // 5 催办 #c22c2c
-            // 6 重办 #cde324
-            // 1 合格 #32da40
-            // 2 在办 #2f8adf
-            // 3 正常完结 #642fdf
-            // 4 强制终结 #1d1b23
             
-            let color = sign[text.sign-1] && sign[text.sign-1].color || "pink"
-            let state = sign[text.sign-1] && sign[text.sign-1].state || " "
+            
+            let color = sign[text.sign] && sign[text.sign].color || "pink"
+            let state = sign[text.sign] && sign[text.sign].state || " "
             return (<div style={{cursor:"default",color: color}}>{state}</div>)
         }
 }, {

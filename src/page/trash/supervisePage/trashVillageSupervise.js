@@ -1,4 +1,5 @@
 import {
+    Button,
     message,
     qs,
     Route,
@@ -367,7 +368,9 @@ class TrashCheckUp extends Component {
                 startTime: null,
                 endTime: null,
                 villageId: null
-            }
+            },
+            selectedRowKeys: [],
+            
         }
     }
     componentWillMount() {
@@ -375,17 +378,17 @@ class TrashCheckUp extends Component {
 
     }
     getList() {
-        console.log(this.state.getListParameter)
+      
         ajax({
             url: 'selectAllCheckdUserNot',
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-                // console.log(res)
+                
                 res
                     .list
                     .some((item, index, arr) => {
-                        arr[index].key = index
+                        arr[index].key = item.checkuserId
                     })
                 this.setState({
                     tableData: res.list,
@@ -399,6 +402,35 @@ class TrashCheckUp extends Component {
             }
         })
     }
+     onChange = (selectedRowKeys, selectedRows) => {
+                this.setState({
+                    selectedRowKeys: selectedRowKeys
+                })
+            }
+    
+    batchPressDo = () => {
+
+        if(JSON.stringify(this.state.selectedRowKeys) == "[]"){
+            message.warning("请选中")
+            return false;
+        }
+        ajax({
+            url: 'batchPressDo',
+            type: 'post',
+            data: qs.stringify({
+                checkuserIds: this.state.selectedRowKeys+"",
+            }),
+            success: (res) => {
+                message.info(res.msg);
+                this.setState({
+                    selectedRowKeys: []
+                },()=>{
+                    this.getList()
+                }
+            )
+            }
+        })
+    }
     treeShow = () => {
       
         if(sessionStorage.roleId != 2){
@@ -407,7 +439,12 @@ class TrashCheckUp extends Component {
                             <Stree treeSelect={treeSelect}/>
                         </div>
                         <div className="comright" style={styleHeight}>
-                            <TableComponent
+                            <TableComponent                    
+                            rowSelection={{
+                                onChange: this.onChange,
+                                selectedRowKeys: this.state.selectedRowKeys
+                            }}
+
                             pagination={this.state.pagination}
                             tableData={this.state.tableData}
                             tableColumns={this.state.tableColumns}/>
@@ -415,15 +452,23 @@ class TrashCheckUp extends Component {
                     </div>   
         }
         return <TableComponent
+                         rowSelection={{
+                             onChange: this.onChange,
+                             selectedRowKeys: this.state.selectedRowKeys
+                         }}
+
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
                         tableColumns={this.state.tableColumns}/>
-      
     }
     render() {
         return (
             <div>
-                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                <div style={{position: "relative"}}>
+                    <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                    <Button style={{position: 'absolute',right: 0, top: 0}} type="primary" onClick={this.batchPressDo}>批量提交</Button>
+                </div>
+                
                 {this.treeShow()}
                 
                 <AlertDetails

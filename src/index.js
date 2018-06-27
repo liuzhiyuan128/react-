@@ -14,8 +14,9 @@ class Root extends Component{
 	render(){
 		return root()
 	}
-	componentDidMount(){
-	
+	componentWillReceiveProps(nextProps){
+		console.log(12312)
+		console.log(nextProps)
 	}
 	
 }

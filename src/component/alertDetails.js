@@ -100,7 +100,7 @@ confirm =  ()=> {
                         </Row>
                          <Row>
                             <Col span={4}>重量</Col>
-                            <Col span={20}>{this.props.alertMsg.weight}顿</Col>
+                            <Col span={20}>{this.props.alertMsg.weight}吨</Col>
                         </Row>
                          <Row>
                             <Col span={4}>去向</Col>

@@ -5,7 +5,8 @@ import{
 	React,
 	ajax,
     qs,
-    message
+    message,
+    dataFilter
 	
 } from "../config/router.js"
 
@@ -227,9 +228,9 @@ class Login extends Component {
 	 loginFn = ()=> {
 		let login = {
 			password:document.querySelector("#password").value,
-			username:document.querySelector("#username").value
+            username:document.querySelector("#username").value,
+            typeFirst: 1
 		}
-		
 		
 		ajax(
 			{
@@ -240,7 +241,10 @@ class Login extends Component {
                 
                     if (data.code != 200) return message.warning("登陆失败")
 
-                    sessionStorage.roleId = data.data.roleId
+                    sessionStorage.roleId = data.data.roleId;
+                    
+
+                    sessionStorage.power = JSON.stringify(dataFilter(data.data.powerDTOS));
 					const history = createHistory({
 					  forceRefresh: true
 					})

@@ -394,11 +394,10 @@ class CompostVillageSupervise extends Component {
             }
         })
     }
-
+    
     render() {
         return (
             <div>
-
                 <SearchRanking onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
                 <TableComponent
                     pagination={this.state.pagination}

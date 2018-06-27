@@ -30,6 +30,7 @@ import trashResult from "../page/trash/result" //垃圾桶管理 考核结果
 import selfReviewReview from "../page/trash/selfReviewReview" //自评审核
 import selfEvaluateCollectListVillage from "../page/trash/selfEvaluateCollectListVillage" //村自评汇总
 import selfEvaluateCollectList from "../page/trash/selfEvaluateCollectList" //村自评汇总
+import overTimeSummary from "../page/trash/overTimeSummary" //超时汇总
 
 
 import househlodRanking from "../page/trash/rankingPage/househlodRanking.js"//住户排行
@@ -64,7 +65,7 @@ import 'echarts/lib/component/grid'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 
-import { dataFilter } from "../js/common";
+import {dataFilter, goIntoHomeRouteBefore} from "../js/common";
 
 
 import ajax from "./ajax.js";//请求数据
@@ -79,7 +80,11 @@ if(!sessionStorage.token){
 	history.replace("/login")
 }
 
+
+
 export {
+	goIntoHomeRouteBefore,
+	overTimeSummary,
 	selfEvaluateCollectList,
 	overTimeSupervise,
 	selfEvaluateCollectListVillage,

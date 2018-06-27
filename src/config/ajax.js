@@ -1,11 +1,11 @@
 ﻿import {message} from "antd"
 
-// const baseUrl = "http://118.31.7.200:8091/" //阿里云
+const baseUrl = "http://118.31.7.200:8091/" //阿里云
 // const baseUrl = "http://118.31.7.200:8090/" //阿里云
-const baseUrl = "http://192.168.10.114:8091/" //西泉
+// const baseUrl = "http://192.168.10.114:8091/" //西泉
 // const baseUrl = "http://192.168.10.102:8091/" //西泉
 // const baseUrl = "http://192.168.10.117:8888/"
-//    const baseUrl = "http://192.168.1.139:8888/"
+//    const baseUrl = "http://192.168.10.153:8888/"
 const ajax = (option) => {
 	//这一步是为了处理1login/111111 这样的场景
 	const lastUrlStr = (option.url.indexOf("/") == -1)
@@ -19,7 +19,18 @@ const ajax = (option) => {
 	let url = "";
 	
 	switch (lastUrlStr) {
-		
+		case "batchPressDo":
+			url = `${baseUrl}bettle/api/check/${option.url}`; 
+			break
+		case "exportOutOfTimeList":
+			url = `${baseUrl}bettle/api/check/${option.url}`; 
+			break
+		case "getAllOutOfTimeList":
+			url = `${baseUrl}bettle/api/check/${option.url}`; 
+			break;
+		case "selectAllCheckdUserOutOfTime":
+			url = `${baseUrl}bettle/api/check/${option.url}`; 
+			break;
 		case "exportSelfEvaluateCollectListVillage":
 			url = `${baseUrl}/bettle/api/selfEvaluateController/${option.url}`; 
 			break;

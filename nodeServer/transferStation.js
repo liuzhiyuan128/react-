@@ -11,6 +11,11 @@ exports.transferStation = function (req, res, resHeaders) {
     
     const secondRepaiName = secondRepaiUrl.substr(secondRepaiUrl.lastIndexOf("/")+1);
     
+    if(req.url == "/"){
+        res.writeHead(200,{});
+        res.end(JSON.stringify({msg: 'ok'}))
+    }
+    
     //调用对应的接口方法
     try{
         eval("repairData."+firstRepairName+"(req, res, resHeaders)")

@@ -1,6 +1,6 @@
-import { selfEvaluateCollectList, selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
+import {goIntoHomeRouteBefore,overTimeSummary, selfEvaluateCollectList, selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
 let defaultSub = sessionStorage.defaultSub || JSON.stringify(['sub1']);
-let defaultKeys = sessionStorage.defaultKeys || '3'
+let defaultKeys = sessionStorage.defaultKeys || 'trashRanking'
 const selectFn = ({key}) => {
 	sessionStorage.defaultKeys = key;
 	sessionStorage.selected = '';
@@ -14,8 +14,10 @@ const selectClcik = () => {
 	sessionStorage.selected = "";
 }
 
-const Home = (router) => {
-
+const Home = ({history,location}) => {
+var power = JSON.parse(sessionStorage.power);
+// 进入之前做校验
+goIntoHomeRouteBefore(history, location, power)
 	return(<div id="home">
 				<Layout>
 				    <Layout>
@@ -33,16 +35,25 @@ const Home = (router) => {
 									}
 				         onOpenChange = {titleClcik}
 				        >
-				       
-				          <SubMenu style={{marginTop:"109px"}} key="sub1" title={<span>垃圾桶管理</span>}>
+				       		{
+										 power.map((item, i)=>{
+											 return <SubMenu  style={i == 0 ? {marginTop:"109px"} : null} key={"sub"+ (i+1)} title={<span>{item.name}</span>}>
+																	{
+																		item.children && item.children.map((item)=>{
+																			return <Menu.Item key={item.path}><Link to={"/home/" + item.path}>{item.name}</Link></Menu.Item>
+																		})
+																	}
+														</SubMenu>
+										 })
+									 }
+				          {/* <SubMenu style={{marginTop:"109px"}} key="sub1" title={<span>垃圾桶管理</span>}>
 				            <Menu.Item key="1"><Link to="/home/trashSupervise">考核督办</Link></Menu.Item>
 				            <Menu.Item key="2"><Link to="/home/trashResult">考核结果</Link></Menu.Item>
-				            <Menu.Item key="3"><Link to={`/home/trashRanking`}>考核排行</Link></Menu.Item>
-										
+				            <Menu.Item key="trashRanking"><Link to={`/home/trashRanking`}>考核排行</Link></Menu.Item>
 				            <Menu.Item key="selfReviewReview"><Link to={`/home/selfReviewReview`}>自评审核</Link></Menu.Item>
 				            <Menu.Item key="selfEvaluateCollectListVillage"><Link to={`/home/selfEvaluateCollectListVillage`}>村自评汇总</Link></Menu.Item>
 				            <Menu.Item key="selfEvaluateCollectList"><Link to={`/home/selfEvaluateCollectList`}>自评汇总</Link></Menu.Item>
-										
+				            <Menu.Item key="overTimeSummary"><Link to={`/home/overTimeSummary`}>超时汇总</Link></Menu.Item>
 				          </SubMenu>
 				          <SubMenu key="sub2" title={<span>堆肥房管理</span>}>
 				            <Menu.Item key="4"><Link to="/home/compostSupervise">考核督办</Link></Menu.Item>
@@ -58,7 +69,7 @@ const Home = (router) => {
 				            <Menu.Item key="10"><Link to="/home/role">角色管理</Link></Menu.Item>
 				            <Menu.Item key="11"><Link to="/home/systemCompost">堆肥房管理</Link></Menu.Item>
 										<Menu.Item key='12'><Link to="/home/log">日志管理</Link></Menu.Item>
-				          </SubMenu>
+				          </SubMenu> */}
 				        </Menu>
 				      </Sider>
 				
@@ -80,6 +91,7 @@ const Home = (router) => {
 									<Route path="/home/selfReviewReview" component={selfReviewReview}/> 
 									<Route path="/home/selfEvaluateCollectListVillage" component={selfEvaluateCollectListVillage}/> 
 									<Route path="/home/selfEvaluateCollectList" component={selfEvaluateCollectList}/>
+									<Route path="/home/overTimeSummary" component={overTimeSummary}/>
 					    </div>
 				      </Layout>
 				    </Layout>

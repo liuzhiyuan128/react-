@@ -306,8 +306,8 @@ const tableColumns = [
         key: "createTime"
     }, {
         title: "重办次数",
-        dataIndex: "vedo",
-        key: "vedo"
+        dataIndex: "redo",
+        key: "redo"
     }, {
         title: '催办次数',
         dataIndex: "pressdo",
@@ -361,25 +361,28 @@ class TrashAreaSupervise extends Component {
     }
     getList() {
         ajax({
-            url: 'selectAllCheckdUserNotArea',
+            url: 'selectAllCheckdUserOutOfTime',
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-                // console.log(res)
-                res
+                if(res.code == 200){
+                    res = res.data
+                    res
                     .list
                     .some((item, index, arr) => {
                         arr[index].key = index
                     })
-                this.setState({
-                    tableData: res.list,
-                    pagination: {
-                        total: res.total,
-                        current: res.pageNum,
-                        loading: false,
-                        onChange: pageOnChange
-                    }
-                })
+                    this.setState({
+                        tableData: res.list,
+                        pagination: {
+                            total: res.total,
+                            current: res.pageNum,
+                            loading: false,
+                            onChange: pageOnChange
+                        }
+                    })
+                }
+                
             }
         })
     }
@@ -407,7 +410,7 @@ treeShow = () => {
     render() {
         return (
             <div>
-                <SearchRanking isTree={false} getSearchData={getSearchData}/>
+                <SearchRanking conditionNone isTree={false} getSearchData={getSearchData}/>
                 {this.treeShow()}
 
                 <AlertDetails

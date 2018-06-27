@@ -86,11 +86,12 @@ class GetSelfEvaluateCollectList extends Component {
             pageSize: 10,
             startTime: '',
             endTime: '',
-            villageId: 1
+            villageId: ""
 
         }
     }
     componentDidMount = () => {
+    
         this.getList()
     }
     pageOnChange = (current) => {
@@ -103,7 +104,7 @@ class GetSelfEvaluateCollectList extends Component {
     getSearchData = (searchData) => {
         this.state.startTime = searchData.startTime;
         this.state.endTime = searchData.endTime;
-        this.state.rankType = searchData.state
+        this.state.rankType = searchData.state || 1;
         this.state.villageId = villageId
         this.state.pagination.current = 1;
         this.setState({}, () => {
@@ -118,7 +119,7 @@ class GetSelfEvaluateCollectList extends Component {
             rankType: this.state.rankType,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pageSize,
-            villageId: this.state.villageId
+            villageId: this.state.villageId 
         }
         ajax({
             url: 'getSelfEvaluateCollectList',

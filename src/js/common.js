@@ -1,60 +1,57 @@
 
 
+
+
 function dataFilter(data) {
 	
-	if(!data || data.length == 0) return [];
-	var data = JSON.parse(JSON.stringify(data))
-	var treeData = []
-	var key = 0
-	for(let i = 0; i < data.length; i++) {
-		key++
-		var item = {
-			label: data[i].name,
-			value:`${data[i].id}`,
-			key: `${key}`,
-			pid: data[i].pid
-		}
-		treeData.push(item)
-		for(let k = 0; k < data.length; k++) {
-			key++
-			if(data[i].id == data[k].pid) {
-
-				if(!treeData[i].children) {
-					treeData[i].children = [];
+		if(!data || data.length == 0) return [];
+		var treeData = []
+		function getTree(data,id,treeData){
+			for(var i = 0; i< data.length; i++){
+				if(data[i].pid == id){
+					//为了tree的数据格式
+						var item = {
+						label: data[i].name,
+						value:`${data[i].id}`,
+						key: `${data[i].id}`,
+						pid: data[i].pid
+					}
+					treeData.push(Object.assign(data[i],item))
+				
+					if(isSame(data[i].id)){
+						treeData[treeData.length-1].children = [];
+						getTree(data, treeData[treeData.length-1].id, treeData[treeData.length-1].children)
+					}
 				}
-				var childrenItem = {
-					label: data[k].name,
-					value: `${data[k].id}`,
-					key: `${key}`,
-					pid: data[k].pid
-				}
-				treeData[i].children.push(childrenItem)
-				data.splice(k, 1);
-				k--
 			}
 		}
-	}
-	//删除区 
-	
-	var data = treeData.splice(0, 1);
-
-
-	//剩下的data为三级目录 与value 相等的 pid;
-	
-	for(let i = 0; i < data[0].children.length; i++) {
-		
-		for(let k = 0; k<treeData.length; k++){
-
-			if(!data[0].children[i].children){
-				data[0].children[i].children = [];
+	//判断有没有子元素
+	function isSame(id) {
+		var falg = false;
+		for (let i = 0; i < data.length; i++) {
+			if(data[i].pid == id){
+			falg=true;
+				break;
 			}
-
-			if(data[0].children[i].value == treeData[k].pid){
-				data[0].children[i].children.push(treeData[k])
-			}
-		
 		}
+		return falg
 	}
-	return data;
+	getTree(data, 0, treeData)
+	return treeData
 }
-export {dataFilter}
+
+const goIntoHomeRouteBefore = (history, location, power) => {
+ const pathname = location.pathname;
+	for (let i = 0; i < power.length; i++) {
+		if(power[i].children){
+			for (let k = 0; k < power[i].children.length; k++) {
+				const item =  power[i].children[k];
+				console.log(pathname.indexOf(item.path))
+				return false;
+			}
+		}	
+	}
+	
+}
+
+export {dataFilter, goIntoHomeRouteBefore}
