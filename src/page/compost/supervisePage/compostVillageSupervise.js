@@ -133,7 +133,7 @@ var score = {
         choosenum: ""
     },
     tyws: {
-        name: "周边卫生",
+        name: "台账管理",
         choosenum: ""
     }
 }
@@ -375,7 +375,12 @@ class CompostVillageSupervise extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-
+                 if(res.code != 200){
+                    this.state.pagination.loading = false;
+                    this.setState({})
+                    message.warning(res.msg)
+                    return false
+                }
                 res = res.data;
                 res
                     .list

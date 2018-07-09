@@ -79,7 +79,8 @@ if(!sessionStorage.token){
 	sessionStorage.token = '';
 	history.replace("/login")
 }
-
+//改变url做校验
+goIntoHomeRouteBefore(history, location, sessionStorage.power && JSON.parse(sessionStorage.power))
 
 
 export {

@@ -16,8 +16,7 @@ const selectClcik = () => {
 
 const Home = ({history,location}) => {
 var power = JSON.parse(sessionStorage.power);
-// 进入之前做校验
-goIntoHomeRouteBefore(history, location, power)
+
 	return(<div id="home">
 				<Layout>
 				    <Layout>

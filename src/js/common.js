@@ -37,19 +37,44 @@ function dataFilter(data) {
 		return falg
 	}
 	getTree(data, 0, treeData)
+	if(JSON.stringify(treeData) == "[]"){
+		getTree(data, 10, treeData)
+	}
 	return treeData
 }
-
+//改变权限限定
 const goIntoHomeRouteBefore = (history, location, power) => {
- const pathname = location.pathname;
+	
+	const pathname = location.pathname
+	let isBreak = false;
+   let isSamePath = false
+   if(pathname == "/home" || pathname == "/login") return false; 
 	for (let i = 0; i < power.length; i++) {
+		if(isBreak){
+			break
+		}
 		if(power[i].children){
 			for (let k = 0; k < power[i].children.length; k++) {
-				const item =  power[i].children[k];
-				console.log(pathname.indexOf(item.path))
-				return false;
+				const item =  power[i].children[k];	
+				if(pathname.indexOf(item.path)+1){
+					isSamePath = true;
+					isBreak = true;
+					break;
+				}
+				
 			}
 		}	
+	}
+	
+// 	//没有相同的时候
+	if(!isSamePath){
+		for (const key in sessionStorage) {
+			if (sessionStorage.hasOwnProperty(key)) {
+				 sessionStorage[key] = ""
+				
+			}
+		}
+		history.replace("/login")
 	}
 	
 }

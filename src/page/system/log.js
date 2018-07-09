@@ -37,8 +37,12 @@ class Log extends Component {
                 type: null,
                 operator: null,
                 startTime: null,
-                endTime: null
-            }
+                endTime: null,
+                pageNum: 1,
+                pageSize: 10
+            },
+            
+            
         }
     }
     onChange = (obj,toString) =>{
@@ -51,18 +55,20 @@ class Log extends Component {
 // startTime 开始时间
 // endTime 结束时间
     getList = () => {
-    
+            
             ajax({
                 url: 'getAllLog',
                 type: 'post',
                 data: qs.stringify(this.state.data),
                 success: (res) => {
+                    console.log(res)
                     if(res.code == 200) {
-                        res.data.some((item) => {
+                        res.data.list.some((item) => {
                             item.key = item.id
                         })
+                        this.state.total = res.data.total;
                         this.setState({
-                            dataSource:res.data
+                            dataSource:res.data.list
                         })
                     }else{
                         message.warning(res.msg)
@@ -107,8 +113,9 @@ class Log extends Component {
                         </Col>
                         <Col  span={3}  style={{textAlign: 'right'}}>
                             <Button onClick = {()=>{
+                                this.state.data.pageNum = 1
                                 this.setState({
-                                    current: 1,
+                                   
                                 }, () => {
                                     this.setState({},()=>{
                                         this.getList()
@@ -120,12 +127,18 @@ class Log extends Component {
                     </Row>
                    <div style={{marginTop: 20}}>
                        <Table pagination={{
-                           current:this.state.current,
+                           
+                           current:this.state.data.pageNum,
                            onChange: (current)=>{
+                               this.state.data.pageNum = current;
                             this.setState({
-                                current: current
+                                
+                            },()=>{
+                                this.getList()
                             })
-                           }
+                           },
+                           total: this.state.total,
+                           pageSize: this.state.pageSize
                        }} dataSource={this.state.dataSource} columns={this.state.columns}/>
                    </div>
                 </div>

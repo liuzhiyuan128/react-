@@ -225,6 +225,10 @@ const tableColumns = [
         dataIndex: "realname",
         key: "realname"
     }, {
+        title: '录入人',
+        dataIndex: 'lrr',
+        key: 'lrr'
+    }, {
         title: '地址',
         dataIndex: 'adress',
         key: 'adress'

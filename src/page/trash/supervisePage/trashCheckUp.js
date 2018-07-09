@@ -89,7 +89,7 @@ var closVal = {
 var score = {
     hlfl: {
         name: "合理分类",
-        choosenum: 0
+        choosenum: 0,
     },
     tyws: {
         name: "庭院卫生"
@@ -167,24 +167,6 @@ const getALineData = (text, e) => {
 
         vm.setState({
             visible: true
-        }, () => {
-            //icon变色
-            setTimeout(() => {
-                var iconDiv = document.querySelectorAll(".score");
-                []
-                    .some
-                    .call(iconDiv, (item) => {
-                        var chooseNum = item.getAttribute("choosenum")
-                        console.log(chooseNum)
-                        if (chooseNum == null) 
-                            return false;
-                        
-                        var choseIocns = item.querySelectorAll('i')
-
-                        //变色
-                        choseIocns[chooseNum].style.color = "#f15f2d"
-                    })
-            }, 0);
         })
     })
 

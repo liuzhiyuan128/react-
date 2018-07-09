@@ -2,12 +2,20 @@ import {DatePicker, Input, Modal, React, Component, Row, Col, Switch, Rate, Text
 const onChange = (date, dateString) => {
     console.log(dateString)
 }
-
+const iconArr = ["iconfont icon-xiaolian", "iconfont icon-lengjing", "iconfont icon-iconfontkulian"]
+const iconReader = (oneItem) => {
+    console.log(oneItem)
+    return <div>
+       {iconArr.map((item,index) => {
+           return  <i key={index} style={{color: (oneItem.choosenum !== undefined && oneItem.choosenum === index) ? "#f15f2d" : ''}} key={index} className={item}></i>
+       })}
+    </div>
+}
 class AlertDetails extends Component {
     constructor(props){
         super(props)
         this.state = {
-            visible:true
+            visible:true,
         }
     }
 confirm =  ()=> {
@@ -27,7 +35,7 @@ confirm =  ()=> {
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-            this.props.cb(this.state.tostring,this.state.value)
+            this.props.cb(this.state.value)
             this.setState(
                 {
                     tostring:null,
@@ -79,7 +87,7 @@ confirm =  ()=> {
                             let arr = []
                             for(let item in this.props.alertMsg.score){
                                 var oneItem = this.props.alertMsg.score[item]
-                                arr.push(<div className="score" choosenum={oneItem.choosenum} style={{height:30, marginTop: 10}}  key={key++}> <Col  style={{  height:"30px",lineHeight:"30px",minWidth:"60px"}} span={4}>{oneItem.name}</Col><Col span={18}><div className="icontBox" style={{height:"30px",lineHeight:"30px",minWidth:"60px"}}><i   className="iconfont">&#xe627;</i><i  className="iconfont">&#xe7ab;</i><i   className="iconfont" >&#xe602;</i></div></Col> </div>)
+                                arr.push(<div   style={{height:30, marginTop: 10}}  key={key++}> <Col  style={{  height:"30px",lineHeight:"30px",minWidth:"60px"}} span={4}>{oneItem.name}</Col><Col span={18}><div className="icontBox" style={{height:"30px",lineHeight:"30px",minWidth:"60px"}}>{iconReader(oneItem)}</div></Col> </div>)
                             }
                             
                             return arr

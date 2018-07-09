@@ -4,6 +4,9 @@ const CheckboxGroup = Checkbox.Group;
 const roleStyle = {
     height: window.innerHeight - 45 - 10 - 10
 }
+import ReadyUser from "./roleComponent/readyUser"
+import ChoosedUser from "./roleComponent/chosedUser"
+import vmS from "./roleComponent/vm";
 let userListVM = null, ChoiceUserListVM = null, RoleVM = null , updataFormVM = null
 
 class AddForm extends React.Component {
@@ -243,354 +246,8 @@ const AddFormConment = Form.create()(AddForm);
 const UpdataFormConment = Form.create()(updataForm);
 
 
-class UserList extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-            userList: [],
-            getUsers: []
 
-        }
-       
-        userListVM = this
-        
-    }
-    componentDidMount = () => {
-        this.getUsers()
-    }
-    getUsers = () => {
-        ajax({
-            url: 'getUsers',
-            data: qs.stringify({
-                roleId: RoleVM.state.id
-            }),
-            type: 'post',
-            success: (res) => {
-                this.setState({
-                    userList: res.data.unselected
-                });
-                
-                ChoiceUserListVM.setState({
-                    userList: res.data.selected
-                })
-              
-                
-            }
-        })
-    }
-    userList = (userListItem) => {
-        userListItem.isActive = !userListItem.isActive;
-        this.setState({})
-    }
-    readyCholse = (value) => {
-        ajax({
-            url: 'getUsers',
-            data: qs.stringify({
-                roleId: RoleVM.state.id,
-                description: value   
-            }),
-            type: 'post',
-            success: (res) => {
-                this.setState({
-                    userList: res.data.unselected
-                });
-                
-                ChoiceUserListVM.setState({
-                    userList: res.data.selected
-                })
-              
-                
-            }
-        })
-    }
-    getuserslist = (list) => {
-        console.log(new Date().getTime())
-       var arr = [];
-       for (let i = 0; i < list.length; i++) {
-           const item = list[i];
-            if (item.isActive) {
-                 
-                    arr.push(
-                          <div
-                    key={item.id}
-                    onClick={() => {
-                    this.userList(item)
-                }}
-                    className={`userList active`}>{item.userName}</div>
-                    )
 
-            }else{
-                   arr.push(
-                        <div
-                        key={item.id}
-                        onClick={() => {
-                        this.userList(item)
-                    }}
-                    className='userList'>{item.userName}</div>
-                   )
-            }
-       }
-       console.log(new Date().getTime())
-       return arr;
-        // this
-        //                     .state
-        //                     .userList
-        //                     .map((item) => {
-        //                         if (item.isActive) {
-        //                             return <div
-        //                                 key={item.id}
-        //                                 onClick={() => {
-        //                                 this.userList(item)
-        //                             }}
-        //                                 className={`userList active`}>{item.userName}</div>
-        //                         } else {
-                                    
-        //                         }
-        //                     })
-    }
-    render(){
-        return <div style={{
-                    padding: "0 20px",
-                    maxHeight: window.innerHeight - 200,
-                    overflowY: "scroll"
-                }}>
-                    <div style={{
-                        border: '1px solid rgb(241, 241, 241)'
-                    }}>
-                        <Select
-                            onChange = {this.readyCholse}
-                            style={{
-                            width: "100%",
-                            background: 'rgb(241, 241, 241)'
-                        }}
-                            placeholder="待选用户列表">
-                           {// 0最高管理员 1 区领导 2 镇管理员 3 村管理员 4 村民
-                           }
-                           <Option value = '0'>最高管理员</Option>
-                           <Option value = '1'>区领导</Option>
-                           <Option value = '2'>镇管理员</Option>
-                           <Option value = '3'>村管理员</Option>
-                           <Option value = '4'>村民</Option>
-                        </Select>
-                        <div
-                            style={{
-                            marginTop: 10,
-                            textAlign: 'center'
-                        }}>
-                            <Icon
-                                type="double-right"
-                                style={{
-                                background: 'rgb(241, 241, 241)',
-                                padding: '15px 100px',
-                                marginRight: 10
-                            }} onClick={()=>{
-                                let key = ChoiceUserListVM.state.userList.length;
-                                this.state.userList.some((item)=>{
-                                    key++
-                                    var newItem = JSON.parse(JSON.stringify(item));
-                                    newItem.key = key;
-                                    newItem.isActive = false
-                                  ChoiceUserListVM.state.userList.push(newItem)  
-                                })
-                               
-                                ChoiceUserListVM.setState({});
-                              
-                                this.setState({
-                                    userList:[]
-                                })
-                            }} />
-                            <Icon
-                                type="right"
-                                style={{
-                                background: 'rgb(241, 241, 241)',
-                                padding: '15px 100px',
-                                marginRight: 10
-                            }} onClick={()=>{
-                                    let key = ChoiceUserListVM.state.userList.length, k = 0;
-                                    const {userList} = this.state;
-
-                                    var newUserList = JSON.parse(JSON.stringify(userList));
-                                    newUserList.some((item, i)=>{
-                                        key++
-                                        item.key = key;
-                                        if(item.isActive == true){
-                                            
-                                            item.isActive = false
-                                            ChoiceUserListVM.state.userList.push(item);
-                                            userList.splice(i-k,1)
-                                            k++
-                                        }
-                                         
-                                    })
-                                    
-                                    ChoiceUserListVM.setState({});
-                              
-                                    this.setState({})
-                            }}/>
-                        </div>
-
-                        {
-                            (this.getuserslist(this.state.userList))
-                }
-                    </div>
-                </div>
-    }
-}
-class ChoiceUserList extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            userList: [
-            ]
-        }
-      
-        ChoiceUserListVM = this
-    }
-    userList = (userListItem) => {
-        userListItem.isActive = !userListItem.isActive;
-        this.setState({})
-    }
-    getuserslist = (list) => {
-        
-       var arr = [];
-       for (let i = 0; i < list.length; i++) {
-           const item = list[i];
-            if (item.isActive) {
-                 
-                    arr.push(
-                          <div
-                    key={item.id}
-                    onClick={() => {
-                    this.userList(item)
-                }}
-                    className={`userList active`}>{item.userName}</div>
-                    )
-
-            }else{
-                   arr.push(
-                        <div
-                        key={item.id}
-                        onClick={() => {
-                        this.userList(item)
-                    }}
-                    className='userList'>{item.userName}</div>
-                   )
-            }
-       }
-     
-   
-       this
-                    .state
-                    .userList
-                    .map((item) => {
-                        if (item.isActive) {
-                            return <div
-                                key={item.id}
-                                onClick={() => {
-                                this.userList(item)
-                            }}
-                                className={`userList active`}>{item.userName}</div>
-                        } else {
-                            return <div
-                                key={item.id}
-                                onClick={() => {
-                                this.userList(item)
-                            }}
-                                className='userList'>{item.userName}</div>
-                        }
-                    })
-       
-    }
-    render() {
-        return <div style={{
-                    padding: "0 20px",
-                    maxHeight: window.innerHeight - 200,
-                    overflowY: "scroll"
-                }}>
-            <div
-                style={{
-                border: '1px solid rgb(241, 241, 241)'
-            }}>
-
-                <div style={{
-                    width: "100%",
-                    background: 'rgb(241, 241, 241)',
-                    textAlign: 'center',
-                    height: '30px',
-                    lineHeight: '30px',
-                    cursor: 'default',
-                    fontWeight: '700'
-                    
-                }}>已选择用户列表</div>
-                <div
-                    style={{
-                    marginTop: 10,
-                    textAlign: 'center',
-                    cursor: 'pointer'
-                }}>
-                    <Icon
-                        type="left"
-                        style={{
-                        background: 'rgb(241, 241, 241)',
-                        padding: '15px 100px',
-                        marginRight: 10
-                    }}
-                    onClick={()=>{
-                                    let key = userListVM.state.userList.length, k=0;
-                                    const {userList} = this.state
-                                    
-                                    var newUserList = JSON.parse(JSON.stringify(userList));
-                                    newUserList.some((item, i)=>{
-                                        key++
-                                        item.key = key;
-                                        if(item.isActive == true){
-                                            item.isActive = false
-                                            userListVM.state.userList.push(item);
-                                            userList.splice(i-k,1)
-                                            k++
-                                        }
-                                         
-                                    })
-                                    userListVM.setState({});
-
-                                    this.setState({})
-                            }}/>
-                    <Icon
-                        type="double-left"
-                        style={{
-                        background: 'rgb(241, 241, 241)',
-                        padding: '15px 100px',
-                        marginRight: 10,
-                        
-                    }}
-                    onClick={()=>{
-                                let key = userListVM.state.userList.length;
-                                this.state.userList.some((item)=>{
-                                    key++
-                                    var newItem = JSON.parse(JSON.stringify(item));
-                                    newItem.key = key;
-                                    newItem.isActive = false
-                                  userListVM.state.userList.push(newItem)  
-                                })
-                               
- 
-                                userListVM.setState({});
-                              
-                                this.setState({
-                                    userList:[]
-                                })
-                            }}
-                    />
-                    
-                </div>
-
-                {
-                    this.getuserslist(this.state.userList)
-}
-            </div>
-        </div>
-    }
-}
 var checkboxData = null
 class Role extends Component {
     constructor(props){
@@ -602,7 +259,8 @@ class Role extends Component {
         userListVm: null,
         visible: false,
         updateRole: false,
-        checkboxData: []
+        checkboxData: [],
+        tirgerReady: "asd"
         }
         RoleVM = this
           
@@ -748,7 +406,6 @@ class Role extends Component {
         console.log(this.state.id)
     }
     changeUserRoles = () => {
-    
         var powerIds = new Array();
         ChoiceUserListVM.state.userList.some((item)=>{
             powerIds.push(item.id)
@@ -770,6 +427,18 @@ class Role extends Component {
                 }
             }
         })
+    }
+    tabChange = (key) => {
+        
+       setTimeout(() => {
+           if(key == 2){
+              vmS.readyUser.foreachList();
+           }if(key == 3){
+                
+                vmS.choosedUser.foreachList()
+           }
+          
+       }, 0);
     }
     render(){
       
@@ -856,7 +525,7 @@ class Role extends Component {
                                   if(this.state.clickKey === -1 ) return '' 
                                     return (
                                         <div>
-                                            <Tabs>
+                                            <Tabs onChange={this.tabChange}>
                                                 <TabPane key="1" tab="角色与权限">
                                                     <div style={{padding: "0 50px"}}>
                                                         <Row style={{border:'1px solid #f1f1f1'}}>
@@ -866,7 +535,7 @@ class Role extends Component {
                                                                            
                                                                             {item.second.map((sitem)=>{
                                                                                 return <div key = {sitem.id} style={{width: "100%", height: "50px",lineHeight: "50px",textAlign: 'center'}}>
-                                                                                            <Checkbox defaultChecked={sitem.checked} value={sitem.id} onChange={this.onChange}>{sitem.name}</Checkbox> {sitem.type== 1 ?  "电脑" : "手机"}
+                                                                                         <Checkbox defaultChecked={sitem.checked} value={sitem.id} onChange={this.onChange}>{sitem.name}</Checkbox> {sitem.type== 1 ?  "电脑" : "手机"}
                                                                                         </div>
                                                                             })}
                                                                         </Col>)
@@ -879,20 +548,11 @@ class Role extends Component {
                                                         </Col>
                                                     </Row>
                                                 </TabPane>
-                                                <TabPane key={2} tab="角色与用户">
-                                                    <Row>
-                                                        <Col span={12}>
-                                                            <UserList />
-                                                        </Col>
-                                                        <Col span={12}>
-                                                            <ChoiceUserList />
-                                                        </Col>
-                                                    </Row>
-                                                    <Row style={{marginTop: 10}}>
-                                                        <Col span={24} style={{textAlign: "right",paddingRight:12}}>
-                                                            <Button type='primary' onClick={this.changeUserRoles}>保存</Button>
-                                                        </Col>
-                                                    </Row>
+                                                <TabPane key={2} tab="待选用户">
+                                                    <ReadyUser />
+                                                </TabPane>
+                                                <TabPane key={3} tab="已选用户">
+                                                    <ChoosedUser/>
                                                 </TabPane>
                                             </Tabs>
                                         </div>

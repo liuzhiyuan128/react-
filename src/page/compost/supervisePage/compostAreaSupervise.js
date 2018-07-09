@@ -73,7 +73,12 @@ const hurry = () => {
                 }),
                 success: (res) => {
                     if(res.code==200){
-					   message.info(res.msg)					
+                       message.info(res.msg);
+
+                       vm.getList();
+                       vm.setState({
+                           visible: false
+                       })		
 					}else{
 					    message.warning(res.msg)
                     }
@@ -170,7 +175,7 @@ var score = {
         choosenum: ""
     },
     tyws: {
-        name: "周边卫生",
+        name: "台账管理",
         choosenum: ""
     }
 }
@@ -398,7 +403,12 @@ class CompostAreaSupervise extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-
+                if(res.code != 200){
+                    this.state.pagination.loading = false;
+                    this.setState({})
+                    message.warning(res.msg)
+                    return false
+                }
                 res = res.data;
                 res
                     .list

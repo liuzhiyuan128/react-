@@ -8,7 +8,8 @@ import {
     Tabs,
     TabPane,
     TableComponent,
-    AlertDetails
+    AlertDetails,
+    message
 } from "../../config/router.js";
 
 let vm = null,
@@ -102,7 +103,7 @@ var score = {
         choosenum: ""
     },
     tyws: {
-        name: "周边卫生",
+        name: "台账管理",
         choosenum: ""
     }
 }
@@ -254,6 +255,10 @@ const tableColumns = [
         dataIndex: "responsibleName",
         key: "responsibleName"
     }, {
+        title: '录入人',
+        dataIndex: 'lrr',
+        key: 'lrr'
+    }, {
         title: '评分',
         dataIndex: 'total',
         key: 'total'
@@ -271,8 +276,7 @@ render: (text) => {
     let sign = [
                 {state:'合格',color: '#32da40'},
                 {state:'在办',color: '#2f8adf'},
-                {state:'催办',color: '#c22c2c'},
-
+                {state:'催办',color: '#c22c2c'}
     ];
     // 5 催办 #c22c2c 6 重办 #cde324 1 合格 #32da40 2 在办 #2f8adf 3 正常完结 #642fdf 4 强制终结
     // #1d1b23
@@ -341,6 +345,12 @@ class CompostResult extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
+                 if(res.code != 200){
+                    this.state.pagination.loading = false;
+                    this.setState({})
+                    message.warning(res.msg)
+                    return false
+                }
                res = res.data
                 res
                     .list
@@ -369,6 +379,7 @@ class CompostResult extends Component {
                     tableData={this.state.tableData}
                     tableColumns={this.state.tableColumns}/>
                 <AlertDetails
+                    showDFXQ
                     alertMsg={this.state.alertMsg}
                     rows={rows}
                     closeAlertDetails={closeAlertDetails}

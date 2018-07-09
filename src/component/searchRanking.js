@@ -140,7 +140,7 @@ class SearchRanking extends Component {
 							if(this.props.hideSecondInput){
 								return <div></div>
 							}else{
-								return <Input onChange={getInputValue} placeholder="住户、村名 、镇名" />
+								return <Input onChange={getInputValue} placeholder="请输入查询条件" />
 							}
 						})()
 					}

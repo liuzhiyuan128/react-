@@ -5,7 +5,6 @@ import {Component, React, Table, Spin} from "../config/router"
 class TableComponent extends Component{
     constructor(props){
         super(props);
-        console.log(props)
     }
     
     render(){

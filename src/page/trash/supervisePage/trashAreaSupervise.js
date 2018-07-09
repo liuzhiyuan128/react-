@@ -55,6 +55,10 @@ const hurry = () => {
             console.log(res)
             if(res>0){
                 message.info("催办成功")
+                vm.getList()
+                vm.setState({
+                    visible: false
+                })
             }else{
                 message.info("催办失败")
             }
@@ -64,8 +68,7 @@ const hurry = () => {
 const cb = (tosthring, value) => {
 
     
-    if (!value) 
-        return message.warning("提交失败，请填入必填项")
+   
   
     ajax({
         url: 'updateCheckUserRedo',

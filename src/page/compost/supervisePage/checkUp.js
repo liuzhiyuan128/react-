@@ -10,7 +10,8 @@ import {
     TableComponent,
     AlertDetails,
     Link,
-    Redirect
+    Redirect,
+    message
 
 } from "../../../config/router.js";
 
@@ -102,7 +103,7 @@ var score = {
         choosenum: ""
     },
     tyws: {
-        name: "周边卫生",
+        name: "台账管理",
         choosenum: ""
     }
 }
@@ -306,22 +307,28 @@ class CheckUp extends Component {
             data: qs.stringify(this.state.getListParameter),
             type: "post",
             success: (res) => {
-                
-                res = res.data;
-                res
-                    .list
-                    .some((item, index, arr) => {
-                        arr[index].key = index
+                if(res.code == 200){
+                    res = res.data;
+                    res
+                        .list
+                        .some((item, index, arr) => {
+                            arr[index].key = index
+                        })
+                    this.setState({
+                        tableData: res.list,
+                        pagination: {
+                            total: res.total,
+                            current: res.pageNum,
+                            loading: false,
+                            onChange: pageOnChange
+                        }
                     })
-                this.setState({
-                    tableData: res.list,
-                    pagination: {
-                        total: res.total,
-                        current: res.pageNum,
-                        loading: false,
-                        onChange: pageOnChange
-                    }
-                })
+                }else{
+                    this.state.pagination.loading = false;
+                    this.setState({})
+                    message.warning(res.msg)
+                }
+                
             }
         })
     }

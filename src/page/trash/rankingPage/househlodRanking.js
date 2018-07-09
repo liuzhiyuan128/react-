@@ -3,6 +3,7 @@ let searchData = {}, vm = null, trashId = '';
 const getSearchData = (data) => {
 
 	searchData = data;
+	vm.state.pagination.loading = true
 	vm.state.pagination.current = 1;
 	vm.setState({
 		
@@ -141,7 +142,7 @@ const getALineData = (text, vm) => {
 class HouseHlodTable extends Component {
 	constructor(props){
 		super(props)
-		
+		searchData = {}
 	}
 	getUserListByMonth() {
 		const data = {
@@ -275,7 +276,7 @@ class HouseHlodTable extends Component {
 						    		onChange:(current)=>{
 						    			
 						    			this.setState({
-						    				pagination:Object.assign(this.state.pagination,{current:current})
+						    				pagination:Object.assign(this.state.pagination,{current:current, loading: true})
 						    			},()=>{
 						    				this.getUserListByMonth()
 						    			})

@@ -4,6 +4,7 @@ const getSearchData = (data) => {
 	
 	searchData = data
 	vm.state.pagination.current = 1;
+	vm.state.pagination.loading = true
 	vm.setState({
 	},()=>{
 		vm.getUserListByMonth()
@@ -191,18 +192,35 @@ class HouseHlodTable extends Component {
 		this.getUserListByMonth();
 		
 	}
+	
 	state = {
 
-		houseHlodTableColumns: [ {
+		houseHlodTableColumns: [
+			{
 			title:"村名",
 			dataIndex:"villageName",
 			key:"villageName"
-		},
-		{
+		}, {
 			title:"总户数",
 			dataIndex:"houseNum",
 			key:"houseNum"
 		}, {
+			title: "考核户数",
+			dataIndex: "houseNumberIn",
+			key: "houseNumberIn"
+		}, {
+			title: "合格户数",
+			dataIndex: "passNumber",
+			key: "passNumber"
+		}, {
+			title: "检查次数",
+			dataIndex: "number",
+			key: "number"
+		}, {
+			title: "考核率",
+			dataIndex: "housePercent",
+			key: "housePercent"
+		},  {
 			title: '总分',
 			dataIndex: 'total',
 			key: 'total',
@@ -212,25 +230,6 @@ class HouseHlodTable extends Component {
 			dataIndex: "avg",
 			key: "avg"
 		}, {
-			title: "检查次数",
-			dataIndex: "number",
-			key: "number"
-		}, {
-			title: "考核户数",
-			dataIndex: "houseNumberIn",
-			key: "houseNumberIn"
-		},
-		{
-			title: "合格户数",
-			dataIndex: "passNumber",
-			key: "passNumber"
-		},
-		{
-			title: "考核率",
-			dataIndex: "housePercent",
-			key: "housePercent"
-		},
-		{
 			title: "源头正确率",
 			dataIndex: "correctPercent",
 			key: "correctPercent"
@@ -290,7 +289,7 @@ class HouseHlodTable extends Component {
 						    		onChange:(current)=>{
 						    			
 						    			this.setState({
-						    				pagination:Object.assign(this.state.pagination,{current:current})
+						    				pagination:Object.assign(this.state.pagination,{current:current,loading: true})
 						    			},()=>{
 						    				this.getUserListByMonth()
 						    			})
@@ -469,11 +468,12 @@ const rankTypeList = [
 		value: 3
 	}
 ]
-const villageRanking = () => (
-	<div>
+const villageRanking = () => {
+	searchData = {}
+	return <div>
 		<SearchRanking showExport="exportWordVillage" showRankType rankTypeList={rankTypeList} isTree={true} getSearchData={getSearchData}/>
 		<HouseHlodTable />
 	</div>
-)
+}
 
 export default villageRanking

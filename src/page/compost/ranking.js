@@ -1,4 +1,4 @@
-import { React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch } from "../../config/router.js"
+import { message,React, SearchRanking, Table, Component, Tabs, TabPane, Modal, Button, echarts, ajax, qs, Pagination, Spin, Row, Col, Switch } from "../../config/router.js"
 
 var searchData = {}, compostingHouseId = '' ,vm = null
 function getSearchData (data) {
@@ -146,6 +146,12 @@ class CompostRankingTable extends Component{
 			data: qs.stringify(data),
 			type: "post",
 			success: (res) => {
+				 if(res.code != 200){
+                    this.state.pagination.loading = false;
+                    this.setState({})
+                    message.warning(res.msg)
+                    return false
+                }
 				res = res.data
 				res.list.some(function(item, index) {
 					item.key = index
@@ -446,6 +452,7 @@ const rankTypeList = [
 	}
 ]
  const compostRanking = ()=>{
+	 searchData = {}
 	return (<div>
 			<SearchRanking showExport="exportWordCompostRanking" showRankType rankTypeList={rankTypeList} onlyAreaTown={true} isTree={true} getSearchData={getSearchData}/>
 			<CompostRankingTable />
