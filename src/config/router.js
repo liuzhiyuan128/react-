@@ -28,6 +28,7 @@ import trashAreaSupervise from "../page/trash/supervisePage/trashAreaSupervise" 
 import overTimeSupervise from "../page/trash/supervisePage/overTimeSupervise" //垃圾桶管理 督办 超时督办
 import trashResult from "../page/trash/result" //垃圾桶管理 考核结果
 import selfReviewReview from "../page/trash/selfReviewReview" //自评审核
+
 import selfEvaluateCollectListVillage from "../page/trash/selfEvaluateCollectListVillage" //村自评汇总
 import selfEvaluateCollectList from "../page/trash/selfEvaluateCollectList" //村自评汇总
 import overTimeSummary from "../page/trash/overTimeSummary" //超时汇总
@@ -50,6 +51,9 @@ import compostVillageSupervise from "../page/compost/supervisePage/compostVillag
 import compostTownSupervise from "../page/compost/supervisePage/compostTownSupervise" //堆肥房 督辦 镇督办
 import compostAreaSupervise from "../page/compost/supervisePage/compostAreaSupervise" //堆肥房 督辦 区督办
 import comostResult from "../page/compost/result" //堆肥房 考核结果
+import selfReview from "../page/compost/selfReview" //自评审核
+import compostSelfEvaluateCollectList from "../page/compost/compostSelfEvaluateCollectList" //自评汇总
+
 
 import log from "../page/system/log";//日志管理
 import user from '../page/system/user'//用户管理
@@ -80,10 +84,12 @@ if(!sessionStorage.token){
 	history.replace("/login")
 }
 //改变url做校验
-goIntoHomeRouteBefore(history, location, sessionStorage.power && JSON.parse(sessionStorage.power))
+// goIntoHomeRouteBefore(history, location, sessionStorage.power && JSON.parse(sessionStorage.power))
 
 
 export {
+	compostSelfEvaluateCollectList,
+	selfReview,
 	goIntoHomeRouteBefore,
 	overTimeSummary,
 	selfEvaluateCollectList,
