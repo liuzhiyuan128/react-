@@ -36,17 +36,17 @@ console.log(selfReview)
 				         onOpenChange = {titleClcik}
 				        >
 				       		{
-										//  power.map((item, i)=>{
-										// 	 return <SubMenu  style={i == 0 ? {marginTop:"109px"} : null} key={"sub"+ (i+1)} title={<span>{item.name}</span>}>
-										// 							{
-										// 								item.children && item.children.map((item)=>{
-										// 									return <Menu.Item key={item.path}><Link to={"/home/" + item.path}>{item.name}</Link></Menu.Item>
-										// 								})
-										// 							}
-										// 				</SubMenu>
-										//  })
+										 power.map((item, i)=>{
+											 return <SubMenu  style={i == 0 ? {marginTop:"109px"} : null} key={"sub"+ (i+1)} title={<span>{item.name}</span>}>
+																	{
+																		item.children && item.children.map((item)=>{
+																			return <Menu.Item key={item.path}><Link to={"/home/" + item.path}>{item.name}</Link></Menu.Item>
+																		})
+																	}
+														</SubMenu>
+										 })
 									 }
-				          <SubMenu style={{marginTop:"109px"}} key="sub1" title={<span>垃圾桶管理</span>}>
+				          {/* <SubMenu style={{marginTop:"109px"}} key="sub1" title={<span>垃圾桶管理</span>}>
 				            <Menu.Item key="1"><Link to="/home/trashSupervise">考核督办</Link></Menu.Item>
 				            <Menu.Item key="2"><Link to="/home/trashResult">考核结果</Link></Menu.Item>
 				            <Menu.Item key="trashRanking"><Link to={`/home/trashRanking`}>考核排行</Link></Menu.Item>
@@ -73,7 +73,7 @@ console.log(selfReview)
 				            <Menu.Item key="10"><Link to="/home/role">角色管理</Link></Menu.Item>
 				            <Menu.Item key="11"><Link to="/home/systemCompost">堆肥房管理</Link></Menu.Item>
 										<Menu.Item key='12'><Link to="/home/log">日志管理</Link></Menu.Item>
-				          </SubMenu>
+				          </SubMenu> */}
 				        </Menu>
 				      </Sider>
 				
