@@ -8,17 +8,22 @@ import {
     message,
     Stree
 } from "../../config/router";
-let villageId = "";
+let villageId = "", vm = null;
 const styleHeight = {
     height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53
 }
 const treeSelect = (key) => {
     villageId = key[0];
-    vm.setState({villageId})
+    vm.setState({villageId},()=>{
+        vm.getSelfSortingID(villageId)
+    });
+
+    
 }
 
 class GetSelfEvaluateCollectList extends Component {
     constructor(props) {
+     
         super(props)
         // 1自评次数 2合格次数 3 合格率 4参与率
         this.state = {
@@ -27,15 +32,19 @@ class GetSelfEvaluateCollectList extends Component {
                 defaultValue: 1,
                 list: [
                     {
-                        name: '自评次数',
+                        name: '检查次数',
                         value: 1
                     }, {
-                        name: '合格次数',
+                        name: '合格张数',
                         value: 2
                     }, {
                         name: '合格率',
                         value: 3
+                    }, {
+                        name: '得分',
+                        value: 4
                     }
+                     
                 ]
             },
             pagination: {
@@ -50,34 +59,35 @@ class GetSelfEvaluateCollectList extends Component {
             // passNuber;//合格次数 private String numberPercent;//合格率 private String
             // score;//获取分数 暂定通过一张一分
             tableColumns: [
+                 {
+                    title: "账号",
+                    dataIndex: "createBy",
+                    key: "createBy"
+                },
                 {
                     title: "村名",
                     dataIndex: "villageName",
                     key: "villageName"
                 }, {
-                    title: '自评次数',
+                    title: '上传张数',
                     dataIndex: 'allNumber',
                     key: 'allNumber'
                 }, {
-                    title: "合格次数",
+                    title: "合格张数",
                     dataIndex: 'passNumber',
                     key: "passNumber"
+                }, {
+                    title: "检查次数",
+                    dataIndex: "checkNumber",
+                    key: "checkNumber"
                 }, {
                     title: "合格率",
                     dataIndex: "numberPercent",
                     key: "numberPercent"
                 }, {
-                    title: "总户数",
-                    dataIndex: "houseNumber",
-                    key: "houseNumber"
-                }, {
-                    title: "参与户数",
-                    dataIndex: "houseNumberIn",
-                    key: "houseNumberIn"
-                }, {
-                    title: "参与率",
-                    dataIndex: "housePercent",
-                    key: "housePercent"
+                    title: "得分",
+                    dataIndex: "score",
+                    key: "score"
                 }
 
             ],
@@ -85,19 +95,43 @@ class GetSelfEvaluateCollectList extends Component {
             pageSize: 10,
             startTime: '',
             endTime: '',
-            villageId: ""
+            villageId: "",
+           
+            getSelfSortingIDList: [],
+            getSelfSortingIDListItem: ''
 
         }
+           villageId = ""
+        vm = this
     }
     componentDidMount = () => {
 
-        this.getList()
+        this.getList();
+        this.getSelfSortingID()
     }
     pageOnChange = (current) => {
         this.state.pagination.current = current;
 
         this.setState({}, () => {
             this.getList()
+        })
+    }
+    getSelfSortingID = () => {
+        ajax({
+           url: 'getSelfSortingID',
+           type: 'post',
+           data:qs.stringify({
+               villageId: this.state.villageId
+           }),
+           success: (res) => {
+               var getSelfSortingIDList = []
+                res.data.map((item) => {
+                   getSelfSortingIDList.push(item.sortingName)
+                });
+                this.setState({
+                    getSelfSortingIDList
+                })
+           }
         })
     }
     getSearchData = (searchData) => {
@@ -118,13 +152,15 @@ class GetSelfEvaluateCollectList extends Component {
             rankType: this.state.rankType,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pageSize,
-            villageId: this.state.villageId
+            villageId: this.state.villageId,
+            createBy: this.state.getSelfSortingIDListItem
         }
         ajax({
-            url: 'getSelfEvaluateCollectList',
+            url: 'getSelfSortingCollectList',
             type: 'post',
             data: qs.stringify(data),
             success: (res) => {
+               
                 if (res.code == 200) {
                     console.log(res)
                     res = res.data;
@@ -148,10 +184,36 @@ class GetSelfEvaluateCollectList extends Component {
 
         if (sessionStorage.roleId != 2) {
             return <div className="comBox">
-                <div className="comLeft" style={styleHeight}>
+                <div style={{width: "20%",  height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53,}} className="comLeft">
                     <Stree treeSelect={treeSelect}/>
                 </div>
-                <div className="comright" style={styleHeight}>
+                <div style={{
+                      height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53,
+                      width: "10%",
+                      background: '#fff',
+                      float: 'left',
+                      overflowY: 'scroll'
+                }}>
+                    {
+                        this.state.getSelfSortingIDList.map((item) => {
+                            if(item == this.state.getSelfSortingIDListItem){
+                                return <div  key={item} style={{width: "100%", textAlign: 'center', cursor: 'pointer', marginTop: 20}}><span style={{background: '#baffd5', padding: 5}}>{item}</span></div>
+                            }
+                            return <div onClick={() => {
+                               this.setState({
+                                   getSelfSortingIDListItem: item
+                               }, () => {
+                                   this.getList()
+                               });
+                            }} key={item} style={{width: "100%", textAlign: 'center', cursor: 'pointer', marginTop: 20}}>{item}</div>
+                        })
+                    }
+                    
+                </div>
+                <div className="comright" style={{
+                     height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53,
+                     width: "69%"
+                }}>
                     <TableComponent
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
@@ -170,7 +232,7 @@ class GetSelfEvaluateCollectList extends Component {
 
             <SearchRanking
                 villageId={this.state.villageId}
-                showExport="exportSelfEvaluateCollectList"
+                showExport="exportSelfSortingCollectList"
                 conditionNone
                 selectData={this.state.selectData}
                 getSearchData={this.getSearchData}/> {this.treeShow()

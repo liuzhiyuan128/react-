@@ -19,7 +19,7 @@ class SelfReview extends Component {
         super(props)
         //1 审核通过  2  审核未通  3未审核
         this.state = {
-            imgSrc: `http://118.31.7.200:8081/static/jdcz014055/2018-06-14/9603.jpg`,
+            imgSrc: ``,
             visible: false,
             listData: [],
             current: 1,
@@ -64,7 +64,7 @@ class SelfReview extends Component {
 
         var data = qs.stringify({pageNum: this.state.current, pageSize: this.state.pageSize, startTime: this.state.startTime, endTime: this.state.endTime, state: this.state.state});
         ajax({
-            url: 'getSelfEvaluateAdmin',
+            url: 'getSelfSorting',
             data: data,
             type: 'post',
             success: (res) => {
@@ -82,7 +82,7 @@ class SelfReview extends Component {
         const sign = e._targetInst.pendingProps.sign;
         const id = e._targetInst.pendingProps.id;
         ajax({
-            url: 'check',
+            url: 'sortingCheck',
             type: 'post',
             data: qs.stringify({sign: sign, id: id}),
             success: (res) => {

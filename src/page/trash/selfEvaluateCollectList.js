@@ -8,7 +8,7 @@ import {
     message,
     Stree
 } from "../../config/router";
-let villageId = "";
+let villageId = "", vm = null
 const styleHeight = {
     height: window.innerHeight - 45 - 10 - 10 - 15 - 40 - 12 - 53
 }
@@ -20,6 +20,8 @@ const treeSelect = (key) => {
 class GetSelfEvaluateCollectList extends Component {
     constructor(props) {
         super(props)
+        villageId = ""
+        vm = this
         // 1自评次数 2合格次数 3 合格率 4参与率
         this.state = {
 

@@ -1,11 +1,13 @@
 ﻿import {message} from "antd"
 
-const baseUrl = "http://118.31.7.200:8091/" //阿里云
+// const baseUrl = "http://118.31.7.200:8091/" //阿里云
 // const baseUrl = "http://118.31.7.200:8090/" //阿里云
 // const baseUrl = "http://192.168.10.114:8091/" //西泉
 // const baseUrl = "http://192.168.10.102:8091/" //西泉
 // const baseUrl = "http://192.168.10.117:8888/"
 //    const baseUrl = "http://192.168.10.153:8888/"
+const baseUrl = "http://192.168.10.117:8091/" //楼
+
 const ajax = (option) => {
 	//这一步是为了处理1login/111111 这样的场景
 	const lastUrlStr = (option.url.indexOf("/") == -1)
@@ -19,9 +21,24 @@ const ajax = (option) => {
 	let url = "";
 	
 	switch (lastUrlStr) {
+		case "getSelfSorting":
+			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`;
+			break
+		case "sortingCheck":
+			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`;
+			break
+		case "exportSelfSortingCollectList":
+			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`; 
+			break
+		case "getSelfSortingID":
+			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`; 
+			break
+		case "getSelfSortingCollectList":
+			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`; 
+			break;
 		case "batchDeleteUserRole":
 			url = `${baseUrl}rbac/role/${option.url}`; 
-			break
+			break3
 		case "getAllUsersSelected":
 			url = `${baseUrl}rbac/role/${option.url}`; 
 			break
@@ -279,6 +296,7 @@ const ajax = (option) => {
 	//判断token是否纯在 存在就传入请求头 不存在 就在请求头里传入空对象
 	if (!url)
 		option.success("路径有误")
+		console.log(url)
 	axios({
 		url: url, //请求地址
 		type: option.type, //请求方式
