@@ -38,8 +38,13 @@ function dataFilter(data) {
 	}
 	getTree(data, 0, treeData)
 	if(JSON.stringify(treeData) == "[]"){
+		
 		getTree(data, 10, treeData)
+		if(JSON.stringify(treeData) == "[]") {
+			getTree(data, data[0].pid, treeData)
+		}
 	}
+	
 	return treeData
 }
 //改变权限限定

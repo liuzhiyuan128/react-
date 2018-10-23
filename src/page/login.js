@@ -21,7 +21,7 @@ class Login extends Component {
 		super(props);
 	}
 	
-	componentDidMount(){
+componentDidMount(){
         document.addEventListener("keydown", (e) => {
             if(e.keyCode === 13){
                 this.loginFn()
@@ -243,7 +243,7 @@ class Login extends Component {
 
                     sessionStorage.roleId = data.data.roleId;
                     
-
+                   
                     sessionStorage.power = JSON.stringify(dataFilter(data.data.powerDTOS));
 					const history = createHistory({
 					  forceRefresh: true
@@ -252,6 +252,7 @@ class Login extends Component {
 						url:`selectMyUserById/${data.data.id}`,
 						type:"get",
 						success:function (res) {
+
                             sessionStorage.realname = res.data.realname
                             console.log(res)
 							history.push("/home")

@@ -98,6 +98,11 @@ body {
   font-size: 29px;
   margin-right: 20px;
 }
+.noneBox {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+}
 #Root {
   height: 100%;
 }

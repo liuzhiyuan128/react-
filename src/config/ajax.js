@@ -6,8 +6,9 @@
 // const baseUrl = "http://192.168.10.102:8091/" //西泉
 // const baseUrl = "http://192.168.10.117:8888/"
 //    const baseUrl = "http://192.168.10.153:8888/"
-// const baseUrl = "http://192.168.10.117:8091/" //楼
+// const baseUrl = "http://192.168.10.137:8091/" //楼
 const baseUrl = "http://nongban.zjshumi.com:8091/"
+// const baseUrl = "127.0.0.1:8091/"
 
 
 const ajax = (option) => {
@@ -23,6 +24,25 @@ const ajax = (option) => {
 	let url = "";
 	
 	switch (lastUrlStr) {
+		
+		case "getSelfCulture":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
+		case "cultureCheck":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
+		case "exportSelfCultureCollectListVillage":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
+		case "exportSelfCultureCollectList":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
+		case "exportSelfCultureCollectList":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
+		case "getSelfCultureCollectList":
+			url = `${baseUrl}bettle/api/selfCultureController/${option.url}`;
+			break
 		case "getSelfSorting":
 			url = `${baseUrl}bettle/api/SelfSortingController/${option.url}`;
 			break

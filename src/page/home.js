@@ -1,4 +1,4 @@
-import {compostSelfEvaluateCollectList, selfReview, goIntoHomeRouteBefore,overTimeSummary, selfEvaluateCollectList, selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
+import {selfReview1,compostSelfEvaluateCollectList1,compostSelfEvaluateCollectList, selfReview, goIntoHomeRouteBefore,overTimeSummary, selfEvaluateCollectList, selfEvaluateCollectListVillage, selfReviewReview, role, systemCompost, user, log, comostResult, trashResult, compostSupervise, Header, Layout, Content, Footer, Sider, Menu, Breadcrumb, SubMenu, Component, React, Icon, Router, Route, Link, TrashRanking, compostRanking, Redirect, BrowserRouter, createHistory, supervise } from "../config/router.js"
 let defaultSub = sessionStorage.defaultSub || JSON.stringify(['sub1']);
 let defaultKeys = sessionStorage.defaultKeys || 'trashRanking'
 const selectFn = ({key}) => {
@@ -59,9 +59,10 @@ console.log(selfReview)
 				            <Menu.Item key="4"><Link to="/home/compostSupervise">考核督办</Link></Menu.Item>
 				            <Menu.Item key="5"><Link to="/home/comostResult">考核结果</Link></Menu.Item>
 				            <Menu.Item key="6"><Link to={"/home/compostRanking"}>考核排行</Link></Menu.Item>	
-										<Menu.Item key="selfselfReview"><Link to={"/home/selfReview"}>自评审核</Link></Menu.Item>
-										<Menu.Item key="compostSelfEvaluateCollectList"><Link to={"/home/compostSelfEvaluateCollectList"}>自评汇总</Link></Menu.Item>
-												          
+										<Menu.Item key="selfselfReview"><Link to={"/home/selfReview"}>分拣员自评审核</Link></Menu.Item>
+										<Menu.Item key="compostSelfEvaluateCollectList"><Link to={"/home/compostSelfEvaluateCollectList"}>分拣员自评汇总</Link></Menu.Item>
+										<Menu.Item key="selfselfReview1"><Link to={"/home/selfReview1"}>菌种员自评审核</Link></Menu.Item>
+										<Menu.Item key="compostSelfEvaluateCollectList1"><Link to={"/home/compostSelfEvaluateCollectList1"}>菌种员自评汇总</Link></Menu.Item>	          
 				          </SubMenu>
 				          <SubMenu key="sub3" title={<span>其他设施管理</span>}>
 				            <Menu.Item key="7">考核督办</Menu.Item>
@@ -98,7 +99,8 @@ console.log(selfReview)
 									<Route path="/home/overTimeSummary" component={overTimeSummary}/>
 									<Route path="/home/selfReview" component={selfReview}/>
 									<Route path="/home/compostSelfEvaluateCollectList" component={compostSelfEvaluateCollectList}/>
-									
+									<Route path="/home/selfReview1" component={selfReview1}/>
+									<Route path="/home/compostSelfEvaluateCollectList1" component={compostSelfEvaluateCollectList1}/>
 					    </div>
 				      </Layout>
 				    </Layout>

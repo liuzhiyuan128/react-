@@ -4,7 +4,7 @@ const util = require('util');
 const transferStation = require('./transferStation').transferStation;
 const port = 8888;
 // const ip = "192.168.1.4"
-const ip = "192.168.1.5"
+const ip = "192.168.10.143"
 
 
 const resHeaders = {
@@ -16,7 +16,7 @@ const resHeaders = {
 }
 
 http.createServer(function (request, response) {
-    
+    console.log(request)
     //跨域问题
       if (request.method == 'OPTIONS') {
             response.writeHead(200, resHeaders )     

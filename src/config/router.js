@@ -53,6 +53,8 @@ import compostAreaSupervise from "../page/compost/supervisePage/compostAreaSuper
 import comostResult from "../page/compost/result" //堆肥房 考核结果
 import selfReview from "../page/compost/selfReview" //自评审核
 import compostSelfEvaluateCollectList from "../page/compost/compostSelfEvaluateCollectList" //自评汇总
+import selfReview1 from "../page/compost/selfReview1" //菌种自评审核
+import compostSelfEvaluateCollectList1 from "../page/compost/compostSelfEvaluateCollectList1" //菌种自评汇总
 
 
 import log from "../page/system/log";//日志管理
@@ -88,6 +90,8 @@ if(!sessionStorage.token){
 
 
 export {
+	compostSelfEvaluateCollectList1,
+	selfReview1,
 	compostSelfEvaluateCollectList,
 	selfReview,
 	goIntoHomeRouteBefore,
