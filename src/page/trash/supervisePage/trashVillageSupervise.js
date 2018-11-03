@@ -373,6 +373,7 @@ class TrashCheckUp extends Component {
                 villageId: null
             },
             selectedRowKeys: [],
+            realPageSize: 0,
             
         }
     }
@@ -400,7 +401,8 @@ class TrashCheckUp extends Component {
                         current: res.pageNum,
                         loading: false,
                         onChange: pageOnChange
-                    }
+                    },
+                    realPageSize: res.list.length
                 })
             }
         })
@@ -451,18 +453,33 @@ class TrashCheckUp extends Component {
                             pagination={this.state.pagination}
                             tableData={this.state.tableData}
                             tableColumns={this.state.tableColumns}/>
+                             <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                         </div>
                     </div>   
         }
-        return <TableComponent
-                         rowSelection={{
-                             onChange: this.onChange,
-                             selectedRowKeys: this.state.selectedRowKeys
-                         }}
-
+        return <div>
+            <TableComponent
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
                         tableColumns={this.state.tableColumns}/>
+            <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
+        </div> 
     }
     render() {
         return (

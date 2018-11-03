@@ -332,7 +332,8 @@ class CompostResult extends Component {
                 startTime: null,
                 endTime: null,
                 villageId: null
-            }
+            },
+            realPageSize: 0
         }
     }
     componentWillMount() {
@@ -364,7 +365,8 @@ class CompostResult extends Component {
                         current: res.pageNum,
                         loading: false,
                         onChange: pageOnChange
-                    }
+                    },
+                    realPageSize: res.list.length
                 })
             }
         })
@@ -378,6 +380,15 @@ class CompostResult extends Component {
                     pagination={this.state.pagination}
                     tableData={this.state.tableData}
                     tableColumns={this.state.tableColumns}/>
+                    <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                 <AlertDetails
                     showDFXQ
                     alertMsg={this.state.alertMsg}

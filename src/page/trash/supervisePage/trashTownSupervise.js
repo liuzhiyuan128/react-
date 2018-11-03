@@ -369,7 +369,8 @@ class TrashTownSupervise extends Component {
                 startTime: null,
                 endTime: null,
                 villageId: null
-            }
+            },
+            realPageSize: 0,
         }
     }
     componentWillMount() {
@@ -395,7 +396,8 @@ class TrashTownSupervise extends Component {
                         current: res.pageNum,
                         loading: false,
                         onChange: pageOnChange
-                    }
+                    },
+                    realPageSize: res.list.length
                 })
             }
         })
@@ -412,13 +414,33 @@ class TrashTownSupervise extends Component {
                             pagination={this.state.pagination}
                             tableData={this.state.tableData}
                             tableColumns={this.state.tableColumns}/>
+                            <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                         </div>
                     </div>   
         }
-        return <TableComponent
+        return  <div>
+            <TableComponent
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
                         tableColumns={this.state.tableColumns}/>
+            <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
+        </div> 
       
     }
     render() {

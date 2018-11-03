@@ -167,7 +167,8 @@ class CompostRankingTable extends Component{
 							total: res.total,
 							current: res.pageNum,
 							loading: false
-						}
+						},
+						realPageSize: res.list.length
 					})
 			
 				
@@ -262,7 +263,8 @@ class CompostRankingTable extends Component{
 			compostingModel: '',
 			servicePopulation: 0
 		},
-		monthDay: false
+		monthDay: false,
+		realPageSize: 0
 	}
 	render(){
 		const {compostRankingAlertData} = this.state
@@ -286,6 +288,15 @@ class CompostRankingTable extends Component{
 						    	}} 
 						    	
 						    	dataSource={ this.state.pagination.compostRankingTableData} columns={this.state.compostRankingColumns} />
+							<div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
 					</Spin>
 					 <Modal
 			          title="查看详情"

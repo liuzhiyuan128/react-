@@ -408,7 +408,8 @@ class CompostTownSupervise extends Component {
                 endTime: null,
                 villageId: null,
                 dataType: "town"
-            }
+            },
+            realPageSize: 0
         }
     }
     componentWillMount() {
@@ -440,7 +441,8 @@ class CompostTownSupervise extends Component {
                         current: res.pageNum,
                         loading: false,
                         onChange: pageOnChange
-                    }
+                    },
+                    realPageSize: res.list.length
                 })
             }
         })
@@ -455,6 +457,15 @@ class CompostTownSupervise extends Component {
                     pagination={this.state.pagination}
                     tableData={this.state.tableData}
                     tableColumns={this.state.tableColumns}/>
+                    <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                 <AlertDetails
                     dbjs = {dbjs}
                     hurry = {hurry}

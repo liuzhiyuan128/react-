@@ -303,7 +303,8 @@ class TrashResult extends Component {
                 endTime: null,
                 villageId: null
             },
-            villageId: ''
+            villageId: '',
+            realPageSize: 0
         }
     }
     componentWillMount() {
@@ -329,7 +330,8 @@ class TrashResult extends Component {
                         current: res.pageNum,
                         loading: false,
                         onChange: pageOnChange
-                    }
+                    },
+                    realPageSize: res.list.length
                 })
             }
         })
@@ -346,13 +348,33 @@ class TrashResult extends Component {
                             pagination={this.state.pagination}
                             tableData={this.state.tableData}
                             tableColumns={this.state.tableColumns}/>
+                            <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                         </div>
                     </div>   
         }
-        return <TableComponent
+        return <div>
+            <TableComponent
                         pagination={this.state.pagination}
                         tableData={this.state.tableData}
                         tableColumns={this.state.tableColumns}/>
+            <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
+        </div>
       
     }
     render() {

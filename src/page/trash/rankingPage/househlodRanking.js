@@ -171,7 +171,7 @@ class HouseHlodTable extends Component {
 				
 				
 					this.setState({
-
+						 realPageSize: res.list.length,
 						 pagination: {
 							houseHlodTableData,
 							total: res.total,
@@ -260,7 +260,8 @@ class HouseHlodTable extends Component {
 		},
 		
 		pageSize: 10,
-		monthDay: false
+		monthDay: false,
+		realPageSize: 0,
 	}
 
 	render() {
@@ -285,6 +286,15 @@ class HouseHlodTable extends Component {
 						    	}} 
 						    	
 						    	dataSource={ this.state.pagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+								<div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
 					</Spin>
 				
 				 <Modal

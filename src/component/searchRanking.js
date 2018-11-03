@@ -28,13 +28,16 @@ function getInputValue (e) {
 	searchData.condition = e.target.value;
 	
 }
+function getRelaname(e) {
+	searchData.realname = e.target.value;
 
+}
 
 class SearchRanking extends Component {
 	constructor(props) {
 		super(props)
+		console.log(props)
 		searchData = {}
-	
 	}
 	triger() {
 		this.props.getSearchData(searchData);
@@ -133,6 +136,15 @@ class SearchRanking extends Component {
 						 })()
 				}
 				</Col>
+				<Col span={3} style={{
+					display: this.props.showRealname ? 'block' : 'none'
+				}}>
+					< Input onChange = {
+						getRelaname
+					}
+					placeholder = "请输入住户姓名" / >
+				</Col>
+				
 		    	<Col span={6} style={{display: this.props.conditionNone ? 'none' : 'block'}}>
 		    		{
 						(()=>{

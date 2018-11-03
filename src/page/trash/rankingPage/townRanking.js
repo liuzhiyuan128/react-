@@ -171,22 +171,26 @@ class HouseHlodTable extends Component {
 			data: qs.stringify(data),
 			type: "post",
 			success: (res) => {
-				res = res.data
+				let townComQueryTotalObj = res.data.townComQueryTotal
+				res = res.data.pageInfo
 				res.list.some(function(item, index) {
 					item.key = index
 				})
 				
 				const houseHlodTableData = res.list
-				
-				
+				townComQueryTotalObj.key = 1
+				var townComQueryTotalArr = [townComQueryTotalObj];
+			
 					this.setState({
-
+						realPageSize: res.list.length,
 						 pagination: {
 							houseHlodTableData,
 							total: res.total,
 							current: res.pageNum,
 							loading: false
-						}
+						},
+						townComQueryTotalData: townComQueryTotalArr
+						
 					})
 					
 				
@@ -252,7 +256,49 @@ class HouseHlodTable extends Component {
 				return(<div style={{cursor:"pointer"}} onClick={()=>getALineData(text,this)}>查看详情</div>)
 			}
 		}],
-		
+		townComQueryTotal: [
+			{
+				title: '合计',
+				dataIndex: 'none',
+				key: 'none'
+			}, {
+				title: '总户数合计',
+				dataIndex: 'houseNumTotal',
+				key: 'houseNumTotal'
+			}, {
+				title: '考核户数合计',
+				dataIndex: 'houseNumberInTotal',
+				key: 'houseNumberInTotal'
+			}, {
+				title: '合格户数合计',
+				dataIndex: 'passNumberTotal',
+				key: 'passNumberTotal'
+			}, {
+				title: '检查次数合计',
+				dataIndex: 'numberTotal',
+				key: 'numberTotal'
+			}, {
+				title: '总考核率',
+				dataIndex: 'housePercentAvg',
+				key: 'housePercentAvg'
+			}, {
+				title: '总分数合计',
+				dataIndex: 'totalTotal',
+				key: 'totalTotal'
+			}, {
+				title: '总平均分',
+				dataIndex: 'avgAvg',
+				key: 'avgAvg'
+			}, {
+				title: '总源头分类正确率',
+				dataIndex: 'correctPercentAvg',
+				key: 'correctPercentAvg'
+			}
+			
+			
+		],
+		townComQueryTotalData: [
+],
 		//弹出框
 		visible: false,
 		//弹出框需要数据
@@ -278,7 +324,8 @@ class HouseHlodTable extends Component {
 		},
 		
 		pageSize: 10,
-		monthDay:false
+		monthDay:false,
+		realPageSize: 0
 	}
 
 	render() {
@@ -286,7 +333,10 @@ class HouseHlodTable extends Component {
 		return(
 			<div className="tableBox">
 					<Spin spinning={this.state.pagination.loading}>
-						    	<Table pagination={{
+						    	<Table 
+						    	pagination = {false}
+						    	dataSource={ this.state.pagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+								<Table pagination={{
 						    		total:this.state.pagination.total,
 						    		pageSize:this.state.pageSize,
 						    		defaultCurrent:1,
@@ -300,9 +350,16 @@ class HouseHlodTable extends Component {
 						    			})
 						    		}
 						    		
-						    	}} 
-						    	
-						    	dataSource={ this.state.pagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+						    	}}   dataSource={ this.state.townComQueryTotalData} columns={this.state.townComQueryTotal}/>
+								<div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
 					</Spin>
 				
 				 <Modal

@@ -294,7 +294,8 @@ class CheckUp extends Component {
                 endTime: null,
                 villageId: null,
                 dataType: "qualified"
-            }
+            },
+            realPageSize: 0
         }
     }
     componentWillMount() {
@@ -321,7 +322,8 @@ class CheckUp extends Component {
                             current: res.pageNum,
                             loading: false,
                             onChange: pageOnChange
-                        }
+                        },
+                        realPageSize: res.list.length
                     })
                 }else{
                     this.state.pagination.loading = false;
@@ -342,6 +344,15 @@ class CheckUp extends Component {
                     pagination={this.state.pagination}
                     tableData={this.state.tableData}
                     tableColumns={this.state.tableColumns}/>
+                      <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
                 <AlertDetails
                     showDFXQ
                     alertMsg={this.state.alertMsg}

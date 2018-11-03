@@ -29,6 +29,8 @@ class SelfReview extends Component {
             startTime: '',
             endTime: '',
             state: 3,
+            realname: '',
+        
             selectData: {
                 defaultValue: 3,
                 list: [
@@ -43,18 +45,21 @@ class SelfReview extends Component {
                         name: '未审核'
                     }
                 ]
-            }
+            },
+            realPageSize: 0
         }
     }
     componentDidMount = () => {
         this.getList()
     }
     getSearchData = (searchData) => {
+        console.log(searchData)
         this.setState({
             pageNum: 1,
             startTime: searchData.startTime,
             endTime: searchData.endTime,
             state: searchData.state,
+            realname: searchData.realname,
             spinShow: true
         }, () => {
             this.getList()
@@ -62,7 +67,15 @@ class SelfReview extends Component {
     }
     getList = () => {
 
-        var data = qs.stringify({pageNum: this.state.current, pageSize: this.state.pageSize, startTime: this.state.startTime, endTime: this.state.endTime, state: this.state.state});
+        var data = qs.stringify({
+          
+            realname: this.state.realname,
+            pageNum: this.state.current,
+            pageSize: this.state.pageSize,
+            startTime: this.state.startTime,
+            endTime: this.state.endTime,
+            state: this.state.state
+        });
         ajax({
             url: 'getSelfEvaluateAdmin',
             data: data,
@@ -70,7 +83,7 @@ class SelfReview extends Component {
             success: (res) => {
                 if (res.code == 200) {
 
-                    this.setState({listData: res.data.list, spinShow: false, total: res.data.total})
+                    this.setState({listData: res.data.list, spinShow: false, total: res.data.total, realPageSize: res.data.list.length})
                 } else {
                     message.info(res.msg)
                 }
@@ -142,6 +155,8 @@ class SelfReview extends Component {
                 </div>
                 <div className="right">
                     <div>{item.createTime}</div>
+                    <div>{item.address}</div>
+                    <div>{item.realname}</div>
                     <div>{stateArr[item.state - 1]}</div>
                     <div
                         style={{
@@ -195,6 +210,7 @@ class SelfReview extends Component {
         return <div className='spinBox'>
             <SearchRanking
                 conditionNone
+                showRealname
                 getSearchData={this.getSearchData}
                 selectData={this.state.selectData}/>
             <Row>
@@ -204,7 +220,8 @@ class SelfReview extends Component {
                     .map((item) => this.getContent(item))}
             </Row>
             <div style={{
-                textAlign: 'right'
+                textAlign: 'right',
+                marginTop: '12px'
             }}>
                 <Pagination
                     onChange={this.pageChange}
@@ -215,6 +232,15 @@ class SelfReview extends Component {
                     defaultCurrent={1}
                     total={this.state.total}/>
             </div>
+              <div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.total
+									}
+									条
+								</div>
             <div>
                 <Modal
                     afterClose={() => {

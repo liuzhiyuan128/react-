@@ -164,16 +164,27 @@ class HouseHlodTable extends Component {
 			data: qs.stringify(data),
 			type: "post",
 			success: (res) => {
-				res = res.data
+				let villageComQueryTotal = null
+				if (res.data.villageComQueryTotal) villageComQueryTotal = res.data.villageComQueryTotal
+				res = res.data.pageInfo
 				res.list.some(function(item, index) {
 					item.key = index
 				})
-				
+			
+				if (villageComQueryTotal) {
+					this.setState({
+						villageComQueryTotal
+					}, () => {
+						this.setState({
+							isShow: true
+						})
+					})
+				}
 				const houseHlodTableData = res.list
-				
+			
 				
 					this.setState({
-
+						realPageSize: res.list.length,
 						 pagination: {
 							houseHlodTableData,
 							total: res.total,
@@ -273,11 +284,24 @@ class HouseHlodTable extends Component {
 		pageSize: 10,
 		
 		selectTreeData: [],
-		monthDay: false
+		monthDay: false,
+		"villageComQueryTotal": {
+            "houseNumTotal": 0, //总户数合计
+            "totalTotal": 0,//总分数合计
+            "numberTotal": 0,//检查次数合计
+            "avgAvg": 0,//总平均分
+            "houseNumberInTotal": 0,//考核户数合计
+            "housePercentAvg": 0,//总考核率
+            "passNumberTotal": 10182,//合格户数合计
+            "correctPercentAvg": 0 //总源头正确率
+		},
+		isShow: false,
+		realPageSize: 0
+
 	}
 
 	render() {
-		const {househlodRankingAlertData} = this.state;
+		const {househlodRankingAlertData, villageComQueryTotal} = this.state;
 		return(
 			<div className="tableBox">
 					<Spin spinning={this.state.pagination.loading}>
@@ -298,6 +322,15 @@ class HouseHlodTable extends Component {
 						    	}} 
 						    	
 						    	dataSource={ this.state.pagination.houseHlodTableData} columns={this.state.houseHlodTableColumns} />
+								<div>
+									每页 {
+										this.state.realPageSize
+									}
+									条共 {
+										this.state.pagination.total
+									}
+									条
+								</div>
 					</Spin>
 				
 				<Modal
@@ -447,10 +480,33 @@ class HouseHlodTable extends Component {
 							
 				        </div>
 			        </Modal>
+				<div style={{display: this.state.isShow ? 'block' : 'none'}}>
+					总户数合计: <span>{villageComQueryTotal.houseNumTotal}</span>； 
+					总分数合计: <span>{villageComQueryTotal.totalTotal}</span>； 
+					检查次数合计: <span>{villageComQueryTotal.numberTotal}</span>； 
+					总平均分: <span>{villageComQueryTotal.avgAvg}</span>； 
+					考核户数合计: <span>{villageComQueryTotal.houseNumberInTotal}</span>； 
+					总考核率: <span>{villageComQueryTotal.housePercentAvg}</span>； 
+					合格户数合计: <span>{villageComQueryTotal.passNumberTotal}</span>； 
+					总源头正确率: <span>{villageComQueryTotal.correctPercentAvg}</span>
+				</div>
 			</div>
 		)
 	}
 }
+/* 
+"villageComQueryTotal": {
+            "houseNumTotal": 28557,总户数合计
+            "totalTotal": 622124,总分数合计
+            "numberTotal": 42997,检查次数合计
+            "avgAvg": 14,总平均分
+            "houseNumberInTotal": 10521,考核户数合计
+            "housePercentAvg": "39.87%",总考核率
+            "passNumberTotal": 10182,合格户数合计
+            "correctPercentAvg": "93.11%" 总源头正确率
+        }
+
+*/
 //：0总分 1平均分 2 考核率 3源头正确率
 const rankTypeList = [
 	{
