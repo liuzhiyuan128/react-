@@ -143,7 +143,7 @@ confirm =  ()=> {
                     <TextArea placeholder="" disabled autosize={{ minRows: 2, maxRows: 6 }} value={this.props.alertMsg.fkyj}></TextArea>
                 </div>
                 <Row>
-                    <Col span={8} style={{textAlign:"center", marginTop: "12px",display:this.props.alertMsg.cb ? "block" : 'none'}}><Button type="primary" onClick= {this.confirm}>重办</Button></Col>
+                    {/* <Col span={8} style={{textAlign:"center", marginTop: "12px",display:this.props.alertMsg.cb ? "block" : 'none'}}><Button type="primary" onClick= {this.confirm}>重办</Button></Col> */}
                     <Col span={8} style={{textAlign:"center", marginTop: "12px",display:this.props.alertMsg.db ? "block" : 'none'}}><Button type="primary" onClick={this.props.dbjs}>督办结束</Button></Col>
                     <Col span={8} style={{textAlign:"center", marginTop: "12px",display:this.props.alertMsg.hurry ? "block" : 'none'}}><Button type="primary" onClick = {this.props.hurry}>催办</Button></Col>
                 </Row>
